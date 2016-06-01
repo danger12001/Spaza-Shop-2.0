@@ -1,0 +1,26 @@
+#statistics {
+  border: 5px solid black;
+}
+#statistics li {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+.heading {
+  /*border: 5px solid blue;*/
+  background-color: red;
+  color: white;
+}
+#sales {
+  display: none;
+}
+#purchases {
+  display: none;
+}
+#heading {
+  text-align: center;
+}
+#linkInfo {
+  text-align: center;
+  border: 1px solid black;
+  text-decoration: none;
+}
