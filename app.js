@@ -3,6 +3,8 @@ var handlebars = require('express-handlebars');
 var app = express();
 var  myConnection = require('express-myconnection');
 var  bodyParser = require('body-parser');
+var mysql = require('mysql');
+var fs = require("fs");
 
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
@@ -24,12 +26,90 @@ app.use(express.static("public"));
 var dbOptions = {
       host: 'localhost',
       user: 'me',
-      password: 'secret',
+      password: '5550121a',
       port: 3000,
+      database: "Nelisa"
     };
 
-    // app.use(myConnection(dbOptions, 'single'));
+    // app.use(myConnection( dbOptions, 'single'));
+    var conn = mysql.createConnection({
+          host: 'localhost',
+          user: 'root',
+          password: '5550121a',
+          // port: 3000,
+          database: "Nelisa"
+        });
 
+    var Salessql = "INSERT INTO `Sales` (Date ,stockItem, AmountSold, Income) VALUES ?";
+    var productSql = "INSERT INTO `products` (description, price) Values ?";
+
+
+    var stockItems = [];
+    var AmountSold = [];
+    var Income = [];
+    var date = [];
+    var value = [];
+    var values = [];
+    var PurCost = [];
+    var PurValue = [];
+
+    var category = fs.readFileSync('./csv/catagories.csv', "utf8");
+    category = category.replace("Product,Category\n", "");
+    var interimArray = category.split('\n').join(".").split(',').join('.').split(".");
+    var categories = [];
+    for (x = 0; x < interimArray.length - 1; x++) {
+      if (x % 2 === 0) {
+        var stockItem = interimArray[x];
+        var categorys = interimArray[x + 1];
+        // console.log(stockItem);
+        categories.push({
+          "stockItem": stockItem,
+          "category": categorys
+        });
+        // console.log(interimArray);
+
+      }
+    }
+
+
+for(x = 0; x < weeklySalesfunc.weeklySales(1).length; x++){
+  stockItems.push(weeklySalesfunc.weeklySales(1)[x].stockItem);
+  stockItems.push(weeklySalesfunc.weeklySales(2)[x].stockItem);
+    stockItems.push(weeklySalesfunc.weeklySales(3)[x].stockItem);
+      stockItems.push(weeklySalesfunc.weeklySales(4)[x].stockItem);
+  AmountSold.push(weeklySalesfunc.weeklySales(1)[x].sold);
+  AmountSold.push(weeklySalesfunc.weeklySales(2)[x].sold);
+  AmountSold.push(weeklySalesfunc.weeklySales(3)[x].sold);
+  AmountSold.push(weeklySalesfunc.weeklySales(4)[x].sold);
+  Income.push(weeklySalesfunc.weeklySales(1)[x].income);
+    Income.push(weeklySalesfunc.weeklySales(2)[x].income);
+      Income.push(weeklySalesfunc.weeklySales(3)[x].income);
+        Income.push(weeklySalesfunc.weeklySales(4)[x].income);
+    date.push(weeklySalesfunc.weeklySales(1)[x].date);
+    date.push(weeklySalesfunc.weeklySales(2)[x].date);
+    date.push(weeklySalesfunc.weeklySales(3)[x].date);
+    date.push(weeklySalesfunc.weeklySales(4)[x].date);
+    value.push([date[x],stockItems[x], AmountSold[x], Income[x]]);
+    values.push(value);
+    for(y = 0; y < categories.length; y++){
+    if(categories[y].stockItem === stockItems[x]){
+      PurValue.push([categories[x].stockItem,Income[x]]);
+    }
+  }
+}
+// console.log(PurValue);
+    // conn.query(Salessql, values, function(err, result) {
+    //     if (err) throw err;
+    //     // console.log("number of rows inserted: " + rows[0]);
+    //     conn.end();
+    // });
+
+    // conn.query(productSql, [PurValue], function(err, result){
+    //   if (err) throw err;
+    //   conn.end();
+    // });
+
+// app.use(myConnection(dbOptions, 'single'));
     app.engine('handlebars', handlebars({defaultLayout : 'main'}));
     app.set('view engine', 'handlebars');
 

@@ -9,29 +9,31 @@ input = input.replace("Day,Date,stock item,No sold,Sales Price\n", "");
   }
     var salesList = [];
   processedArray.forEach(function(array) {
-    salesList.push([array[2], Number(array[3]),[array[4]] ]);
+    salesList.push([array[1],array[2], Number(array[3]),Number(array[4]) ]);
   });
   salesList.sort();
   var weeklySales = [];
   for (i = 1; i < salesList.length; i++) { //maps stock item and amount sold.
 
     if (i % 7 === 0) {
-      var stockItem = salesList[i][0]; //if i % 7 then put that item with index 0 in stockItem (salesList index 0 = Item)
+      var date = salesList[i][0];
+      var stockItem = salesList[i][1]; //if i % 7 then put that item with index 0 in stockItem (salesList index 1 = Item)
       var sold = 0; // amount sold
-      var income = salesList[i][2];
+      var income = salesList[i][3];
 
 if(week % 2 !== 0){
       for (j = 0; j < 7; j++) {
-        sold += salesList[i + j][1]; //gets the No sold
+        sold += salesList[i + j][2]; //gets the No sold
       }
     }
     else {
-      sold += salesList[i][1];
+      sold += salesList[i][2];
     }
       weeklySales.push({ //pushes to weeklySales
         "stockItem": stockItem,
         "sold": sold,
-        "income": Number(income)
+        "income": Number(income),
+        "date": date
       });
     }
   }
