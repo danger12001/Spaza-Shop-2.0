@@ -10,6 +10,7 @@ exports.Purchases = function(week) {
   for (x = 0; x < interimArray.length - 1; x++) {
     if (x % 6 === 0) {
       var shop = interimArray[x];
+      var date = interimArray[x + 1];
       var item = interimArray[x + 2];
       var quantity = interimArray[x + 3];
       var cost = interimArray[x + 4];
@@ -20,7 +21,8 @@ exports.Purchases = function(week) {
         "items": item,
         "quantity": quantity,
         "cost": cost,
-        "totalCost":totalcost
+        "totalCost":totalcost,
+        "date": date
       });
       // console.log(interimArray);
 // console.log(purchases);
@@ -33,11 +35,13 @@ exports.Purchases = function(week) {
       if (weeklySales[y].stockItem == purchases[x].items) {
         var item = weeklySales[y].stockItem;
         var quantity = purchases[x].quantity;
-        var totalCost = purchases[x].totalCost;
+        var totalCost = purchases[x].cost;
+        var date = purchases[x].date;
         // console.log(amountsold);
         op.push({item: item,
           quantity: quantity,
-          totalCost: totalCost});
+          totalCost: totalCost,
+          date: date});
       }
     }
   }
