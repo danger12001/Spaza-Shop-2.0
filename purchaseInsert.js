@@ -10,18 +10,21 @@ var conn = mysql.createConnection({
     });
 // console.log(purchases.Purchases());
 // var sql = "INSERT INTO purchases ( date, quantity, cost) VALUES ?";
-var testSql = 'insert into purchases (date, quantity, cost, product_id) values \ ((select id from products), product.id);';
+var sql = 'insert into purchases (date, quantity, cost, product_id) values ?;';
 var values = [];
 var date = [];
 var quantity = [];
 var cost = [];
-
+var product_id = [];
 // console.log(purchases.Purchases(1).length);
 for(var x = 0; x < purchases.Purchases().length; x++){
   date.push(purchases.Purchases()[x].date);
   quantity.push(purchases.Purchases()[x].quantity);
   cost.push(purchases.Purchases()[x].cost);
-  values.push([[date[x]], [quantity[x]], [cost[x]]]);
+  product_id.push(purchases.Purchases()[x].product_id);
+
+  values.push([ [date[x]], [quantity[x]], [cost[x]], [product_id[x]] ]);
+  // console.log(values);
 
 
   // console.log("THIS IS PURCHASES", purchases);
@@ -30,9 +33,9 @@ for(var x = 0; x < purchases.Purchases().length; x++){
   // console.log(x);
 // console.log(purchases.Purchases(1)[x].date);
 }
-console.log(purchases.Purchases());
-// conn.query(testSql, [values], function(err, result){
-//   if (err) throw err;
-//   conn.end();
-// });
+// console.log(product_id);
+conn.query(sql, [values], function(err, result){
+  if (err) throw err;
+  conn.end();
+});
 // console.log(values.date);

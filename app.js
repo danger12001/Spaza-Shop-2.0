@@ -1,6 +1,5 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
-var app = express();
 var  myConnection = require('express-myconnection');
 var  bodyParser = require('body-parser');
 var mysql = require('mysql');
@@ -14,6 +13,7 @@ var mostProfitableProduct = require('./routes/mostProfitableProduct');
 var mostProfitableCategory = require('./routes/mostProfitableCategory');
 var weeklySalesfunc = require('./routes/weeklySales');
 var purchases = require('./routes/purchases');
+var app = express();
 
 var week1 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(1), leastPopularProduct: leastPopularProduct.leastPopularProduct(1), mostPopularCategory: mostPopularCategory.mostPopularCategory(1),leastPopularCategory: leastPopularCategory.leastPopularCategory(1),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(1), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(1), weeklySales: weeklySalesfunc.weeklySales(1), purchases: purchases.Purchases(1) };
 var week2 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(2), leastPopularProduct: leastPopularProduct.leastPopularProduct(2), mostPopularCategory: mostPopularCategory.mostPopularCategory(2),leastPopularCategory: leastPopularCategory.leastPopularCategory(2),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(2), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(2), weeklySales: weeklySalesfunc.weeklySales(2), purchases: purchases.Purchases(2) };
@@ -22,33 +22,15 @@ var week4 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(4), least
 
 
 app.use(express.static("public"));
-console.log(purchases.Purchases(1).length);
 var dbOptions = {
       host: 'localhost',
-      user: 'me',
+      user: 'root',
       password: '5550121a',
-      port: 3000,
+      port: 3306,
       database: "Nelisa"
     };
-
-
-
-    // console.log(categoryValues);
     app.use(myConnection(mysql, dbOptions, 'single'));
-    var conn = mysql.createConnection({
-          host: 'localhost',
-          user: 'root',
-          password: '5550121a',
-          port: 3000,
-          database: "Nelisa"
-        });
-
-
-    // conn.query(productSql, [PurValue], function(err, result){
-    //   if (err) throw err;
-    //   conn.end();
-    // });
-
+    // var connection = mysql.createConnection(dbOptions);
 
     app.engine('handlebars', handlebars({defaultLayout : 'main'}));
     app.set('view engine', 'handlebars');
@@ -68,6 +50,17 @@ var dbOptions = {
     });
     app.get('/week4', function (req, res) {
      res.render("week4", week4);
+    });
+    app.get('/sales', function(req, res, next){
+      req.getConnection(function(err, connection){
+        // connection = mysql.createConnection(dbOptions);
+        if(err) return next(err);
+        connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id ORDER BY `sales`.`id` ASC ",[], function(err, data){
+          if(err) return next(err);
+          res.render("sales",{sales: data});
+          // connection.end();
+        });
+      });
     });
 //start server
     var server = app.listen(3000, function () {
