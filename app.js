@@ -62,6 +62,17 @@ var dbOptions = {
         });
       });
     });
+    app.get('/purchases', function(req, res, next){
+      req.getConnection(function(err, connection){
+        // connection = mysql.createConnection(dbOptions);
+        if(err) return next(err);
+        connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ",[], function(err, data){
+          if(err) return next(err);
+          res.render("purchases",{purchases: data});
+          // connection.end();
+        });
+      });
+    });
 //start server
     var server = app.listen(3000, function () {
 

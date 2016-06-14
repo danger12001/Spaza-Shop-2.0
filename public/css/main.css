@@ -9,6 +9,10 @@
   border-bottom: 1px solid black;
     border-right: 1px solid black;
 }
+.head {
+  font-weight: bold;
+
+}
 .heading {
   /*border: 5px solid blue;*/
   background-color: red;

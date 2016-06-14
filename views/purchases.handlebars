@@ -1,0 +1,17 @@
+
+<ul class="row list">
+  <li class="col s2 head">ID</li>
+  <li class="col s2 head">Purchase Date</li>
+  <li class="col s4 head">Product</li>
+  <li class="col s2 head">Quantity</li>
+  <li class="col s2 head">Price</li>
+        {{#purchases}}
+
+
+        <li class="col s2">{{id}}</li>
+        <li class="col s2"> {{date}}</li>
+          <li class="col s4"> {{product}}</li>
+          <li class="col s2"> {{quantity}}</li>
+          <li class="col s2"> {{cost}}</li>
+        {{/purchases}}
+    </ul>
