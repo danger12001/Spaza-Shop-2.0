@@ -6,8 +6,9 @@
   border-right: 1px solid black;
 }
 .list li {
-  border-bottom: 1px solid black;
-    border-right: 1px solid black;
+  border: 1px solid black;
+    /*border-right: 1px solid black;*/
+    height: 25px;
 }
 .head {
   font-weight: bold;
@@ -31,4 +32,10 @@
   text-align: center;
   border: 1px solid black;
   text-decoration: none;
+}
+.buttons {
+  height: 25px;
+  line-height: 25px;
+  padding-right: 10px;
+  border: 1px solid black;
 }

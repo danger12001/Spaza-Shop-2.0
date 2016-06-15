@@ -2,16 +2,19 @@
 <ul class="row list">
   <li class="col s2 head">ID</li>
   <li class="col s2 head">Purchase Date</li>
-  <li class="col s4 head">Product</li>
+  <li class="col s2 head">Product</li>
   <li class="col s2 head">Quantity</li>
   <li class="col s2 head">Price</li>
+  <a href="purchases/addPurchases"><li class="btn col s2 buttons">Add Purchase</li></a>
         {{#purchases}}
 
 
         <li class="col s2">{{id}}</li>
         <li class="col s2"> {{date}}</li>
-          <li class="col s4"> {{product}}</li>
+          <li class="col s2"> {{product}}</li>
           <li class="col s2"> {{quantity}}</li>
           <li class="col s2"> {{cost}}</li>
+          <a href="/purchases/editPurchases/{{id}}" class="btn col s1 buttons">Edit</a>
+          <a href="/purchases/delete/{{id}}" class="btn col s1 buttons">Delete</a>
         {{/purchases}}
     </ul>

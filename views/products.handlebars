@@ -1,0 +1,16 @@
+
+<ul class="row list">
+  <li class="col s3 head">ID</li>
+  <li class="col s3 head">Product</li>
+  <li class="col s3 head">Category</li>
+  <a href="products/add"><li class="btn col s3 buttons">Add Product</li></a>
+
+        {{#products}}
+
+        <li class="col s3 dbList">{{id}}</li>
+          <li class="col s3 dbList"> {{product}}</li>
+          <li class="col s3 dbList"> {{category}}</li>
+          <a href="/products/edit/{{id}}" class="btn col s2 buttons">Edit Product</a>
+          <a href="/products/delete/{{id}}" class="btn col s1 buttons">Delete Product</a>
+        {{/products}}
+    </ul>

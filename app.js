@@ -13,14 +13,22 @@ var mostProfitableProduct = require('./routes/mostProfitableProduct');
 var mostProfitableCategory = require('./routes/mostProfitableCategory');
 var weeklySalesfunc = require('./routes/weeklySales');
 var purchases = require('./routes/purchases');
+var products = require('./routes/products');
+var purchase = require('./routes/purchase');
 var app = express();
 
 var week1 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(1), leastPopularProduct: leastPopularProduct.leastPopularProduct(1), mostPopularCategory: mostPopularCategory.mostPopularCategory(1),leastPopularCategory: leastPopularCategory.leastPopularCategory(1),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(1), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(1), weeklySales: weeklySalesfunc.weeklySales(1), purchases: purchases.Purchases(1) };
 var week2 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(2), leastPopularProduct: leastPopularProduct.leastPopularProduct(2), mostPopularCategory: mostPopularCategory.mostPopularCategory(2),leastPopularCategory: leastPopularCategory.leastPopularCategory(2),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(2), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(2), weeklySales: weeklySalesfunc.weeklySales(2), purchases: purchases.Purchases(2) };
 var week3 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(3), leastPopularProduct: leastPopularProduct.leastPopularProduct(3), mostPopularCategory: mostPopularCategory.mostPopularCategory(3),leastPopularCategory: leastPopularCategory.leastPopularCategory(3),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(3), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(3), weeklySales: weeklySalesfunc.weeklySales(3), purchases: purchases.Purchases(3)};
 var week4 = {mostPopularProduct: mostPopularProduct.mostPopularProduct(4), leastPopularProduct: leastPopularProduct.leastPopularProduct(4), mostPopularCategory: mostPopularCategory.mostPopularCategory(4),leastPopularCategory: leastPopularCategory.leastPopularCategory(4),mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(4), mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(4), weeklySales: weeklySalesfunc.weeklySales(4), purchases: purchases.Purchases(4)};
+app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/json
+app.use(bodyParser.json());
 
-
+function errorHandler(err, req, res, next) {
+  res.status(500);
+  res.render('error', { error: err });
+}
 app.use(express.static("public"));
 var dbOptions = {
       host: 'localhost',
@@ -55,7 +63,7 @@ var dbOptions = {
       req.getConnection(function(err, connection){
         // connection = mysql.createConnection(dbOptions);
         if(err) return next(err);
-        connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id ORDER BY `sales`.`id` ASC ",[], function(err, data){
+        connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ",[], function(err, data){
           if(err) return next(err);
           res.render("sales",{sales: data});
           // connection.end();
@@ -73,6 +81,31 @@ var dbOptions = {
         });
       });
     });
+    app.get('/products', function(req, res, next){
+      req.getConnection(function(err, connection){
+        // connection = mysql.createConnection(dbOptions);
+        if(err) return next(err);
+        connection.query("SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ",[], function(err, data){
+          if(err) return next(err);
+          res.render("products",{products: data});
+          // connection.end();
+        });
+      });
+    });
+
+  app.get('/products/add', products.showAdd);
+  app.post('/products/add', products.add);
+  app.get('/products/delete/:id', products.delete);
+  app.get('/products/edit/:id', products.get);
+  app.post('/products/update/:id', products.update);
+
+  app.get('/purchases/addPurchases', purchase.showAdd);
+  app.post('/purchases/addPurchases', purchase.add);
+  app.get('/purchases/delete/:id', purchase.delete);
+  app.get('/purchases/editPurchases/:id', purchase.get);
+  app.post('/purchases/update/:id', purchase.update);
+
+  app.use(errorHandler);
 //start server
     var server = app.listen(3000, function () {
 
