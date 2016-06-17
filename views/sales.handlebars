@@ -1,0 +1,26 @@
+
+<ul class="row list">
+  <!-- <li class="col s2 head">ID</li> -->
+  <li class="col s1 head">Date</li>
+  <li class="col s4 head">Product</li>
+  <li class="col s2 head">Amount Sold</li>
+  <li class="col s2 head">Price Per Unit</li>
+  <li class="col s3 btn buttons">ADD</li>
+        {{#sales}}
+
+
+        <li class="col s1"> {{date}}</li>
+          <li class="col s4"> {{product}}</li>
+          <li class="col s2"> {{sold}}</li>
+          <li class="col s2"> {{price}}</li>
+          <li class="col s2 btn buttons">edit</li>
+          <li class="col s1 btn buttons">delete</li>
+        {{/sales}}
+    </ul>
+      <!-- {{#sales}}
+<td>{{id}}</td>
+<td>{{date}}</td>
+<td>{{product}}</td>
+<td>{{sold}}</td>
+<td>{{price}}</td>
+{{/sales}} -->

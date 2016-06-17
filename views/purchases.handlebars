@@ -1,0 +1,20 @@
+
+<ul class="row list">
+  <li class="col s1 head">ID</li>
+  <li class="col s1 head">Date</li>
+  <li class="col s3 head">Product</li>
+  <li class="col s2 head">Quantity</li>
+  <li class="col s2 head">Price</li>
+  <a href="purchases/addPurchases"><li class="btn col s3 buttons">Add Purchase</li></a>
+        {{#purchases}}
+
+
+        <li class="col s1">{{id}}</li>
+        <li class="col s1"> {{date}}</li>
+          <li class="col s3"> {{product}}</li>
+          <li class="col s2"> {{quantity}}</li>
+          <li class="col s2"> {{cost}}</li>
+          <a href="/purchases/editPurchase/{{id}}" class="btn col s2 buttons">Edit</a>
+          <a href="/purchases/delete/{{id}}" class="btn col s1 buttons">Delete</a>
+        {{/purchases}}
+    </ul>
