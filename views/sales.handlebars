@@ -5,7 +5,7 @@
   <li class="col s4 head">Product</li>
   <li class="col s2 head">Amount Sold</li>
   <li class="col s2 head">Price Per Unit</li>
-  <li class="col s3 btn buttons">ADD</li>
+<a href="sales/addSales"><li class="btn col s3 buttons">Add Sale</li></a>
         {{#sales}}
 
 
@@ -13,14 +13,7 @@
           <li class="col s4"> {{product}}</li>
           <li class="col s2"> {{sold}}</li>
           <li class="col s2"> {{price}}</li>
-          <li class="col s2 btn buttons">edit</li>
-          <li class="col s1 btn buttons">delete</li>
+<a href="sales/editSale/{{id}}"><li class="btn col s2 buttons">edit</li></a>
+<a href="sales/delete/{{id}}"><li class="btn col s1 buttons">delete</li></a>
         {{/sales}}
     </ul>
-      <!-- {{#sales}}
-<td>{{id}}</td>
-<td>{{date}}</td>
-<td>{{product}}</td>
-<td>{{sold}}</td>
-<td>{{price}}</td>
-{{/sales}} -->

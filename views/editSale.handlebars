@@ -1,6 +1,6 @@
-<h1>Add purchase</h1>
+<h1>Edit Sale</h1>
 
-<form action="/purchases/addPurchases" method="POST">
+<form action="/sales/update/{{data.id}}" method="POST">
 	<div class="">
 		<!-- <label for="">Category</label> -->
 
@@ -9,21 +9,21 @@
 	</div>
   <div>
 		<label for="date">date</label>
-		<input class="datepicker" type="date" name="date" value="{{date}}">
+		<input class="datepicker" type="date" name="date" value="{{data.date}}">
 	</div>
   <div>
-		<label for="quantity">quantity</label>
-		<input type="number" name="quantity" value="{{quantity}}">
+		<label for="sold">quantity</label>
+		<input type="number" name="sold" value="{{data.sold}}">
 	</div>
   <div>
-		<label for="cost">cost</label>
-		<input type="text" name="cost" value="{{cost}}">
+		<label for="price">cost</label>
+		<input type="text" name="price" value="{{data.price}}">
 	</div>
   <label>Product</label>
   <select class="browser-default" name="product_id">
-    {{#purchases}}
+    {{#sales}}
     <option value="{{id}}"> {{product}}</option>
-    {{/purchases}}
+    {{/sales}}
   </select>
 	<!-- <div>
 		<label for="">product</label>

@@ -1,0 +1,13 @@
+
+<ul class="row list">
+  <li class="col s6 head">Category</li>
+  <a href="categories/addCategory"><li class="btn col s6 buttons">Add Category</li></a>
+
+
+        {{#categories}}
+
+          <li class="col s6 dbList"> {{category}}</li>
+          <a href="/categories/editCategory/{{id}}" class="btn col s4 buttons">Edit</a>
+          <a href="/categories/delete/{{id}}" class="btn col s2 buttons">Delete</a>
+        {{/categories}}
+    </ul>

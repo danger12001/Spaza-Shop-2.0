@@ -16,6 +16,8 @@ var weeklySalesfunc = require('./routes/weeklySales');
 var purchases = require('./routes/purchases');
 var products = require('./routes/products');
 var purchase = require('./routes/purchase');
+var sales = require('./routes/sales');
+var categories = require('./routes/categories');
 var app = express();
 var categoriesTable = String(fs.readFileSync("./sql/categoriesTable.sql"));
 var productsTable = String(fs.readFileSync("./sql/productsTable.sql"));
@@ -156,6 +158,19 @@ app.get('/products', function(req, res, next) {
         });
     });
 });
+app.get('/categories', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        // connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT categories.id, categories.category FROM categories", [], function(err, data) {
+            if (err) return next(err);
+            res.render("categories", {
+                categories: data
+            });
+            // connection.end();
+        });
+    });
+});
 
 app.get('/products/add', products.showAdd);
 app.post('/products/add', products.add);
@@ -168,6 +183,18 @@ app.post('/purchases/addPurchases', purchase.add);
 app.get('/purchases/delete/:id', purchase.delete);
 app.get('/purchases/editPurchase/:id', purchase.get);
 app.post('/purchases/update/:id', purchase.update);
+
+app.get('/sales/addSales', sales.showAdd);
+app.post('/sales/addSales', sales.add);
+app.get('/sales/delete/:id', sales.delete);
+app.get('/sales/editSale/:id', sales.get);
+app.post('/sales/update/:id', sales.update);
+
+app.get('/categories/addCategory', categories.showAdd);
+app.post('/categories/addCategory', categories.add);
+app.get('/categories/delete/:id', categories.delete);
+app.get('/categories/editCategory/:id', categories.get);
+app.post('/categories/update/:id', categories.update);
 
 // conn.query(categoriesTable, [], function(err, result) {
 //     if (err) throw err;
