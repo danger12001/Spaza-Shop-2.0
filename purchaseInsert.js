@@ -4,7 +4,7 @@ var purchases = require('./routes/purchases');
 var conn = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '5550121',
+      password: '5550121a',
       // port: 3000,
       database: "Nelisa"
     });
