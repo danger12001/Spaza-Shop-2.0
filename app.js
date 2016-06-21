@@ -4,8 +4,7 @@ var myConnection = require('express-myconnection');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var fs = require("fs");
-
-
+var session = require('express-session');
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
 var mostPopularCategory = require('./routes/mostPopularCategory');
@@ -19,11 +18,11 @@ var purchase = require('./routes/purchase');
 var sales = require('./routes/sales');
 var categories = require('./routes/categories');
 var app = express();
+
 var categoriesTable = String(fs.readFileSync("./sql/categoriesTable.sql"));
 var productsTable = String(fs.readFileSync("./sql/productsTable.sql"));
 var purchaseTable = String(fs.readFileSync("./sql/purchaseTable.sql"));
 var salesTable = String(fs.readFileSync("./sql/salesTable.sql"));
-
 var productsFK = String(fs.readFileSync("./sql/productsFK.sql"));
 var purchaseFK = String(fs.readFileSync("./sql/purchaseFK.sql"));
 var salesFK = String(fs.readFileSync("./sql/salesFK.sql"));
@@ -71,6 +70,8 @@ var week4 = {
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -88,6 +89,10 @@ var dbOptions = {
     port: 3306,
     database: "Nelisa"
 };
+app.use(session({
+    secret: 'secret?',
+    cookie: { maxAge: 60000 }
+}));
 app.use(myConnection(mysql, dbOptions, 'single'));
 // var connection = mysql.createConnection(dbOptions);
 var conn = mysql.createConnection({
@@ -171,6 +176,33 @@ app.get('/categories', function(req, res, next) {
         });
     });
 });
+// app.get("/login", function(req, res){
+//     // req.session will be defined now
+//     if (!req.session.user){
+//         //set a session value from a form variable
+//         req.session.user = req.body.username;
+//     }
+// });
+// app.use(function(req, res, next){
+//   console.log('Checking if user is logged in');
+//
+//   // the user is not going to the login screen
+//   if (req.path != "/login"){
+//       //is the user not logged in?
+//       if (!req.session.username ){
+//           // redirects to the login screen
+//           return res.redirect("/login");
+//       }
+//   }
+//
+//   //proceed to the next middleware component
+//   next();
+// });
+// app.get("/logout", function(req, res){
+//   delete req.session.username;
+// });
+
+
 
 app.get('/products/add', products.showAdd);
 app.post('/products/add', products.add);
@@ -218,6 +250,7 @@ app.post('/categories/update/:id', categories.update);
 //         });
 //     });
 // });
+
 
 app.use(errorHandler);
 //start server
