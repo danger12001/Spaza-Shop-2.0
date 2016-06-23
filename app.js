@@ -4,6 +4,7 @@ var myConnection = require('express-myconnection');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var fs = require("fs");
+var bcrypt = require('bcrypt');
 var session = require('express-session');
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
@@ -17,6 +18,9 @@ var products = require('./routes/products');
 var purchase = require('./routes/purchase');
 var sales = require('./routes/sales');
 var categories = require('./routes/categories');
+var signup  = require('./routes/signUp');
+var login = require('./routes/login');
+var users = require('./routes/users');
 var app = express();
 
 var categoriesTable = String(fs.readFileSync("./sql/categoriesTable.sql"));
@@ -26,6 +30,7 @@ var salesTable = String(fs.readFileSync("./sql/salesTable.sql"));
 var productsFK = String(fs.readFileSync("./sql/productsFK.sql"));
 var purchaseFK = String(fs.readFileSync("./sql/purchaseFK.sql"));
 var salesFK = String(fs.readFileSync("./sql/salesFK.sql"));
+var usersTable = String(fs.readFileSync("./sql/usersTable.sql"));
 
 var week1 = {
     mostPopularProduct: mostPopularProduct.mostPopularProduct(1),
@@ -89,16 +94,19 @@ var dbOptions = {
     port: 3306,
     database: "Nelisa"
 };
-
+app.use(session({
+    secret: 'space cats on synthesizers',
+    cookie: { maxAge: 60000 }
+}));
 app.use(myConnection(mysql, dbOptions, 'single'));
-//var connection = mysql.createConnection(dbOptions);
-var connection = mysql.createConnection({
-    host: '162.243.221.42',
-    user: 'root',
-   password: '5550121a',
-    port: 3306,
-    database: "Nelisa"
-});
+var connection = mysql.createConnection(dbOptions);
+// var connection = mysql.createConnection({
+    // host: '162.243.221.42',
+    // user: 'root',
+  //  password: '5550121a',
+    // port: 3306,
+    // database: "Nelisa"
+// });
 
 app.engine('handlebars', handlebars({
     defaultLayout: 'main'
@@ -173,39 +181,46 @@ app.get('/categories', function(req, res, next) {
         });
     });
 });
-// app.get("/login", function(req, res){
-//     // req.session will be defined now
-//     if (!req.session.user){
-//         //set a session value from a form variable
-//         req.session.user = req.body.username;
-//     }
-// });
-// app.use(function(req, res, next){
-//   console.log('Checking if user is logged in');
-//
-//   // the user is not going to the login screen
-//   if (req.path != "/login"){
-//       //is the user not logged in?
-//       if (!req.session.username ){
-//           // redirects to the login screen
-//           return res.redirect("/login");
-//       }
-//   }
-//
-//   //proceed to the next middleware component
-//   next();
-// });
-// app.get("/logout", function(req, res){
-//   delete req.session.username;
-// });
-
-
-
+app.get("/signup", function(req, res, next){
+  req.getConnection(function(err, connection){
+    connection = mysql.createConnection(dbOptions);
+    if(err) return next(err);
+      res.render("signup");
+});
+});
+app.post('/signup', signup);
+app.get("/login", function(req, res, next){
+  req.getConnection(function(err, connection){
+    connection = mysql.createConnection(dbOptions);
+    if(err) return next(err);
+    res.render("login");
+  });
+});
+app.post('/login', login);
+app.get('/users', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT users.id, users.username, users.admin, users.locked FROM users", [], function(err, data) {
+            if (err) return next(err);
+            res.render("users", {
+                users: data
+            });
+            // connection.end();
+        });
+    });
+});
 app.get('/products/add', products.showAdd);
 app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
+
+app.get('/users/addUser', users.showAdd);
+app.post('/users/addUser', users.add);
+app.get('/users/delete/:id', users.delete);
+app.get('/users/edit/:id', users.get);
+app.post('/users/update/:id', users.update);
 
 app.get('/purchases/addPurchases', purchase.showAdd);
 app.post('/purchases/addPurchases', purchase.add);
@@ -224,6 +239,13 @@ app.post('/categories/addCategory', categories.add);
 app.get('/categories/delete/:id', categories.delete);
 app.get('/categories/editCategory/:id', categories.get);
 app.post('/categories/update/:id', categories.update);
+
+
+
+
+connection.query(usersTable, [], function(err, result) {
+    if (err) throw err;
+});
 
 // conn.query(categoriesTable, [], function(err, result) {
 //     if (err) throw err;
