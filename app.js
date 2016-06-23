@@ -83,23 +83,20 @@ function errorHandler(err, req, res, next) {
 }
 app.use(express.static("public"));
 var dbOptions = {
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: '5550121a',
     port: 3306,
     database: "Nelisa"
 };
-app.use(session({
-    secret: 'secret?',
-    cookie: { maxAge: 60000 }
-}));
+
 app.use(myConnection(mysql, dbOptions, 'single'));
-// var connection = mysql.createConnection(dbOptions);
-var conn = mysql.createConnection({
-    host: 'localhost',
+//var connection = mysql.createConnection(dbOptions);
+var connection = mysql.createConnection({
+    host: '162.243.221.42',
     user: 'root',
-    password: '5550121',
-    // port: 3000,
+   password: '5550121a',
+    port: 3306,
     database: "Nelisa"
 });
 
@@ -126,20 +123,20 @@ app.get('/week4', function(req, res) {
 });
 app.get('/sales', function(req, res, next) {
     req.getConnection(function(err, connection) {
-        // connection = mysql.createConnection(dbOptions);
+        connection = mysql.createConnection(dbOptions);
         if (err) return next(err);
         connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
             res.render("sales", {
                 sales: data
             });
-            // connection.end();
+           //  connection.end();
         });
     });
 });
 app.get('/purchases', function(req, res, next) {
     req.getConnection(function(err, connection) {
-        // connection = mysql.createConnection(dbOptions);
+        connection = mysql.createConnection(dbOptions);
         if (err) return next(err);
         connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
@@ -152,7 +149,7 @@ app.get('/purchases', function(req, res, next) {
 });
 app.get('/products', function(req, res, next) {
     req.getConnection(function(err, connection) {
-        // connection = mysql.createConnection(dbOptions);
+        connection = mysql.createConnection(dbOptions);
         if (err) return next(err);
         connection.query("SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
@@ -165,7 +162,7 @@ app.get('/products', function(req, res, next) {
 });
 app.get('/categories', function(req, res, next) {
     req.getConnection(function(err, connection) {
-        // connection = mysql.createConnection(dbOptions);
+        connection = mysql.createConnection(dbOptions);
         if (err) return next(err);
         connection.query("SELECT categories.id, categories.category FROM categories", [], function(err, data) {
             if (err) return next(err);
