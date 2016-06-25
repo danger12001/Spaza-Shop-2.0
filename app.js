@@ -6,6 +6,7 @@ var mysql = require('mysql');
 var fs = require("fs");
 var bcrypt = require('bcrypt');
 var session = require('express-session');
+var flash = require('express-flash');
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
 var mostPopularCategory = require('./routes/mostPopularCategory');
@@ -90,7 +91,7 @@ app.use(express.static("public"));
 var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    password: '5550121',
     port: 3306,
     database: "Nelisa"
 };
@@ -98,16 +99,9 @@ app.use(session({
     secret: 'space cats on synthesizers',
     cookie: { maxAge: 60000 }
 }));
+app.use(flash());
 app.use(myConnection(mysql, dbOptions, 'single'));
 var connection = mysql.createConnection(dbOptions);
-// var connection = mysql.createConnection({
-    // host: '162.243.221.42',
-    // user: 'root',
-  //  password: '5550121a',
-    // port: 3306,
-    // database: "Nelisa"
-// });
-
 app.engine('handlebars', handlebars({
     defaultLayout: 'main'
 }));

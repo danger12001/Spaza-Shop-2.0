@@ -8,15 +8,14 @@ module.exports = function(req, res) {
     req.getConnection(function(err, connection) {
 
         connection.query('SELECT * FROM users where username = ?', username, function(err, users) {
-            var user = users[0];
-            var id = user.id;
+          if(users[0] === undefined){
+            req.flash("warning", 'Invalid username or password');
+            return res.redirect("/login");
+          }
+          var user = users[0];
+          var id = user.id;
 
-            if (user === undefined) {
-                // req.flash('warning', 'Invalid username');
-                return res.redirect("/login");
-            }
-
-            else if (user.locked === 0) {
+            if (user.locked === 0) {
 
                 bcrypt.compare(password, user.password, function(err, match) {
                     if (match) {
@@ -35,14 +34,13 @@ module.exports = function(req, res) {
                             // });
                         // }
                         else {
-                          // alert("Invalid username or password");
-                            // req.alert('warning', 'Invalid username or password');
+                            req.flash('warning', 'Invalid username or password');
                             return res.redirect("/login");
                         }
                     }
                 );
             } else {
-                // req.flash('warning', 'Account locked');
+                req.flash('warning', 'Account locked');
                 return res.redirect("/login");
             }
         });

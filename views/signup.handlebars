@@ -1,7 +1,7 @@
 
-<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SIGN UP</h3>
+<h3>SIGN UP</h3>
 
-<form class="navbar-form navbar-left" action="/signup" method="POST">
+<form action="/signup" method="POST">
 
     <div class="form-group">
         <label for="">username&nbsp;:</label>
@@ -12,9 +12,16 @@
         <label for="">password&nbsp;:</label>
         <input type="password" name="password">
     </div>
-
+    <div class="switch">
+    <label>
+      Regular User
+      <input type="checkbox" name="admin">
+      <span class="lever"></span>
+      Super User
+    </label>
+  </div>
     <h5 id = 'warning'>{{messages.warning}}</h5>
 
-    <input type="submit" value="Sign Up">
+    <input class="btn" type="submit" value="Sign Up">
 
 </form>

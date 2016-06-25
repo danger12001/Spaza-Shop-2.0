@@ -1,6 +1,6 @@
 <h3>LOGIN</h3>
 
-<form class="navbar-form navbar-left" action="/login" method="POST">
+<form action="/login" method="POST">
 
     <div class="form-group">
         <label for="">username&nbsp;:</label>
@@ -13,11 +13,11 @@
     </div>
 
     <h5 id = 'warning'>{{messages.warning}}</h5>
-    <h5 id = 'success'>{{messages.success}}</h4>
 
-    <input type="submit" value="Login">
+    <input type="submit" class="btn" value="Login">
+    
     <div>
-        <a href='/signup' id = 'signup'>Need an account? Create one here!<a>
+        <a href='/signup'  id = 'signup'>Need an account? Create one here!<a>
     </div>
 
 </form>
