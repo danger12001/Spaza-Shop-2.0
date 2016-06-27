@@ -1,0 +1,12 @@
+<ul class="row list">
+  <li class="col s2 head">Date</li>
+  <li class="col s4 head">Product</li>
+  <li class="col s3 head">Amount Sold</li>
+  <li class="col s3 head">Price Per Unit</li>
+        {{#sales}}
+        <li class="col s2"> {{date}}</li>
+          <li class="col s4"> {{product}}</li>
+          <li class="col s3"> {{sold}}</li>
+          <li class="col s3"> {{price}}</li>
+        {{/sales}}
+    </ul>

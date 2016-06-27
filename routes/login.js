@@ -19,10 +19,16 @@ module.exports = function(req, res) {
 
                 bcrypt.compare(password, user.password, function(err, match) {
                     if (match) {
-                        req.session.user = user;
-                        // req.session.admintab = {
-                          // admin: req.session.user.admin
-                        // };
+                      // var admin = user.admin;
+                      // console.log(user.username);
+                        req.session.username = user.username;
+                        // console.log("Logged in as" + req.session.user);
+                        if(user.admin === 1){
+                        req.session.admintab = {
+                          admin: req.session.username
+                        };
+                      }
+                      // console.log("Logged in as: " + (req.session.username));
                         return res.redirect("/");
                     }
                     // else {

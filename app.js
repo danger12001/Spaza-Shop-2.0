@@ -91,7 +91,7 @@ app.use(express.static("public"));
 var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121',
+    password: '5550121a',
     port: 3306,
     database: "Nelisa"
 };
@@ -107,21 +107,31 @@ app.engine('handlebars', handlebars({
 }));
 app.set('view engine', 'handlebars');
 
+app.use(function(req, res, next){
+  if (req.path != "/login"){
+    if(req.path !="/signup"){
+    if (!req.session.username ){
+      return res.redirect("/login");
+    }
+  }
+  }
+  next();
+});
 //routes
 app.get('/', function(req, res) {
-    res.render("index");
+    res.render("index", {admin: req.session.admintab, user: req.session.username});
 });
 app.get('/week1', function(req, res) {
-    res.render("week1", week1);
+    res.render("week1", {data: week1, admin: req.session.admintab, user: req.session.username});
 });
 app.get('/week2', function(req, res) {
-    res.render("week2", week2);
+    res.render("week2",{data: week2, admin: req.session.admintab, user: req.session.username});
 });
 app.get('/week3', function(req, res) {
-    res.render("week3", week3);
+    res.render("week3", {data: week3, admin: req.session.admintab, user: req.session.username});
 });
 app.get('/week4', function(req, res) {
-    res.render("week4", week4);
+  res.render("week4", {data: week4, admin: req.session.admintab, user: req.session.username});
 });
 app.get('/sales', function(req, res, next) {
     req.getConnection(function(err, connection) {
@@ -130,12 +140,16 @@ app.get('/sales', function(req, res, next) {
         connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
             res.render("sales", {
-                sales: data
+                sales: data,
+                admin: req.session.admintab, user: req.session.username
+
             });
            //  connection.end();
         });
     });
 });
+
+
 app.get('/purchases', function(req, res, next) {
     req.getConnection(function(err, connection) {
         connection = mysql.createConnection(dbOptions);
@@ -143,7 +157,8 @@ app.get('/purchases', function(req, res, next) {
         connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
             res.render("purchases", {
-                purchases: data
+                purchases: data,
+                admin: req.session.admintab, user: req.session.username
             });
             // connection.end();
         });
@@ -156,7 +171,8 @@ app.get('/products', function(req, res, next) {
         connection.query("SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ", [], function(err, data) {
             if (err) return next(err);
             res.render("products", {
-                products: data
+                products: data,
+                admin: req.session.admintab, user: req.session.username
             });
             // connection.end();
         });
@@ -169,12 +185,74 @@ app.get('/categories', function(req, res, next) {
         connection.query("SELECT categories.id, categories.category FROM categories", [], function(err, data) {
             if (err) return next(err);
             res.render("categories", {
-                categories: data
+                categories: data,
+                admin: req.session.admintab, user: req.session.username
             });
             // connection.end();
         });
     });
 });
+
+app.get('/sale', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ", [], function(err, data) {
+            if (err) return next(err);
+            res.render("salesU", {
+                sales: data,
+                admin: req.session.admintab, user: req.session.username
+
+            });
+           //  connection.end();
+        });
+    });
+});
+
+
+app.get('/purchase', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ", [], function(err, data) {
+            if (err) return next(err);
+            res.render("purchasesU", {
+                purchases: data,
+                admin: req.session.admintab, user: req.session.username
+            });
+            // connection.end();
+        });
+    });
+});
+app.get('/product', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ", [], function(err, data) {
+            if (err) return next(err);
+            res.render("productsU", {
+                products: data,
+                admin: req.session.admintab, user: req.session.username
+            });
+            // connection.end();
+        });
+    });
+});
+app.get('/category', function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        connection = mysql.createConnection(dbOptions);
+        if (err) return next(err);
+        connection.query("SELECT categories.id, categories.category FROM categories", [], function(err, data) {
+            if (err) return next(err);
+            res.render("categoriesU", {
+                categories: data,
+                admin: req.session.admintab, user: req.session.username
+            });
+            // connection.end();
+        });
+    });
+});
+
 app.get("/signup", function(req, res, next){
   req.getConnection(function(err, connection){
     connection = mysql.createConnection(dbOptions);
@@ -191,6 +269,12 @@ app.get("/login", function(req, res, next){
   });
 });
 app.post('/login', login);
+
+app.get("/logout", function (req, res, next){
+delete req.session.username;
+delete req.session.admintab;
+res.redirect("/");
+});
 app.get('/users', function(req, res, next) {
     req.getConnection(function(err, connection) {
         connection = mysql.createConnection(dbOptions);
@@ -198,7 +282,9 @@ app.get('/users', function(req, res, next) {
         connection.query("SELECT users.id, users.username, users.admin, users.locked FROM users", [], function(err, data) {
             if (err) return next(err);
             res.render("users", {
-                users: data
+                users: data,
+                admin: req.session.admintab,
+                user: req.session.username
             });
             // connection.end();
         });
@@ -213,7 +299,7 @@ app.post('/products/update/:id', products.update);
 app.get('/users/addUser', users.showAdd);
 app.post('/users/addUser', users.add);
 app.get('/users/delete/:id', users.delete);
-app.get('/users/edit/:id', users.get);
+app.get('/users/editUser/:id', users.get);
 app.post('/users/update/:id', users.update);
 
 app.get('/purchases/addPurchases', purchase.showAdd);
@@ -266,6 +352,7 @@ connection.query(usersTable, [], function(err, result) {
 
 
 app.use(errorHandler);
+
 //start server
 var server = app.listen(3000, function() {
 

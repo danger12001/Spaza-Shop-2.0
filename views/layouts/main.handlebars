@@ -14,6 +14,8 @@
         <a href="/" class="brand-logo">Nelisa's Spaza Shop</a>
         <ul id="nav-mobile" class="right">
 
+
+
 <li>
   <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
 </li>
@@ -23,16 +25,47 @@
     <li><a href="/week3">Week Three</a></li>
     <li><a href="/week4">Week Four</a></li>
   </ul>
+
+{{#if admin}}
   <li><a href="/sales">Sales</a></li>
   <li><a href="/purchases">Purchases</a></li>
   <li><a href="/products"> Products</a></li>
     <li><a href="/categories"> Categories </a></li>
+    <li><a href="/users"> Users </a></li>
+{{/if}}
+
+{{#unless admin}}
+{{#if user}}
+<li><a href="/sale">Sales</a></li>
+<li><a href="/purchase">Purchases</a></li>
+<li><a href="/product"> Products</a></li>
+  <li><a href="/category"> Categories </a></li>
+{{/if}}
+{{/unless}}
+
+
+{{#unless user }}
+{{#unless admin }}
     <li><a href="/signup"> Sign Up </a></li>
     <li><a href="/login"> Log In </a></li>
-    <li><a href="/users"> Users </a></li>
+{{/unless}}
+{{/unless}}
+{{#if user}}
+    <!-- <li><a href="/logout">Logout</a></li> -->
 
+    <li>
+      <a class='dropdown-button' href='#' data-activates='dropdown2'>Log Out</a>
+    </li>
 
+      <ul id='dropdown2' class='dropdown-content'>
+        <li>Current user: {{user}}</li>
+        <li><a href="/logout">Log Out</a></li>
+      </ul>
 
+{{/if}}
+<!-- {{#if admin}} -->
+    <!-- <li><a href="/logout">Logout</a></li> -->
+<!-- {{/if}} -->
           <!-- <li><a href="">Log In</a></li> -->
           <!-- <li><a href="">Sign Up</a></li> -->
         </ul>

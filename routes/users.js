@@ -56,7 +56,7 @@ exports.get = function(req, res, next) {
     req.getConnection(function(err, connection) {
         connection.query('SELECT * FROM users WHERE id = ?', [id], function(err, rows) {
             if (err) return next(err);
-            res.render('edit_user', {
+            res.render('editUser', {
                 data: rows[0],
                 // admin: req.session.admintab
             });
@@ -67,15 +67,20 @@ exports.get = function(req, res, next) {
 exports.update = function(req, res, next) {
 
     var id = req.params.id;
-    var password = req.body.password;
+    // var password = req.body.password;
     var data = {
         username: req.body.username,
         admin: req.body.admin,
         locked: req.body.locked
     };
-
-    bcrypt.hash(password, 10, function(err, hash) {
-        data.password = hash;
+    if(req.body.admin === "on"){
+      data.admin = 1;
+    }
+    else {
+      data.admin = 0;
+    }
+    // bcrypt.hash(password, 10, function(err, hash) {
+        // data.password = hash;
 
         req.getConnection(function(err, connection) {
             connection.query('UPDATE users SET ? WHERE id = ?', [data, id], function(err, rows) {
@@ -83,7 +88,7 @@ exports.update = function(req, res, next) {
                 res.redirect('/users');
             });
         });
-    });
+    // });
 };
 
 exports.delete = function(req, res, next) {
