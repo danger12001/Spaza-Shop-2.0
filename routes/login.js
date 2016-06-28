@@ -1,4 +1,5 @@
 var bcrypt = require('bcrypt');
+var lockCount = 0;
 
 module.exports = function(req, res) {
 
@@ -31,21 +32,25 @@ module.exports = function(req, res) {
                       // console.log("Logged in as: " + (req.session.username));
                         return res.redirect("/");
                     }
-                    // else {
-                        // login_count++;
-                        // if (login_count === 3) {
-                            // connection.query('UPDATE users SET locked = 1 WHERE id = ?', [id], function(err, rows) {
-                                // req.flash('warning', 'Account locked');
-                                // return res.redirect("/login");
-                            // });
-                        // }
+                    else {
+                        lockCount ++;
+                        console.log(lockCount);
+                        if (lockCount === 3) {
+                          console.log("LOCKED");
+                            connection.query('UPDATE users SET locked = 1 WHERE id = ?', [id], function(err, rows) {
+                                req.flash('warning', 'Account locked');
+                                return res.redirect("/login");
+                            });
+                        }
+
                         else {
                             req.flash('warning', 'Invalid username or password');
                             return res.redirect("/login");
+                          }
                         }
-                    }
-                );
-            } else {
+                    });
+            }
+             else {
                 req.flash('warning', 'Account locked');
                 return res.redirect("/login");
             }

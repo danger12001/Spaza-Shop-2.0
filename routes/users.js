@@ -71,7 +71,7 @@ exports.update = function(req, res, next) {
     var data = {
         username: req.body.username,
         admin: req.body.admin,
-        locked: req.body.locked
+        locked: req.body.lock
     };
     if(req.body.admin === "on"){
       data.admin = 1;
@@ -79,8 +79,14 @@ exports.update = function(req, res, next) {
     else {
       data.admin = 0;
     }
+    if(req.body.lock === "on"){
+      data.locked = 0;
+    }
+    else {
+      data.locked = 1;
+    }
     // bcrypt.hash(password, 10, function(err, hash) {
-        // data.password = hash;
+    //     data.password = hash;
 
         req.getConnection(function(err, connection) {
             connection.query('UPDATE users SET ? WHERE id = ?', [data, id], function(err, rows) {
