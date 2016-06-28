@@ -113,9 +113,31 @@ app.use(function(req, res, next){
     if (!req.session.username ){
       return res.redirect("/login");
     }
+
   }
   }
   next();
+});
+
+app.use(function(req, res, next){
+  if(!req.session.admintab){
+    if (req.path == "/users"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/sales"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/products"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/purchases"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/categories"){
+    return res.redirect("/");
+  }
+}
+next();
 });
 //routes
 app.get('/', function(req, res) {
