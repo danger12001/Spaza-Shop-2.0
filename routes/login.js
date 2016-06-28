@@ -34,9 +34,10 @@ module.exports = function(req, res) {
                     }
                     else {
                         lockCount ++;
-                        console.log(lockCount);
                         if (lockCount === 3) {
-                          console.log("LOCKED");
+                          if(lockCount >= 3){
+                            lockCount = 0;
+                          }
                             connection.query('UPDATE users SET locked = 1 WHERE id = ?', [id], function(err, rows) {
                                 req.flash('warning', 'Account locked');
                                 return res.redirect("/login");
