@@ -128,13 +128,49 @@ app.use(function(req, res, next){
   else if(req.path == "/sales"){
     return res.redirect("/");
   }
+  else if(req.path == "/sales/addSales"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/sales/editSale"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/sales/delete"){
+    return res.redirect("/");
+  }
   else if(req.path == "/products"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/products/add"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/products/edit"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/products/delete"){
     return res.redirect("/");
   }
   else if(req.path == "/purchases"){
     return res.redirect("/");
   }
+  else if(req.path == "/purchases/addPurchases"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/purchases/editPurchase"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/purchases/delete"){
+    return res.redirect("/");
+  }
   else if(req.path == "/categories"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/categories/addCategory"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/categories/editCategory"){
+    return res.redirect("/");
+  }
+  else if(req.path == "/categories/delete"){
     return res.redirect("/");
   }
 }
