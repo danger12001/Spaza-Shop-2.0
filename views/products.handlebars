@@ -1,6 +1,21 @@
+
+
 <ul class="row list">
+
+  <div class="row">
+     <form action="/products/searchResults/">
+         <div class="input-field col s6 offset-s6">
+             <i class="material-icons prefix">search</i>
+             <input id="search_bar" type="text" class="validate" name="searchBox">
+             <label for="search_bar">Search</label>
+         </div>
+     </form>
+ </div>
+
   <li class="col s5 head">Product</li>
   <li class="col s5 head">Category</li>
+
+
   <a href="products/add"><li class="btn col s2 buttons"> <i class="material-icons">library_add</i></li></a>
         {{#products}}
           <li class="col s5 dbList"> {{product}}</li>

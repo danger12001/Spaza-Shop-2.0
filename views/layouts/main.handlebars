@@ -16,15 +16,6 @@
 
 
 
-<li>
-  <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
-</li>
-  <ul id='dropdown1' class='dropdown-content'>
-    <li><a href="/week1">Week One</a></li>
-    <li><a href="/week2">Week Two</a></li>
-    <li><a href="/week3">Week Three</a></li>
-    <li><a href="/week4">Week Four</a></li>
-  </ul>
 
 {{#if admin}}
   <li><a href="/sales">Sales</a></li>
@@ -36,8 +27,17 @@
 
 {{#unless admin}}
 {{#if user}}
-<li><a href="/sale">Sales</a></li>
-<li><a href="/purchase">Purchases</a></li>
+<li>
+  <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
+</li>
+<ul id='dropdown1' class='dropdown-content'>
+  <li><a href="/week1">Week One</a></li>
+  <li><a href="/week2">Week Two</a></li>
+  <li><a href="/week3">Week Three</a></li>
+  <li><a href="/week4">Week Four</a></li>
+</ul>
+<!-- <li><a href="/sale">Sales</a></li>
+<li><a href="/purchase">Purchases</a></li> -->
 <li><a href="/product"> Products</a></li>
   <li><a href="/category"> Categories </a></li>
 {{/if}}

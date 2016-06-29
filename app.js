@@ -23,6 +23,7 @@ var categories = require('./routes/categories');
 var signup  = require('./routes/signUp');
 var login = require('./routes/login');
 var users = require('./routes/users');
+var search = require("./routes/search");
 var app = express();
 
 var categoriesTable = String(fs.readFileSync("./sql/categoriesTable.sql"));
@@ -98,7 +99,7 @@ var dbOptions = {
 };
 app.use(session({
     secret: 'space cats on synthesizers',
-    cookie: { maxAge: 60000 }
+    // cookie: { maxAge: 60000 }
 }));
 app.use(flash());
 app.use(myConnection(mysql, dbOptions, 'single'));
@@ -349,11 +350,15 @@ app.get('/users', function(req, res, next) {
         });
     });
 });
+
+
 app.get('/products/add', products.showAdd);
 app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
+// app.post('/products/searchResults', products.search);
+app.get('/products/searchResults/:searchBox', products.search);
 
 app.get('/users/addUser', users.showAdd);
 app.post('/users/addUser', users.add);
