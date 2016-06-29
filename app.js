@@ -359,6 +359,7 @@ app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
 // app.post('/products/searchResults', products.search);
 app.get('/products/searchResults/:searchBox', products.search);
+app.post('/products/searchResults/', products.search);
 
 app.get('/users/addUser', users.showAdd);
 app.post('/users/addUser', users.add);

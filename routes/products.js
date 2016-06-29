@@ -74,15 +74,17 @@ exports.delete = function(req, res, next){
 		});
 	});
 };
+
 exports.search = function(req, res, next) {
     req.getConnection(function(err, connection) {
-        var searchBox = req.body.searchBox;
+        var searchBox = '%' + req.body.searchBox + '%';
 				// console.log(searchBox);
-        connection.query('SELECT products.id, products.product FROM products WHERE products.product LIKE ?', [searchBox], function(err, results) {
+
+        connection.query('SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id AND products.product LIKE ?', [searchBox], function(err, results) {
 					// console.log(results);
             if (err) return next(err);
             res.render('searchResults', {
-                search: results,
+                search: results
                 // layout: false
             });
         });
