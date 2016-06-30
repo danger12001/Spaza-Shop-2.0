@@ -7,6 +7,7 @@ exports.showAdd = function(req, res){
         	if (err) return next(err);
     		res.render( 'add', {
 					categories : categories,
+					admin: req.session.admintab, user: req.session.username
     		});
       	});
 	});
@@ -41,7 +42,8 @@ exports.get = function(req, res, next){
 				});
 				res.render('edit', {
 					categories : categories,
-					data : product
+					data : product,
+					admin: req.session.admintab, user: req.session.username
 				});
 			});
 		});
@@ -80,14 +82,21 @@ exports.search = function(req, res, next) {
         var searchBox = '%' + req.body.searchBox + '%';
 				// console.log(searchBox);
 
-        connection.query('SELECT products.id,products.product, categories.category FROM products, categories WHERE products.category_id = categories.id AND products.product LIKE ?', [searchBox], function(err, results) {
+        connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchBox, searchBox], function(err, results) {
 					// console.log(results);
+
             if (err) return next(err);
+						// connection.query('SELECT categories.id,categories.category FROM  categories WHERE categories.category LIKE ?', [searchBox], function(err, cat) {
+							// if (err) return next(err);
+
             res.render('searchResults', {
-                search: results
+                search: results,
+								// category: cat,
+								admin: req.session.admintab, user: req.session.username
                 // layout: false
             });
         });
 				// console.log(search);
-    });
+			});
+    // });
 };

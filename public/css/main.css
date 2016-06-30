@@ -19,6 +19,9 @@
   background-color: red;
   color: white;
 }
+.header {
+  font-weight: bold;
+}
 #sales {
   display: none;
 }

@@ -1,0 +1,16 @@
+<ul class="row list">
+  {{#category}}
+  {{/category}}
+  <li class="col s2 head">Date</li>
+  <li class="col s4 head">Product</li>
+  <li class="col s1 head">Quantity</li>
+  <li class="col s1 head">Price</li>
+  <li class="col s4 head">Category</li>
+        {{#search}}
+        <li class="col s2"> {{date}}</li>
+          <li class="col s4"> {{product}}</li>
+          <li class="col s1"> {{quantity}}</li>
+          <li class="col s1"> {{cost}}</li>
+          <li class="col s4"> {{category}}</li>
+        {{/search}}
+    </ul>

@@ -7,6 +7,7 @@ exports.showAdd = function(req, res){
         	if (err) return next(err);
     		res.render( 'addSales', {
 					sales : sales,
+					admin: req.session.admintab, user: req.session.username
     		});
       	});
 	});
@@ -42,7 +43,8 @@ exports.get = function(req, res, next){
 				});
 				res.render('editSale', {
 					sales : sales,
-					data : product
+					data : product,
+					admin: req.session.admintab, user: req.session.username
 				});
 			});
 		});
@@ -75,4 +77,19 @@ exports.delete = function(req, res, next){
 			res.redirect('/sales');
 		});
 	});
+};
+exports.search = function(req, res, next) {
+	var searchBox = '%' + req.body.search + '%';
+    req.getConnection(function(err, connection) {
+        connection.query('SELECT sales.id, sales.date, products.product, categories.category, sales.sold, sales.price FROM  sales	INNER JOIN products ON sales.product_id = products.id INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchBox, searchBox], function(err, results) {
+					// console.log(results);
+            if (err) return next(err);
+            res.render('salesSearchResults', {
+                search: results,
+								admin: req.session.admintab, user: req.session.username
+                // layout: false
+            });
+        });
+				// console.log(search);
+    });
 };

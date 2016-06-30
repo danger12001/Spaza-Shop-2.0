@@ -7,6 +7,7 @@ exports.showAdd = function(req, res){
         	if (err) return next(err);
     		res.render( 'addCategory', {
 					categories : categories,
+					admin: req.session.admintab, user: req.session.username
     		});
       	});
 	});
@@ -38,7 +39,8 @@ exports.get = function(req, res, next){
 				});
 				res.render('editCategory', {
 					categories : categories,
-					data : cat
+					data : cat,
+					admin: req.session.admintab, user: req.session.username
 				});
 			});
 		});
@@ -70,4 +72,21 @@ exports.delete = function(req, res, next){
 			res.redirect('/categories');
 		});
 	});
+};
+exports.search = function(req, res, next) {
+    req.getConnection(function(err, connection) {
+        var searchBox = '%' + req.body.searchBox + '%';
+				// console.log(searchBox);
+
+        connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchBox], function(err, results) {
+					// console.log(results);
+            if (err) return next(err);
+            res.render('CategorySearchResults', {
+                search: results,
+								admin: req.session.admintab, user: req.session.username
+                // layout: false
+            });
+        });
+				// console.log(search);
+    });
 };

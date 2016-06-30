@@ -7,6 +7,7 @@ exports.showAdd = function(req, res){
         	if (err) return next(err);
     		res.render( 'addPurchases', {
 					purchases : purchases,
+					admin: req.session.admintab, user: req.session.username
     		});
       	});
 	});
@@ -42,7 +43,8 @@ exports.get = function(req, res, next){
 				});
 				res.render('editPurchase', {
 					purchases : purchases,
-					data : product
+					data : product,
+					admin: req.session.admintab, user: req.session.username
 				});
 			});
 		});
@@ -75,4 +77,27 @@ exports.delete = function(req, res, next){
 			res.redirect('/purchases');
 		});
 	});
+};
+
+exports.search = function(req, res, next) {
+	var searchBox = '%' + req.body.search + '%';
+    req.getConnection(function(err, connection) {
+        connection.query(					'SELECT purchases.id, purchases.date, products.product, categories.category,purchases.quantity, purchases.cost FROM  purchases INNER JOIN products ON purchases.product_id = products.id INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchBox, searchBox], function(err, results) {
+					// console.log(results);
+
+            if (err) return next(err);
+						// connection.query('SELECT categories.id,categories.category FROM  categories WHERE categories.category LIKE ?', [searchBox], function(err, cat) {
+							// if (err) return next(err);
+
+            res.render('purchasesSearchResults', {
+                search: results,
+								// category: cat,
+								admin: req.session.admintab, user: req.session.username
+
+                // layout: false
+            });
+        // });
+			});
+				// console.log(search);
+    });
 };

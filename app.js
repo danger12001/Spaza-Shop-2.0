@@ -23,7 +23,6 @@ var categories = require('./routes/categories');
 var signup  = require('./routes/signUp');
 var login = require('./routes/login');
 var users = require('./routes/users');
-var search = require("./routes/search");
 var app = express();
 
 var categoriesTable = String(fs.readFileSync("./sql/categoriesTable.sql"));
@@ -357,7 +356,6 @@ app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
-// app.post('/products/searchResults', products.search);
 app.get('/products/searchResults/:searchBox', products.search);
 app.post('/products/searchResults/', products.search);
 
@@ -373,11 +371,16 @@ app.get('/purchases/delete/:id', purchase.delete);
 app.get('/purchases/editPurchase/:id', purchase.get);
 app.post('/purchases/update/:id', purchase.update);
 
+app.get('/purchases/purchasesSearchResults/:searchBox', purchase.search);
+app.post('/purchases/purchasesSearchResults/', purchase.search);
+
 app.get('/sales/addSales', sales.showAdd);
 app.post('/sales/addSales', sales.add);
 app.get('/sales/delete/:id', sales.delete);
 app.get('/sales/editSale/:id', sales.get);
 app.post('/sales/update/:id', sales.update);
+app.get('/sales/salesSearchResults/:searchBox', sales.search);
+app.post('/sales/salesSearchResults/', sales.search);
 
 app.get('/categories/addCategory', categories.showAdd);
 app.post('/categories/addCategory', categories.add);
@@ -385,6 +388,8 @@ app.get('/categories/delete/:id', categories.delete);
 app.get('/categories/editCategory/:id', categories.get);
 app.post('/categories/update/:id', categories.update);
 
+app.get('/categories/CategorySearchResults/:searchBox', categories.search);
+app.post('/categories/CategorySearchResults/', categories.search);
 
 
 
