@@ -16,7 +16,7 @@ module.exports = function(req, res) {
           var user = users[0];
           var id = user.id;
 
-            if (user.locked === "Yes") {
+            if (user.locked === "No" || user.locked === 0) {
 
                 bcrypt.compare(password, user.password, function(err, match) {
                     if (match) {
