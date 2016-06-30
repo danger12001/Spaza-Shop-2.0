@@ -8,16 +8,18 @@ module.exports = function(req, res, next) {
 
         var password = req.body.password;
         var admin = "";
+        var locked = "";
         if(req.body.admin === "on"){
           admin = "Yes";
         }
         else {
           admin = "No";
         }
+    
         var data = {
             username: req.body.username,
             admin: admin,
-            locked: 0,
+            locked: "No",
 
         };
                 bcrypt.hash(password, 10, function(err, hash) {
