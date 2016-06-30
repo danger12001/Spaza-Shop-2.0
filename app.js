@@ -122,11 +122,11 @@ app.use(function(req, res, next){
 });
 
 app.use(function(req, res, next){
-  // if(!req.session.admintab){
+  if(!req.session.admintab){
     // if (req.path == "/users"){
-    // return res.redirect("/");
-  // }
-   if(req.path == "/sales"){
+    // return res.redirect("/users");
+  }
+  else if(req.path == "/sales"){
     return res.redirect("/");
   }
   else if(req.path == "/sales/addSales"){
