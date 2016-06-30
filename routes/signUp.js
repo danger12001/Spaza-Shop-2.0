@@ -10,16 +10,16 @@ module.exports = function(req, res, next) {
         var admin = "";
         var locked = "";
         if(req.body.admin === "on"){
-          admin = "Yes";
+          admin = "1";
         }
         else {
-          admin = "No";
+          admin = "0";
         }
         if(req.body.locked === "on"){
-          locked = "No";
+          locked = "0";
         }
         else {
-          locked = "No";
+          locked = "0";
         }
         var data = {
             username: req.body.username,
