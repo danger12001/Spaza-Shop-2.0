@@ -9,10 +9,10 @@ module.exports = function(req, res, next) {
         var password = req.body.password;
         var admin = "";
         if(req.body.admin === "on"){
-          admin = 1;
+          admin = "Yes";
         }
         else {
-          admin = 0;
+          admin = "No";
         }
         var data = {
             username: req.body.username,

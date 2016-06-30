@@ -16,7 +16,7 @@ module.exports = function(req, res) {
           var user = users[0];
           var id = user.id;
 
-            if (user.locked === 0) {
+            if (user.locked === "No") {
 
                 bcrypt.compare(password, user.password, function(err, match) {
                     if (match) {
@@ -24,7 +24,7 @@ module.exports = function(req, res) {
                       // console.log(user.username);
                         req.session.username = user.username;
                         // console.log("Logged in as" + req.session.user);
-                        if(user.admin === 1){
+                        if(user.admin === "Yes"){
                         req.session.admintab = {
                           admin: req.session.username
                         };
@@ -38,7 +38,7 @@ module.exports = function(req, res) {
                           if(lockCount >= 3){
                             lockCount = 0;
                           }
-                            connection.query('UPDATE users SET locked = 1 WHERE id = ?', [id], function(err, rows) {
+                            connection.query('UPDATE users SET locked = "Yes" WHERE id = ?', [id], function(err, rows) {
                                 req.flash('warning', 'Account locked');
                                 return res.redirect("/login");
                             });

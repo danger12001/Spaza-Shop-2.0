@@ -5,6 +5,13 @@ exports.show = function(req, res, next) {
         if (err) return next(err);
         connection.query('SELECT * FROM users', function(err, results) {
             if (err) return next(err);
+            var result = results;
+            if(result.admin == 1){
+              result.admin = "Yes";
+            }
+            else {
+              result.admin = "No";
+            }
             res.render('users', {
                 users: results,
                 // admin: req.session.admintab
@@ -31,12 +38,12 @@ exports.add = function(req, res, next) {
 var adminSwitch = req.body.admin;
         if(adminSwitch.checked === "true"){
           console.log("true");
-          data.admin = 1;
+          data.admin = "Yes";
           // data.username = "BLEH";
         }
         else {
           console.log("false");
-          data.admin = 0;
+          data.admin = "No";
           // data.username = "BLAH";
         }
         bcrypt.hash(password, 10, function(err, hash) {
@@ -74,16 +81,16 @@ exports.update = function(req, res, next) {
         locked: req.body.lock
     };
     if(req.body.admin === "on"){
-      data.admin = 1;
+      data.admin = "Yes";
     }
     else {
-      data.admin = 0;
+      data.admin = "No";
     }
     if(req.body.lock === "on"){
-      data.locked = 0;
+      data.locked = "No";
     }
     else {
-      data.locked = 1;
+      data.locked = "Yes";
     }
     // bcrypt.hash(password, 10, function(err, hash) {
     //     data.password = hash;

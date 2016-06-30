@@ -1,4 +1,13 @@
 <ul class="row list">
+  <div class="row">
+     <form action="/products/searchResults/" method="POST">
+         <div class="input-field col s12">
+             <i class="material-icons prefix">search</i>
+             <input id="search_bar" type="text" class="validate" name="searchBox">
+             <label for="search_bar">Search</label>
+         </div>
+     </form>
+ </div>
   <li class="col s6 head">Product</li>
   <li class="col s6 head">Category</li>
         {{#products}}

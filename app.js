@@ -356,7 +356,14 @@ app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
+
+
+
+
+
+app.get('/product/searchResults/:searchBox', products.search);
 app.get('/products/searchResults/:searchBox', products.search);
+app.post('/product/searchResults/', products.search);
 app.post('/products/searchResults/', products.search);
 
 app.get('/users/addUser', users.showAdd);
@@ -379,6 +386,7 @@ app.post('/sales/addSales', sales.add);
 app.get('/sales/delete/:id', sales.delete);
 app.get('/sales/editSale/:id', sales.get);
 app.post('/sales/update/:id', sales.update);
+
 app.get('/sales/salesSearchResults/:searchBox', sales.search);
 app.post('/sales/salesSearchResults/', sales.search);
 
@@ -390,6 +398,8 @@ app.post('/categories/update/:id', categories.update);
 
 app.get('/categories/CategorySearchResults/:searchBox', categories.search);
 app.post('/categories/CategorySearchResults/', categories.search);
+app.get('/category/CategorySearchResults/:searchBox', categories.search);
+app.post('/category/CategorySearchResults/', categories.search);
 
 
 
