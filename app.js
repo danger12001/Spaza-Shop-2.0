@@ -111,21 +111,22 @@ app.set('view engine', 'handlebars');
 app.use(function(req, res, next){
   if (req.path != "/login"){
     if(req.path !="/signup"){
+      if(req.path !="/users"){
     if (!req.session.username ){
       return res.redirect("/login");
     }
-
+}
   }
   }
   next();
 });
 
 app.use(function(req, res, next){
-  if(!req.session.admintab){
-    if (req.path == "/users"){
-    return res.redirect("/");
-  }
-  else if(req.path == "/sales"){
+  // if(!req.session.admintab){
+    // if (req.path == "/users"){
+    // return res.redirect("/");
+  // }
+   if(req.path == "/sales"){
     return res.redirect("/");
   }
   else if(req.path == "/sales/addSales"){
