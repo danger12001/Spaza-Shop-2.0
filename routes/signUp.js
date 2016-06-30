@@ -16,7 +16,7 @@ module.exports = function(req, res, next) {
           admin = "No";
         }
         if(req.body.locked === "on"){
-          locked = "Yes";
+          locked = "No";
         }
         else {
           locked = "No";
