@@ -112,9 +112,9 @@ app.use(function(req, res, next){
   if (req.path != "/login"){
     if(req.path !="/signup"){
       if(req.path !="/users"){
-    if (!req.session.username ){
-      return res.redirect("/login");
-    }
+        // if (!req.session.username ){
+      // return res.redirect("/login");
+    // }
 }
   }
   }
@@ -123,8 +123,8 @@ app.use(function(req, res, next){
 
 app.use(function(req, res, next){
   if(!req.session.admintab){
-    // if (req.path == "/users"){
-    // return res.redirect("/users");
+    if (req.path == "/users"){
+    return res.redirect("/users");
   }
   else if(req.path == "/sales"){
     return res.redirect("/");
