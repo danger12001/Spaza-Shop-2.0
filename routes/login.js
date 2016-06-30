@@ -38,7 +38,7 @@ module.exports = function(req, res) {
                           if(lockCount >= 3){
                             lockCount = 0;
                           }
-                            connection.query('UPDATE users SET locked = "Yes" WHERE id = ?', [id], function(err, rows) {
+                            connection.query('UPDATE users SET locked = "No" WHERE id = ?', [id], function(err, rows) {
                                 req.flash('warning', 'Account locked');
                                 return res.redirect("/login");
                             });
