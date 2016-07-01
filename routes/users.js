@@ -5,16 +5,24 @@ exports.show = function(req, res, next) {
         if (err) return next(err);
         connection.query('SELECT * FROM users', function(err, results) {
             if (err) return next(err);
-            //var result = results;
-           // if(result.admin == 1){
-             // result.admin = "Yes";
-           // }
-           // else {
-             // result.admin = "No";
-            //}
+            var transposedResults = [];
+                  results.forEach(function(data) {
+                      if (data.admin === 0) {
+                          data.admin = "No";
+                      } else {
+                          data.admin = "Yes";
+                      }
+                      if (data.locked === 0) {
+                          data.locked = "No";
+                      } else {
+                          data.locked = "Yes";
+                      }
+                      transposedResults.push(data);
+                  });
             res.render('users', {
-                users: results,
-                // admin: req.session.admintab
+                users: transposedResults,
+                admin: req.session.admintab,
+                user: req.session.user
             });
         });
     });

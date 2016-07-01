@@ -86,7 +86,8 @@ function errorHandler(err, req, res, next) {
     res.status(500);
     res.render('error', {
         error: err,
-        admin: req.session.admintab, user: req.session.username
+        admin: req.session.admintab,
+        user: req.session.username
     });
 }
 app.use(express.static("public"));
@@ -335,21 +336,7 @@ delete req.session.username;
 delete req.session.admintab;
 res.redirect("/");
 });
-app.get('/users', function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        connection = mysql.createConnection(dbOptions);
-        if (err) return next(err);
-        connection.query("SELECT users.id, users.username, users.admin, users.locked FROM users", [], function(err, data) {
-            if (err) return next(err);
-            res.render("users", {
-                users: data,
-                admin: req.session.admintab,
-                user: req.session.username
-            });
-            // connection.end();
-        });
-    });
-});
+
 
 
 app.get('/products/add', products.showAdd);
@@ -367,6 +354,8 @@ app.get('/products/searchResults/:searchBox', products.search);
 app.post('/product/searchResults/', products.search);
 app.post('/products/searchResults/', products.search);
 
+
+app.get('/users', users.show);
 app.get('/users/addUser', users.showAdd);
 app.post('/users/addUser', users.add);
 app.get('/users/delete/:id', users.delete);
