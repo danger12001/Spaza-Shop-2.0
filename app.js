@@ -85,7 +85,8 @@ app.use(bodyParser.json());
 function errorHandler(err, req, res, next) {
     res.status(500);
     res.render('error', {
-        error: err
+        error: err,
+        admin: req.session.admintab, user: req.session.username
     });
 }
 app.use(express.static("public"));
@@ -431,7 +432,7 @@ connection.query(usersTable, [], function(err, result) {
 // });
 
 
-app.use(errorHandler, {admin: req.session.admintab, user: req.session.username});
+app.use(errorHandler);
 
 //start server
 var server = app.listen(3000, function() {
