@@ -8,6 +8,7 @@ var fs = require("fs");
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 var flash = require('express-flash');
+var jquery = require('jquery');
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
 var mostPopularCategory = require('./routes/mostPopularCategory');
@@ -239,6 +240,9 @@ app.get('/products', function(req, res, next) {
         });
     });
 });
+
+
+
 app.get('/categories', function(req, res, next) {
     req.getConnection(function(err, connection) {
         connection = mysql.createConnection(dbOptions);
@@ -345,14 +349,13 @@ app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
 
+app.get('/products/search/:search_val', products.search);
 
-
-
-
-app.get('/product/searchResults/:searchBox', products.search);
-app.get('/products/searchResults/:searchBox', products.search);
-app.post('/product/searchResults/', products.search);
-app.post('/products/searchResults/', products.search);
+// jquery.get('/products/searchResults:searchBox', products.search);
+// app.get('/product/searchResults/:searchBox', products.search);
+// app.get('/products/:searchBox');
+// app.post('/product/searchResults/', products.search);
+// app.post('/products/searchResults/', products.search);
 
 
 app.get('/users', users.show);

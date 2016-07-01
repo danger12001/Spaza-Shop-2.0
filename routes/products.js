@@ -98,5 +98,19 @@ exports.search = function(req, res, next) {
         });
 				// console.log(search);
 			});
+
+
+			// jquery('#productsSearch').submit( function(event){
+			//
+			//   // Stop the form from submitting normally
+			//   event.preventDefault();
+			//
+			//   // Get the search term from the DOM
+			//   var theSearchTerm = jQuery('#search_bar').val();
+			//
+			//   // use jQuery to POST the data to the /search URL
+			//   jquery.post('/products/searchResults/', {searchterm: theSearchTerm}, products.search);
+			// });
+
     // });
 };
