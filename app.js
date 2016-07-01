@@ -431,7 +431,7 @@ connection.query(usersTable, [], function(err, result) {
 // });
 
 
-app.use(errorHandler);
+app.use(errorHandler, {admin: req.session.admintab, user: req.session.username});
 
 //start server
 var server = app.listen(3000, function() {
