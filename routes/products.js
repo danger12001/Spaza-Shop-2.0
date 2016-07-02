@@ -77,40 +77,29 @@ exports.delete = function(req, res, next){
 	});
 };
 
-exports.search = function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        var searchBox = '%' + req.body.searchBox + '%';
-				// console.log(searchBox);
-
-        connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchBox, searchBox], function(err, results) {
-					// console.log(results);
-
-            if (err) return next(err);
-						// connection.query('SELECT categories.id,categories.category FROM  categories WHERE categories.category LIKE ?', [searchBox], function(err, cat) {
-							// if (err) return next(err);
-
-            res.render('searchResults', {
-                search: results,
-								// category: cat,
-								admin: req.session.admintab, user: req.session.username
-                // layout: false
-            });
-        });
-				// console.log(search);
-			});
-
-
-			// jquery('#productsSearch').submit( function(event){
-			//
-			//   // Stop the form from submitting normally
-			//   event.preventDefault();
-			//
-			//   // Get the search term from the DOM
-			//   var theSearchTerm = jQuery('#search_bar').val();
-			//
-			//   // use jQuery to POST the data to the /search URL
-			//   jquery.post('/products/searchResults/', {searchterm: theSearchTerm}, products.search);
-			// });
-
-    // });
+exports.search = function(req, res, next){
+  req.getConnection(function(err, connection) {
+    var searchVal = '%'+ req.params.searchVal +'%';
+    connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchVal,searchVal], function(err, result){
+      if(err) return console.log(err);
+      res.render('searchResults',{
+        search : result,
+        		admin: req.session.admintab, user: req.session.username,
+        layout : false
+      });
+    });
+  });
+};
+exports.searchU = function(req, res, next){
+  req.getConnection(function(err, connection) {
+    var searchVal = '%'+ req.params.searchVal +'%';
+    connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchVal,searchVal], function(err, result){
+      if(err) return console.log(err);
+      res.render('productSearchResult',{
+        search : result,
+        		admin: req.session.admintab, user: req.session.username,
+        layout : false
+      });
+    });
+  });
 };

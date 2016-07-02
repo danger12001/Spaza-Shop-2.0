@@ -8,7 +8,7 @@ var fs = require("fs");
 var bcrypt = require('bcrypt');
 var session = require('express-session');
 var flash = require('express-flash');
-var jquery = require('jquery');
+
 var mostPopularProduct = require('./routes/mostPopularProduct');
 var leastPopularProduct = require('./routes/leastPopularProduct');
 var mostPopularCategory = require('./routes/mostPopularCategory');
@@ -258,37 +258,37 @@ app.get('/categories', function(req, res, next) {
     });
 });
 
-app.get('/sale', function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        connection = mysql.createConnection(dbOptions);
-        if (err) return next(err);
-        connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ", [], function(err, data) {
-            if (err) return next(err);
-            res.render("salesU", {
-                sales: data,
-                admin: req.session.admintab, user: req.session.username
-
-            });
-           //  connection.end();
-        });
-    });
-});
-
-
-app.get('/purchase', function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        connection = mysql.createConnection(dbOptions);
-        if (err) return next(err);
-        connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ", [], function(err, data) {
-            if (err) return next(err);
-            res.render("purchasesU", {
-                purchases: data,
-                admin: req.session.admintab, user: req.session.username
-            });
-            // connection.end();
-        });
-    });
-});
+// app.get('/sale', function(req, res, next) {
+//     req.getConnection(function(err, connection) {
+//         connection = mysql.createConnection(dbOptions);
+//         if (err) return next(err);
+//         connection.query("SELECT sales.id,sales.date,sales.sold,sales.price, products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0 ORDER BY `sales`.`id` ASC ", [], function(err, data) {
+//             if (err) return next(err);
+//             res.render("salesU", {
+//                 sales: data,
+//                 admin: req.session.admintab, user: req.session.username
+//
+//             });
+//            //  connection.end();
+//         });
+//     });
+// });
+//
+//
+// app.get('/purchase', function(req, res, next) {
+//     req.getConnection(function(err, connection) {
+//         connection = mysql.createConnection(dbOptions);
+//         if (err) return next(err);
+//         connection.query("SELECT purchases.id,purchases.date,purchases.cost, products.product, purchases.quantity FROM purchases, products WHERE purchases.product_id = products.id ORDER BY `purchases`.`id` ASC ", [], function(err, data) {
+//             if (err) return next(err);
+//             res.render("purchasesU", {
+//                 purchases: data,
+//                 admin: req.session.admintab, user: req.session.username
+//             });
+//             // connection.end();
+//         });
+//     });
+// });
 app.get('/product', function(req, res, next) {
     req.getConnection(function(err, connection) {
         connection = mysql.createConnection(dbOptions);
@@ -348,15 +348,8 @@ app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
 app.get('/products/edit/:id', products.get);
 app.post('/products/update/:id', products.update);
-
-app.get('/products/search/:search_val', products.search);
-
-// jquery.get('/products/searchResults:searchBox', products.search);
-// app.get('/product/searchResults/:searchBox', products.search);
-// app.get('/products/:searchBox');
-// app.post('/product/searchResults/', products.search);
-// app.post('/products/searchResults/', products.search);
-
+app.get('/products/search/:searchVal', products.search);
+app.get('/product/search/:searchVal', products.searchU);
 
 app.get('/users', users.show);
 app.get('/users/addUser', users.showAdd);
@@ -364,37 +357,29 @@ app.post('/users/addUser', users.add);
 app.get('/users/delete/:id', users.delete);
 app.get('/users/editUser/:id', users.get);
 app.post('/users/update/:id', users.update);
+app.get('/users/search/:searchVal', users.search);
 
 app.get('/purchases/addPurchases', purchase.showAdd);
 app.post('/purchases/addPurchases', purchase.add);
 app.get('/purchases/delete/:id', purchase.delete);
 app.get('/purchases/editPurchase/:id', purchase.get);
 app.post('/purchases/update/:id', purchase.update);
-
-app.get('/purchases/purchasesSearchResults/:searchBox', purchase.search);
-app.post('/purchases/purchasesSearchResults/', purchase.search);
+app.get('/purchases/search/:searchVal', purchase.search);
 
 app.get('/sales/addSales', sales.showAdd);
 app.post('/sales/addSales', sales.add);
 app.get('/sales/delete/:id', sales.delete);
 app.get('/sales/editSale/:id', sales.get);
 app.post('/sales/update/:id', sales.update);
-
-app.get('/sales/salesSearchResults/:searchBox', sales.search);
-app.post('/sales/salesSearchResults/', sales.search);
+app.get('/sales/search/:searchVal', sales.search);
 
 app.get('/categories/addCategory', categories.showAdd);
 app.post('/categories/addCategory', categories.add);
 app.get('/categories/delete/:id', categories.delete);
 app.get('/categories/editCategory/:id', categories.get);
 app.post('/categories/update/:id', categories.update);
-
-app.get('/categories/CategorySearchResults/:searchBox', categories.search);
-app.post('/categories/CategorySearchResults/', categories.search);
-app.get('/category/CategorySearchResults/:searchBox', categories.search);
-app.post('/category/CategorySearchResults/', categories.search);
-
-
+app.get('/categories/search/:searchVal', categories.search);
+app.get('/category/search/:searchVal', categories.searchU);
 
 connection.query(usersTable, [], function(err, result) {
     if (err) throw err;

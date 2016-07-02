@@ -1,13 +1,15 @@
-<ul class="row list">
-  <div class="row">
-     <form action="/products/searchResults/" method="POST">
-         <div class="input-field col s12">
-             <i class="material-icons prefix">search</i>
-             <input id="search_bar" type="text" class="validate" name="searchBox">
-             <label for="search_bar">Search</label>
-         </div>
-     </form>
- </div>
+
+<div class="row">
+  <form action="/product/search/">
+    <div class="input-field col s12">
+      <i class="material-icons prefix">search</i>
+      <input id="search_bar" type="text" class="validate" name="searchVal">
+      <label for="search_bar">Search</label>
+    </div>
+  </form>
+</div>
+<ul id="productList" class="row list">
+
   <li class="col s6 head">Product</li>
   <li class="col s6 head">Category</li>
         {{#products}}
@@ -15,3 +17,16 @@
           <li class="col s6 dbList"> {{category}}</li>
         {{/products}}
     </ul>
+    <script>
+   $(document).ready(function(){
+   $("#search_bar").keyup(function(){
+       var searchVal = $("#search_bar").val();
+       $.get("/product/search/" + searchVal, function(results){
+         $("#productList").html(results)
+       });
+       if(searchVal.length === 0){
+          location.reload();
+       };
+   });
+   });
+     </script>

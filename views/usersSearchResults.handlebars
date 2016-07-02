@@ -1,0 +1,12 @@
+
+
+<ul class="row list">
+  <li class="col s10 header">User</li>
+  <a href="users/addUser"><li class="btn col s2 buttons"> <i class="material-icons">library_add</i></li></a>
+{{#search}}
+<li class="col s10 ">{{username}}</li>
+<a href="users/editUser/{{id}}"><li class="btn col s1 buttons"><i  class="material-icons">mode_edit</i></li></a>
+<a href="users/delete/{{id}}"><li class="btn col s1 buttons"><i class="material-icons">delete</i></li></a>
+{{/search}}
+
+</ul>

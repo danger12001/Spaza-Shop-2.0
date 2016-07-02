@@ -1,8 +1,12 @@
 
 
 <ul class="row list">
-  <li class="col s12 head">Category</li>
+  <li class="col s10 head">Category</li>
+  <a href="categories/addCategory"><li class="btn col s2 buttons">  <i class="material-icons">library_add</i></li></a>
+
 {{#search}}
-<li class="col s12 ">{{category}}</li>
+<li class="col s10 ">{{category}}</li>
+<a href="/categories/editCategory/{{id}}" class="btn col s1 buttons"> <i  class="material-icons">mode_edit</i></a>
+<a href="/categories/delete/{{id}}" class="btn col s1 buttons"><i class="material-icons">delete</i></a>
 {{/search}}
 </ul>
