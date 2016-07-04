@@ -25,7 +25,6 @@
     <li><a href="/users"> Users </a></li>
 {{/if}}
 
-{{#unless admin}}
 {{#if user}}
 <li>
   <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
@@ -38,10 +37,11 @@
 </ul>
 <!-- <li><a href="/sale">Sales</a></li>
 <li><a href="/purchase">Purchases</a></li> -->
+{{#unless admin}}
 <li><a href="/product"> Products</a></li>
   <li><a href="/category"> Categories </a></li>
+  {{/unless}}
 {{/if}}
-{{/unless}}
 
 
 {{#unless user }}
@@ -63,6 +63,21 @@
       </ul>
 
 {{/if}}
+{{#unless user}}
+{{#if admin}}
+    <!-- <li><a href="/logout">Logout</a></li> -->
+
+    <li>
+      <a class='dropdown-button' href='#' data-activates='dropdown2'>Log Out</a>
+    </li>
+
+      <ul id='dropdown2' class='dropdown-content'>
+        <li>Current user: {{user}}</li>
+        <li><a href="/logout">Log Out</a></li>
+      </ul>
+
+{{/if}}
+{{/unless}}
 <!-- {{#if admin}} -->
     <!-- <li><a href="/logout">Logout</a></li> -->
 <!-- {{/if}} -->

@@ -1,11 +1,11 @@
 var mysql = require('mysql');
 
 var conn = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '5550121a',
-      // port: 3000,
-      database: "Nelisa"
+  host: '127.0.0.1',
+  user: 'root',
+  password: '5550121a',
+  port: 3306,
+  database: "Nelisa"
     });
 
 var sql = "INSERT INTO categories ( category ) VALUES ?";
