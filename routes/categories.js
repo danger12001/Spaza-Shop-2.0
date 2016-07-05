@@ -73,20 +73,30 @@ exports.delete = function(req, res, next){
 		});
 	});
 };
-exports.search = function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        var searchBox = '%' + req.body.searchBox + '%';
-				// console.log(searchBox);
 
-        connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchBox], function(err, results) {
-					// console.log(results);
-            if (err) return next(err);
-            res.render('CategorySearchResults', {
-                search: results,
-								admin: req.session.admintab, user: req.session.username
-                // layout: false
-            });
-        });
-				// console.log(search);
+exports.search = function(req, res, next){
+  req.getConnection(function(err, connection) {
+    var searchVal = '%'+ req.params.searchVal +'%';
+    connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal], function(err, result){
+      if(err) return console.log(err);
+      res.render('CategorySearchResults',{
+        search : result,
+        		admin: req.session.admintab, user: req.session.username,
+        layout : false
+      });
     });
+  });
+};
+exports.searchU = function(req, res, next){
+  req.getConnection(function(err, connection) {
+    var searchVal = '%'+ req.params.searchVal +'%';
+    connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal], function(err, result){
+      if(err) return console.log(err);
+      res.render('CatSearchResults',{
+        search : result,
+        		admin: req.session.admintab, user: req.session.username,
+        layout : false
+      });
+    });
+  });
 };

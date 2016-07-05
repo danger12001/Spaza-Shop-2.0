@@ -121,3 +121,16 @@ exports.delete = function(req, res, next) {
         });
     });
 };
+exports.search = function(req, res, next){
+  req.getConnection(function(err, connection) {
+    var searchVal = '%'+ req.params.searchVal +'%';
+    connection.query('SELECT * FROM users WHERE users.username LIKE ?', [searchVal], function(err, result){
+      if(err) return console.log(err);
+      res.render('usersSearchResults',{
+        search : result,
+        		admin: req.session.admintab, user: req.session.username,
+        layout : false
+      });
+    });
+  });
+};

@@ -2,11 +2,11 @@ var mysql = require('mysql');
 var purchases = require('./routes/purchases');
 // var dateConverter = require('./node_modules/date');
 var conn = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '5550121a',
-      // port: 3000,
-      database: "Nelisa"
+  host: '127.0.0.1',
+  user: 'root',
+  password: '5550121a',
+  port: 3306,
+  database: "Nelisa"
     });
 // console.log(purchases.Purchases());
 // var sql = "INSERT INTO purchases ( date, quantity, cost) VALUES ?";

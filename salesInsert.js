@@ -61,11 +61,11 @@ values.push([[date[x]],[id[x]], [sold[x]], [price[x]]]);
 // console.log(id[14]);
 
 var conn = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '5550121a',
-      // port: 3000,
-      database: "Nelisa"
+  host: '127.0.0.1',
+  user: 'root',
+  password: '5550121a',
+  port: 3306,
+  database: "Nelisa"
     });
 var sql = "INSERT INTO sales ( date, product_id, sold, price) VALUES ?";
 conn.query(sql, [values], function(err, result){
