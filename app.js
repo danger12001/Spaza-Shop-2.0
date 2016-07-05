@@ -339,7 +339,9 @@ delete req.session.username;
 delete req.session.admintab;
 res.redirect("/");
 });
-
+app.get('/aboutus', function(req, res) {
+    res.render("aboutUs", {admin: req.session.admintab, user: req.session.username});
+});
 
 
 app.get('/products/add', products.showAdd);

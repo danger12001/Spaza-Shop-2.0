@@ -47,3 +47,20 @@
     /*border-right: 1px solid black;*/
     height: 25px;
 }
+.currentPage {
+  background-color:rgba(0,0,0,0.2);
+}
+#nelisaData {
+  display: none;
+}
+#xolaniData {
+  display: none;
+}
+#nelisa {
+  height: 250px;
+  width: 25%;
+}
+#xolani {
+  height: 250px;
+  width: 25%;
+}
