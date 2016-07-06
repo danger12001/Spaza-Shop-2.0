@@ -1,0 +1,66 @@
+#statistics {
+  border: 5px solid black;
+}
+#statistics li {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+.list li {
+  border: 1px solid black;
+    /*border-right: 1px solid black;*/
+    height: 25px;
+}
+.head {
+  font-weight: bold;
+
+}
+.heading {
+  /*border: 5px solid blue;*/
+  background-color: red;
+  color: white;
+}
+.header {
+  font-weight: bold;
+}
+#sales {
+  display: none;
+}
+#purchases {
+  display: none;
+}
+#heading {
+  text-align: center;
+}
+#linkInfo {
+  text-align: center;
+  border: 1px solid black;
+  text-decoration: none;
+}
+.buttons {
+  height: 25px;
+  line-height: 25px;
+  padding-right: 10px;
+  border: 1px solid black;
+}
+.dbList {
+  border: 1px solid black;
+    /*border-right: 1px solid black;*/
+    height: 25px;
+}
+.currentPage {
+  background-color:rgba(0,0,0,0.2);
+}
+#nelisaData {
+  display: none;
+}
+#xolaniData {
+  display: none;
+}
+#nelisa {
+  height: 250px;
+  /*width: 80%;*/
+}
+#xolani {
+  height: 250px;
+  /*width: 10%;*/
+}

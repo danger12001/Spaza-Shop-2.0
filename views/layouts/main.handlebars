@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Nelisa's Spaza-Shop </title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+  <link href="css/main.css" type="text/css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+
+    <nav>
+      <div class="nav-wrapper grey darken-2 ">
+        <a href="/" class="brand-logo left hide-on-med-and-down">Nelisa's Spaza Shop</a>
+        <ul id="nav-mobile" class="right">
+
+
+
+
+{{#if admin}}
+<!-- <li><a href="/aboutus">About Us</a></li> -->
+  <li id="Sales"><a href="/sales">Sales</a></li>
+  <li><a href="/purchases">Purchases</a></li>
+  <li><a href="/products"> Products</a></li>
+    <li><a href="/categories"> Categories </a></li>
+    <li><a href="/users"> Users </a></li>
+    <li>
+      <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
+    </li>
+    <ul id='dropdown1' class='dropdown-content'>
+      <li><a href="/week1">Week One</a></li>
+      <li><a href="/week2">Week Two</a></li>
+      <li><a href="/week3">Week Three</a></li>
+      <li><a href="/week4">Week Four</a></li>
+    </ul>
+{{/if}}
+{{#unless admin}}
+{{#if user}}
+<li>
+  <a class='dropdown-button' href='#' data-activates='dropdown1'>Statistics</a>
+</li>
+<ul id='dropdown1' class='dropdown-content'>
+  <li><a href="/week1">Week One</a></li>
+  <li><a href="/week2">Week Two</a></li>
+  <li><a href="/week3">Week Three</a></li>
+  <li><a href="/week4">Week Four</a></li>
+</ul>
+<!-- <li><a href="/sale">Sales</a></li>
+<li><a href="/purchase">Purchases</a></li> -->
+<!-- <li><a href="/aboutus">About Us</a></li> -->
+{{#unless admin}}
+<li><a href="/product"> Products</a></li>
+  <li><a href="/category"> Categories </a></li>
+  {{/unless}}
+{{/if}}
+{{/unless}}
+
+{{#unless user }}
+{{#unless admin }}
+    <li><a href="/signup"> Sign Up </a></li>
+    <li><a href="/login"> Log In </a></li>
+{{/unless}}
+{{/unless}}
+{{#if user}}
+    <!-- <li><a href="/logout">Logout</a></li> -->
+
+    <li>
+      <a class='dropdown-button' href='#' data-activates='dropdown2'>Log Out</a>
+    </li>
+
+      <ul id='dropdown2' class='dropdown-content'>
+        <li>Current user: {{user}}</li>
+        <li><a href="/logout">Log Out</a></li>
+      </ul>
+
+{{/if}}
+
+
+{{#if admin}}
+{{#unless user}}
+    <!-- <li><a href="/logout">Logout</a></li> -->
+
+    <li>
+      <a class='dropdown-button' href='#' data-activates='dropdown2'>Log Out</a>
+    </li>
+
+      <ul id='dropdown2' class='dropdown-content'>
+        <li>Current user: {{admin.admin}}</li>
+        <li><a href="/logout">Log Out</a></li>
+      </ul>
+
+{{/unless}}
+{{/if}}
+<!-- {{#if admin}} -->
+    <!-- <li><a href="/logout">Logout</a></li> -->
+<!-- {{/if}} -->
+          <!-- <li><a href="">Log In</a></li> -->
+          <!-- <li><a href="">Sign Up</a></li> -->
+        </ul>
+      </div>
+    </nav>
+
+  <div class="container">
+    {{{body}}}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+  <script>
+   $( document ).ready(function() {
+     $('.datepicker').pickadate({
+         format: 'dd-mmm',
+         selectMonths: true, // Creates a dropdown to control month
+        });
+
+  });
+  </script>
+  </body>
+
+</html>

@@ -1,0 +1,28 @@
+<h1>Add user</h1>
+
+<form action="/users/addUser" method="POST">
+	<div>
+		<label for="">Username</label>
+		<input type="text" name="username" >
+
+    <label for="">Password</label>
+		<input type="password" name="password" >
+
+    <div class="switch" id="adminSwitch">
+        <label>
+          Regular User
+          <input type="checkbox" name="admin">
+          <span class="lever"></span>
+          Admin
+        </label>
+      </div>
+
+  </div>
+
+	<!-- <div>
+		<label for="">Amount</label>
+		<input type="number" step="any" name="price" value="{{price}}">
+	</div> -->
+
+	<input type="submit" class="btn" value="Add User">
+</form>

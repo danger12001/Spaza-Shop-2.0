@@ -1,0 +1,41 @@
+
+<div class="row">
+  <form>
+    <div class="input-field col s12">
+      <i class="material-icons prefix">search</i>
+      <input id="search_bar" type="text" class="validate" name="searchVal">
+      <label for="search_bar">Search</label>
+    </div>
+  </form>
+</div>
+<ul id="list" class="row list">
+
+
+  <li class="col s4 head">Product</li>
+  <li class="col s3 head">Price</li>
+  <li class="col s3 head">Category</li>
+  <a href="products/add"><li class="btn col s2 buttons"> <i class="material-icons">library_add</i></li></a>
+
+
+        {{#products}}
+          <li class="col s4 dbList"> {{product}}</li>
+          <li class="col s3 dbList"> {{price}}</li>
+          <li class="col s3 dbList"> {{category}}</li>
+          <a href="/products/edit/{{id}}" class="btn col s1 buttons"><i  class="material-icons">mode_edit</i></a>
+          <a href="/products/delete/{{id}}" class="btn col s1 buttons"><i class="material-icons">delete</i></a>
+        {{/products}}
+    </ul>
+
+   <script>
+$(document).ready(function(){
+  $("#search_bar").keyup(function(){
+      var searchVal = $("#search_bar").val();
+      $.get("/products/search/" + searchVal, function(results){
+        $("#list").html(results)
+      });
+      if(searchVal.length === 0){
+         location.reload();
+      };
+  });
+});
+    </script>

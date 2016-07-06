@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Week 3 Statistics </title>
+  </head>
+  <body>
+
+  <h1 id="heading"> WEEK 3:</h1>
+  <ul id="statistics" class="row">
+    <li class="col s8">Most Popular Product :</li><li class="col s4"> {{data.mostPopularProduct}}</li>
+    <li class="col s8">Most Popular Category:</li> <li class="col s4">{{data.mostPopularCategory}}</li>
+    <li class="col s8">Most Profitable Product: </li><li class="col s4">{{data.mostProfitableProduct}}</li>
+    <li class="col s8">Most Profitable Category:</li><li class="col s4"> {{data.mostProfitableCategory}}</li>
+
+    <li class="col s8">Least Popular Product:</li><li class="col s4"> {{data.leastPopularProduct}}</li>
+    <li class="col s8">Least Popular Category:</li><li class="col s4"> {{data.leastPopularCategory}}</li>
+    <!-- <div id="SS" class="btn col s6">Show Sales</div> <div id="SP" class="btn col s6">Show Purchases</div> -->
+    <div id="sales">
+    <li class="heading col s3"> Sales: </li> <li class="heading col s3">Quantity: </li>  <li class="heading col s3"> Sales: </li> <li class="heading col s3">Quantity: </li> <li> {{#each weeklySales}}<li class="col s3">{{stockItem}}</li><li class="col s3"> {{sold}}</li> {{/each}}</li>
+  </div>
+<div id="purchases">
+    <li class="heading col s3"> Purchases: </li><li class="heading col s3">Quantity: </li><li class="heading col s3"> Purchases: </li><li class="heading col s3">Quantity: </li> <li > {{#each purchases}}<li class="col s3">{{item}}</li><li class="col s3">  {{quantity}}</li> {{/each}}</li>
+  </div>
+</ul>
+<div class="row">
+  <a id="linkgrid" class="btn col s12" href="/"> Home </a>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript" src="JS/bootstrap.js"></script>
+<script>
+var sales = document.getElementById("sales");
+var purchases = document.getElementById("purchases");
+$("#SS").click(function(){
+  if(sales.style.display == "none"){
+    sales.style.display = "block";
+  }
+  else {
+    sales.style.display = "none";
+  }
+});
+$("#SP").click(function(){
+  if(purchases.style.display == "none"){
+    purchases.style.display = "block";
+  }
+  else {
+    purchases.style.display = "none";
+  }
+});
+</script>
+  </body>
+
+</html>

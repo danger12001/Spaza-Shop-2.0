@@ -1,0 +1,14 @@
+
+
+<ul class="row list">
+  <li class="col s5 head">Product</li>
+  <li class="col s5 head">Category</li>
+  <a href="products/add"><li class="btn col s2 buttons"> <i class="material-icons">library_add</i></li></a>
+{{#search}}
+<li class="col s5 dbList"> {{product}}</li>
+<li class="col s5 dbList"> {{category}}</li>
+<a href="/products/edit/{{id}}" class="btn col s1 buttons"><i  class="material-icons">mode_edit</i></a>
+<a href="/products/delete/{{id}}" class="btn col s1 buttons"><i class="material-icons">delete</i></a>
+{{/search}}
+
+</ul>

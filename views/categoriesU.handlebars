@@ -1,0 +1,29 @@
+<div class="row">
+  <form>
+    <div class="input-field col s12">
+      <i class="material-icons prefix">search</i>
+      <input id="search_bar" type="text" class="validate" name="searchVal">
+      <label for="search_bar">Search</label>
+    </div>
+  </form>
+</div>
+<ul id="cateList" class="row list">
+
+  <li class="col s12 head">Category</li>
+        {{#categories}}
+          <li class="col s12 dbList"> {{category}}</li>
+        {{/categories}}
+    </ul>
+    <script>
+ $(document).ready(function(){
+   $("#search_bar").keyup(function(){
+       var searchVal = $("#search_bar").val();
+       $.get("/category/search/" + searchVal, function(results){
+         $("#cateList").html(results)
+       });
+       if(searchVal.length === 0){
+          location.reload();
+       };
+   });
+ });
+</script>

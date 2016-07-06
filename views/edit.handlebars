@@ -1,0 +1,24 @@
+
+<h1>Edit product</h1>
+
+<form action="/products/update/{{data.id}}" method="POST">
+	<div class="">
+		<label for="">Category</label>
+		<!-- <select class="" name="category_id"> -->
+			<select class="browser-default" name="category_id">
+				{{#categories}}
+					<option value="{{id}}">{{category}}</option>
+					<!-- <option value="{{id}}">{{categor}}</option> -->
+				{{/categories}}
+			</select>
+	</div>
+	<div class="">
+		<label for="">Product</label>
+		<input type="text" name="product" value="{{data.product}}">
+	</div>
+	<div >
+		<label for="price">Price</label>
+		<input type="number" name="price" value="{{data.price}}">
+	</div>
+	<input type="submit" class="btn" value="Edit Product">
+</form>

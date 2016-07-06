@@ -1,0 +1,27 @@
+<h1>Add product</h1>
+
+<form action="/products/add" method="POST">
+	<div class="">
+		<!-- <label for="">Category</label> -->
+
+    <!-- <select class="input-field" name="category_id"> -->
+    <!-- </select> -->
+    <label>Category</label>
+    <select class="browser-default" name="category_id">
+			{{#categories}}
+        <option value="{{id}}">{{category}}</option>
+			{{/categories}}
+    </select>
+	</div>
+
+	<div>
+		<label for="">Product Name</label>
+		<input type="text" name="product" value="{{product}}">
+	</div>
+	<div>
+		<label for="">Price</label>
+		<input type="number" name="price" value="{{price}}">
+	</div>
+
+	<input class="btn" type="submit" value="Add Product">
+</form>
