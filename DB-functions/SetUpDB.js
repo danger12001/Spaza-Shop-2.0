@@ -10,7 +10,6 @@ var usersTable = String(fs.readFileSync('./sql/usersTable.sql'));
 var productsFK = String(fs.readFileSync('./sql/productsFK.sql'));
 var purchaseFK = String(fs.readFileSync('./sql/purchaseFK.sql'));
 var salesFK = String(fs.readFileSync('./sql/salesFK.sql'));
-exports.setup = function (){
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
@@ -52,5 +51,5 @@ connection.query(purchaseFK, [], function(err, result) {
 connection.query(salesFK, [], function(err, result) {
   if (err) throw err;
   connection.end();
+
 });
-};
