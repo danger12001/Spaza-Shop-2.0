@@ -7,7 +7,6 @@ var dbOptions = {
   user: 'root',
   password: '5550121a',
   port: 3306,
-  database: "Nelisa2"
 };
 var CreateDB = String(fs.readFileSync('./sql/CreateDB.sql'));
 var connection = mysql.createConnection(dbOptions);
