@@ -2,7 +2,6 @@ var mysql = require('mysql');
 var fs = require("fs");
 var myConnection = require('express-myconnection');
 
-var CreateDB = String(fs.readFileSync('./sql/CreateDB.sql'));
 var categoriesTable = String(fs.readFileSync('./sql/categoriesTable.sql'));
 var productsTable = String(fs.readFileSync('./sql/productsTable.sql'));
 var purchaseTable = String(fs.readFileSync('./sql/purchaseTable.sql'));
@@ -22,10 +21,6 @@ exports.setup = function (){
 var connection = mysql.createConnection(dbOptions);
 
 //DB SETUP SQL
-connection.query(CreateDB, [], function(err, result) {
-  if (err) throw err;
-  // connection.end();
-});
 connection.query(categoriesTable, [], function(err, result) {
   if (err) throw err;
   // connection.end();
