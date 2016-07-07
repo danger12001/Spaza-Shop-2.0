@@ -200,7 +200,6 @@ app.get('/products/search/:searchVal', products.search);
 app.get('/product/search/:searchVal', products.searchU);
 
 app.get('/sales', sales.show);
-app.get('/sale', sales.show);
 app.get('/sales/addSales', sales.showAdd);
 app.post('/sales/addSales', sales.add);
 app.get('/sales/delete/:id', sales.delete);

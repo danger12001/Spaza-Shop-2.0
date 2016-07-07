@@ -6,6 +6,7 @@ var mostPopularCategory = require('../routes/mostPopularCategory');
 var leastPopularCategory = require('../routes/leastPopularCategory');
 var mostProfitableProduct = require('../routes/mostProfitableProduct');
 var mostProfitableCategory = require('../routes/mostProfitableCategory');
+<<<<<<< HEAD
 // var purchases = require("../routes/purchases");
 
 describe("weeklySales", function() {
@@ -535,6 +536,29 @@ describe("weeklySales", function() {
 
     );
   });
+=======
+var purchases = require("../routes/purchases");
+describe("weeklySales",function(){
+  it("should return a map of the sales for the month",function(){
+    var result = weeklySales.weeklySales(1);
+    assert.deepEqual(result,
+   [ { stockItem: 'Bananas - loose', sold: 47,income: 2 },
+     { stockItem: 'Bread', sold: 45,income: 12},
+     { stockItem: 'Chakalaka Can', sold: 23,income: 10},
+     { stockItem: 'Coke 500ml', sold: 54, income: 6.5},
+     { stockItem: 'Cream Soda 500ml', sold: 22,income: 7.5},
+     { stockItem: 'Fanta 500ml', sold: 33, income: 6.5 },
+     { stockItem: 'Gold Dish Vegetable Curry Can', sold: 17, income: 9 },
+     { stockItem: 'Imasi', sold: 30, income: 25 },
+     { stockItem: 'Iwisa Pap 5kg', sold: 17, income: 30 },
+     { stockItem: 'Milk 1l', sold: 39, income: 10 },
+     { stockItem: 'Mixed Sweets 5s', sold: 49, income: 3 },
+     { stockItem: 'Shampoo 1 litre', sold: 3, income: 30 },
+     { stockItem: 'Soap Bar', sold: 12, income: 6 },
+     { stockItem: 'Top Class Soy Mince', sold: 22, income: 12 } ]
+);
+});
+>>>>>>> eb93296c5e0e149f99a8dbe9c2a512705a96802d
 });
 describe("mostPopularProduct",function(){
   it("should return the most popular product of each week",function(){
