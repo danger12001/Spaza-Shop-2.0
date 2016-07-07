@@ -1,1 +1,1 @@
-INSERT INTO `users` (username, password, admin, locked) VALUES ?
+INSERT INTO `users` (username,email, password, admin, locked) VALUES ?
