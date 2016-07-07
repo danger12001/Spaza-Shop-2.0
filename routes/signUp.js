@@ -7,6 +7,7 @@ module.exports = function(req, res, next) {
             return next(err);
 
         var password = req.body.password;
+        var passwordVerification = req.body.passwordV;
         var admin = "";
         var locked = "";
         if(req.body.admin === "on"){
@@ -21,14 +22,21 @@ module.exports = function(req, res, next) {
         else {
           locked = "0";
         }
+
         var data = {
             username: req.body.username,
             admin: admin,
             locked: locked,
+            email: req.body.email
 
         };
                 bcrypt.hash(password, 10, function(err, hash) {
+                  if(password === passwordVerification){
                     data.password = hash;
+                  }
+                  else {
+                    req.flash('warning', "Passwords do not match");
+                  }
 
                     connection.query('insert into users set ?', data, function(err, data) {
                          if (err) {

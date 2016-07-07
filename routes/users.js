@@ -28,8 +28,17 @@ exports.show = function(req, res, next) {
     });
 };
 
-exports.showAdd = function(req, res) {
-    res.render('addUser');
+  exports.showAdd = function(req, res){
+  	req.getConnection(function(err, connection){
+  		if (err) return next(err);
+  		connection.query('SELECT * from users', [], function(err, data) {
+          	if (err) return next(err);
+      		res.render( 'addUser', {
+  					data : data,
+  					admin: req.session.admintab, user: req.session.username
+      		});
+        	});
+  	});
 };
 
 
@@ -39,21 +48,14 @@ exports.add = function(req, res, next) {
         var password = req.body.password;
         var data = {
             username: req.body.username,
-            admin: req.body.admin,
+            email: req.body.email,
+            admin: 0,
             locked: 0
         };
 
-var adminSwitch = req.body.admin;
-        if(adminSwitch.checked === "true"){
-          console.log("true");
-          data.admin = 1;
-          // data.username = "BLEH";
-        }
-        else {
-          console.log("false");
-          data.admin = 0;
-          // data.username = "BLAH";
-        }
+var adminSwitch = req.body.adminSwitch;
+console.log(adminSwitch);
+
         bcrypt.hash(password, 10, function(err, hash) {
             data.password = hash;
 
@@ -73,7 +75,8 @@ exports.get = function(req, res, next) {
             if (err) return next(err);
             res.render('editUser', {
                 data: rows[0],
-                // admin: req.session.admintab
+                admin: req.session.admintab,
+                user: req.session.user
             });
         });
     });
@@ -84,7 +87,7 @@ exports.update = function(req, res, next) {
     var id = req.params.id;
     // var password = req.body.password;
     var data = {
-        username: req.body.username,
+        // username: req.body.username,
         admin: req.body.admin,
         locked: req.body.lock
     };

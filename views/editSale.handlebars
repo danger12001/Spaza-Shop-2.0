@@ -1,0 +1,30 @@
+<h1>Edit Sale</h1>
+
+<form action="/sales/update/{{data.id}}" method="POST">
+	<div class="">
+		<!-- <label for="">Category</label> -->
+
+    <!-- <select class="input-field" name="category_id"> -->
+    <!-- </select> -->
+	</div>
+  <div>
+		<label for="date">date</label>
+		<input class="datepicker" type="date" name="date" value="{{data.date}}">
+	</div>
+  <div>
+		<label for="sold">quantity</label>
+		<input type="number" name="sold" value="{{data.sold}}">
+	</div>
+
+  <label>Product</label>
+  <select class="browser-default" name="product_id">
+    {{#sales}}
+    <option value="{{id}}"> {{product}}</option>
+    {{/sales}}
+  </select>
+	<!-- <label for="price">cost</label> -->
+	<input type="text" name="price" value="{{data.price}}" >
+
+
+	<input class="btn" type="submit" value="Edit Sale">
+</form>

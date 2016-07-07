@@ -8,11 +8,13 @@ var bcrypt = require('bcrypt');
 var session = require('express-session');
 var flash = require('express-flash');
 var app = express();
-var signup  = require('./routes/signUp');
+var signup = require('./routes/signUp');
 var login = require('./routes/login');
 
 var categories = require("./routes/categories");
 var products = require("./routes/products");
+var sales = require("./routes/sales");
+var purchase = require("./routes/purchase");
 var users = require("./routes/users");
 
 
@@ -25,53 +27,53 @@ var mostProfitableCategory = require('./routes/mostProfitableCategory');
 var weeklySalesfunc = require('./routes/weeklySales');
 var purchases = require('./routes/purchases');
 var week1 = {
-    mostPopularProduct: mostPopularProduct.mostPopularProduct(1),
-    leastPopularProduct: leastPopularProduct.leastPopularProduct(1),
-    mostPopularCategory: mostPopularCategory.mostPopularCategory(1),
-    leastPopularCategory: leastPopularCategory.leastPopularCategory(1),
-    mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(1),
-    mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(1),
-    weeklySales: weeklySalesfunc.weeklySales(1),
-    purchases: purchases.Purchases(1)
+  mostPopularProduct: mostPopularProduct.mostPopularProduct(1),
+  leastPopularProduct: leastPopularProduct.leastPopularProduct(1),
+  mostPopularCategory: mostPopularCategory.mostPopularCategory(1),
+  leastPopularCategory: leastPopularCategory.leastPopularCategory(1),
+  mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(1),
+  mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(1),
+  weeklySales: weeklySalesfunc.weeklySales(1),
+  purchases: purchases.Purchases(1)
 };
 var week2 = {
-    mostPopularProduct: mostPopularProduct.mostPopularProduct(2),
-    leastPopularProduct: leastPopularProduct.leastPopularProduct(2),
-    mostPopularCategory: mostPopularCategory.mostPopularCategory(2),
-    leastPopularCategory: leastPopularCategory.leastPopularCategory(2),
-    mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(2),
-    mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(2),
-    weeklySales: weeklySalesfunc.weeklySales(2),
-    purchases: purchases.Purchases(2)
+  mostPopularProduct: mostPopularProduct.mostPopularProduct(2),
+  leastPopularProduct: leastPopularProduct.leastPopularProduct(2),
+  mostPopularCategory: mostPopularCategory.mostPopularCategory(2),
+  leastPopularCategory: leastPopularCategory.leastPopularCategory(2),
+  mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(2),
+  mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(2),
+  weeklySales: weeklySalesfunc.weeklySales(2),
+  purchases: purchases.Purchases(2)
 };
 var week3 = {
-    mostPopularProduct: mostPopularProduct.mostPopularProduct(3),
-    leastPopularProduct: leastPopularProduct.leastPopularProduct(3),
-    mostPopularCategory: mostPopularCategory.mostPopularCategory(3),
-    leastPopularCategory: leastPopularCategory.leastPopularCategory(3),
-    mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(3),
-    mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(3),
-    weeklySales: weeklySalesfunc.weeklySales(3),
-    purchases: purchases.Purchases(3)
+  mostPopularProduct: mostPopularProduct.mostPopularProduct(3),
+  leastPopularProduct: leastPopularProduct.leastPopularProduct(3),
+  mostPopularCategory: mostPopularCategory.mostPopularCategory(3),
+  leastPopularCategory: leastPopularCategory.leastPopularCategory(3),
+  mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(3),
+  mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(3),
+  weeklySales: weeklySalesfunc.weeklySales(3),
+  purchases: purchases.Purchases(3)
 };
 var week4 = {
-    mostPopularProduct: mostPopularProduct.mostPopularProduct(4),
-    leastPopularProduct: leastPopularProduct.leastPopularProduct(4),
-    mostPopularCategory: mostPopularCategory.mostPopularCategory(4),
-    leastPopularCategory: leastPopularCategory.leastPopularCategory(4),
-    mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(4),
-    mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(4),
-    weeklySales: weeklySalesfunc.weeklySales(4),
-    purchases: purchases.Purchases(4)
+  mostPopularProduct: mostPopularProduct.mostPopularProduct(4),
+  leastPopularProduct: leastPopularProduct.leastPopularProduct(4),
+  mostPopularCategory: mostPopularCategory.mostPopularCategory(4),
+  leastPopularCategory: leastPopularCategory.leastPopularCategory(4),
+  mostProfitableProduct: mostProfitableProduct.mostProfitableProduct(4),
+  mostProfitableCategory: mostProfitableCategory.mostProfitableCategory(4),
+  weeklySales: weeklySalesfunc.weeklySales(4),
+  purchases: purchases.Purchases(4)
 };
 
 function errorHandler(err, req, res, next) {
-    res.status(500);
-    res.render('error', {
-        error: err,
-        admin: req.session.admintab,
-        user: req.session.username
-    });
+  res.status(500);
+  res.render('error', {
+    error: err,
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 }
 
 app.use(bodyParser.urlencoded({
@@ -89,6 +91,7 @@ var dbOptions = {
 app.use(session({
   secret: 'space cats on synthesizers'
 }));
+
 app.use(flash());
 app.use(myConnection(mysql, dbOptions, 'single'));
 var connection = mysql.createConnection(dbOptions);
@@ -130,44 +133,64 @@ app.use(function(req, res, next) {
 
 //Routes
 app.get('/', function(req, res) {
-    res.render("index",{admin: req.session.admintab, user: req.session.username});
+  res.render("index", {
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 });
 app.get('/week1', function(req, res) {
-    res.render("week1", {data: week1,admin: req.session.admintab, user: req.session.username});
+  res.render("week1", {
+    data: week1,
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 });
 app.get('/week2', function(req, res) {
-    res.render("week2",{data: week2,admin: req.session.admintab, user: req.session.username});
+  res.render("week2", {
+    data: week2,
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 });
 app.get('/week3', function(req, res) {
-    res.render("week3", {data: week3,admin: req.session.admintab, user: req.session.username});
+  res.render("week3", {
+    data: week3,
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 });
 app.get('/week4', function(req, res) {
-  res.render("week4", {data: week4,admin: req.session.admintab, user: req.session.username});
+  res.render("week4", {
+    data: week4,
+    admin: req.session.admintab,
+    user: req.session.username
+  });
 });
-app.get("/signup", function(req, res, next){
-  req.getConnection(function(err, connection){
+app.get("/signup", function(req, res, next) {
+  req.getConnection(function(err, connection) {
     connection = mysql.createConnection(dbOptions);
-    if(err) return next(err);
-      res.render("signup");
+    if (err) return next(err);
+    res.render("signup");
+  });
 });
-});
-app.get("/login", function(req, res, next){
-  req.getConnection(function(err, connection){
+app.get("/login", function(req, res, next) {
+  req.getConnection(function(err, connection) {
     connection = mysql.createConnection(dbOptions);
-    if(err) return next(err);
+    if (err) return next(err);
     res.render("login");
   });
 });
 app.post('/signup', signup);
 app.post('/login', login);
 
-app.get("/logout", function (req, res, next){
-delete req.session.username;
-delete req.session.admintab;
-res.redirect("/");
+app.get("/logout", function(req, res, next) {
+  delete req.session.username;
+  delete req.session.admintab;
+  res.redirect("/");
 });
 
 app.get('/products', products.show);
+app.get('/product', products.showU);
 app.get('/products/add', products.showAdd);
 app.post('/products/add', products.add);
 app.get('/products/delete/:id', products.delete);
@@ -176,7 +199,25 @@ app.post('/products/update/:id', products.update);
 app.get('/products/search/:searchVal', products.search);
 app.get('/product/search/:searchVal', products.searchU);
 
+app.get('/sales', sales.show);
+app.get('/sale', sales.show);
+app.get('/sales/addSales', sales.showAdd);
+app.post('/sales/addSales', sales.add);
+app.get('/sales/delete/:id', sales.delete);
+app.get('/sales/editSale/:id', sales.get);
+app.post('/sales/update/:id', sales.update);
+app.get('/sales/search/:searchVal', sales.search);
+
+app.get('/purchases', purchase.show);
+app.get('/purchases/addPurchases', purchase.showAdd);
+app.post('/purchases/addPurchases', purchase.add);
+app.get('/purchases/delete/:id', purchase.delete);
+app.get('/purchases/editPurchase/:id', purchase.get);
+app.post('/purchases/update/:id', purchase.update);
+app.get('/purchases/search/:searchVal', purchase.search);
+
 app.get('/categories', categories.show);
+app.get('/category', categories.showU);
 app.get('/categories/addCategory', categories.showAdd);
 app.post('/categories/addCategory', categories.add);
 app.get('/categories/delete/:id', categories.delete);

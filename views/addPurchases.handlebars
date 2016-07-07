@@ -1,0 +1,25 @@
+<h1>Add purchase</h1>
+
+<form action="/purchases/addPurchases" method="POST">
+	<div class="">
+	</div>
+	<div>
+		<label for="date">date</label>
+		<input class="datepicker" type="date" name="date" value="{{date}}">
+	</div>
+	<div>
+		<label for="quantity">quantity</label>
+		<input type="number" name="quantity" value="{{quantity}}">
+	</div>
+	<div>
+		<label for="cost">cost</label>
+		<input type="text" name="cost" value="{{cost}}">
+	</div>
+	<label>Product</label>
+	<select class="browser-default" name="product_id">
+		{{#purchases}}
+			<option value="{{id}}"> {{product}}</option>
+		{{/purchases}}
+	</select>
+	<input class="btn" type="submit" value="Add Purchase">
+</form>

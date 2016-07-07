@@ -4,7 +4,7 @@
     <title> Nelisa's Spaza-Shop </title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
-  <link href="css/main.css" type="text/css" rel="stylesheet">
+  <link href="/css/main.css" type="text/css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 </head>
 <body>
@@ -34,6 +34,8 @@
       <li><a href="/week4">Week Four</a></li>
     </ul>
 {{/if}}
+
+
 {{#unless admin}}
 {{#if user}}
 <li>
@@ -108,12 +110,19 @@
   <script>
    $( document ).ready(function() {
      $('.datepicker').pickadate({
-         format: 'dd-mmm',
+         format: 'dd mmm',
          selectMonths: true, // Creates a dropdown to control month
         });
 
   });
   </script>
+  <!-- <script src="/js/salesPrice.js"></script> -->
+<script>$(document).ready(function(){
+  $("#saleSelect").on("change", function(){
+    $("#sale-price").val($("#saleSelect option:selected").attr("data-price"));
+  });
+});
+</script>
   </body>
 
 </html>

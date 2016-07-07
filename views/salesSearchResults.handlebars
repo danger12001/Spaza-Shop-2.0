@@ -1,0 +1,17 @@
+<ul class="row list">
+  <li class="col s2 head">Date</li>
+  <li class="col s3 head">Product</li>
+  <li class="col s2 head">Amount Sold</li>
+  <li class="col s1 head">Price</li>
+  <li class="col s2 head">Category</li>
+  <a href="sales/addSales"><li class="btn col s2 buttons"> <i class="material-icons">library_add</i></li></a>
+        {{#search}}
+        <li class="col s2"> {{date}}</li>
+          <li class="col s3"> {{product}}</li>
+          <li class="col s2"> {{sold}}</li>
+          <li class="col s1"> {{price}}</li>
+          <li class="col s2"> {{category}}</li>
+          <a href="sales/editSale/{{id}}"><li class="btn col s1 buttons"><i  class="material-icons">mode_edit</i></li></a>
+          <a href="sales/delete/{{id}}"><li class="btn col s1 buttons"><i class="material-icons">delete</i></li></a>
+        {{/search}}
+    </ul>
