@@ -2,15 +2,15 @@ var mysql = require('mysql');
 var fs = require("fs");
 var myConnection = require('express-myconnection');
 
-var CreateDB = String(fs.readFileSync('./DB-functions/sql/CreateDB.sql'));
-var categoriesTable = String(fs.readFileSync('./DB-functions/sql/categoriesTable.sql'));
-var productsTable = String(fs.readFileSync('./DB-functions/sql/productsTable.sql'));
-var purchaseTable = String(fs.readFileSync('./DB-functions/sql/purchaseTable.sql'));
-var salesTable = String(fs.readFileSync('./DB-functions/sql/salesTable.sql'));
-var usersTable = String(fs.readFileSync('./DB-functions/sql/usersTable.sql'));
-var productsFK = String(fs.readFileSync('./DB-functions/sql/productsFK.sql'));
-var purchaseFK = String(fs.readFileSync('./DB-functions/sql/purchaseFK.sql'));
-var salesFK = String(fs.readFileSync('./DB-functions/sql/salesFK.sql'));
+var CreateDB = String(fs.readFileSync('./sql/CreateDB.sql'));
+var categoriesTable = String(fs.readFileSync('./sql/categoriesTable.sql'));
+var productsTable = String(fs.readFileSync('./sql/productsTable.sql'));
+var purchaseTable = String(fs.readFileSync('./sql/purchaseTable.sql'));
+var salesTable = String(fs.readFileSync('./sql/salesTable.sql'));
+var usersTable = String(fs.readFileSync('./sql/usersTable.sql'));
+var productsFK = String(fs.readFileSync('./sql/productsFK.sql'));
+var purchaseFK = String(fs.readFileSync('./sql/purchaseFK.sql'));
+var salesFK = String(fs.readFileSync('./sql/salesFK.sql'));
 exports.setup = function (){
   var dbOptions = {
     host: '127.0.0.1',
