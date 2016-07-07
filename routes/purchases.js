@@ -1,11 +1,11 @@
 var weeklySalesfunc = require("./weeklySales");
 var fs = require("fs");
 exports.Purchases = function() {
-  var purchase = fs.readFileSync('./csv/purchases.csv', "utf8");
+  var purchase = fs.readFileSync('../csv/purchases.csv', "utf8");
   purchase = purchase.replace("Shop;Date;Item;Quantity;Cost;Total Cost\n", "");
   var interimArray = purchase.split('\n').join(".").split(';').join('.').split(".");
 
-  var category = fs.readFileSync('./csv/catagories.csv', "utf8");
+  var category = fs.readFileSync('../csv/catagories.csv', "utf8");
   category = category.replace("Product,Category\n", "");
   var interimArrayC = category.split('\n').join(".").split(',').join('.').split(".");
   var categories = [];
