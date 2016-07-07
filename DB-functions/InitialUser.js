@@ -19,7 +19,7 @@ var conn = mysql.createConnection({
 
     bcrypt.hash(password, 10, function(err, hash) {
       var password = hash;
-    values.push([username,password,email,admin,locked]);
+    values.push([username,email,password,admin,locked]);
     // console.log(values);
 
       conn.query(sql, [values], function(err, data) {
