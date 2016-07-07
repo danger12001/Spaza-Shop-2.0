@@ -98,7 +98,7 @@ exports.delete = function(req, res, next) {
 exports.search = function(req, res, next) {
   req.getConnection(function(err, connection) {
     var searchVal = '%' + req.params.searchVal + '%';
-    connection.query('SELECT purchases.id, purchases.date, products.product, categories.category,purchases.quantity, purchases.cost FROM  purchases INNER JOIN products ON purchases.product_id = products.id INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchVal, searchVal], function(err, result) {
+    connection.query("SELECT DATE_FORMAT(purchases.date,'%d %b') as date,purchases.id, products.product, categories.category, purchases.quantity, purchases.cost FROM  purchases	INNER JOIN products ON purchases.product_id = products.id INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?", [searchVal, searchVal], function(err, result) {
       if (err) return console.log(err);
       res.render('purchasesSearchResults', {
         search: result,
