@@ -14,11 +14,12 @@ var conn = mysql.createConnection({
     var password = "123";
     var admin = 1;
     var locked = 0;
+    var email = "Nelisa@Nelisa.com";
     var values = [];
 
     bcrypt.hash(password, 10, function(err, hash) {
       var password = hash;
-    values.push([username,password,admin,locked]);
+    values.push([username,password,email,admin,locked]);
     // console.log(values);
 
       conn.query(sql, [values], function(err, data) {
