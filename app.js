@@ -233,6 +233,9 @@ app.get('/users/delete/:id', users.delete);
 app.get('/users/editUser/:id', users.get);
 app.post('/users/update/:id', users.update);
 app.get('/users/search/:searchVal', users.search);
+app.get('/user/:user', users.settingsGet);
+app.post('/user/update/:user', users.settingsUpdate);
+
 //
 app.use(errorHandler);
 

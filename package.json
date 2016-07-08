@@ -1,10 +1,6 @@
 {
   "name": "Spaza-Shop",
-<<<<<<< HEAD
   "version": "3.0.0",
-=======
-  "version": "0.0.0",
->>>>>>> eb93296c5e0e149f99a8dbe9c2a512705a96802d
   "description": "",
   "main": "app.js",
   "directories": {
@@ -20,12 +16,9 @@
     "nodemon": "~1.9.2",
     "express-flash": "0.0.2",
     "express-session": "^1.13.0",
-<<<<<<< HEAD
+
     "bcrypt": "^0.8.7"
-=======
-    "bcrypt": "^0.8.7",
-    "jquery": "~3.0.0"
->>>>>>> eb93296c5e0e149f99a8dbe9c2a512705a96802d
+
   },
   "devDependencies": {},
   "scripts": {
@@ -35,7 +28,7 @@
     "type": "git",
     "url": "https://github.com/danger12001/Spaza-Shop-2.0.git"
   },
-  "author": "",
+  "author": "Paul Robertson",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/danger12001/Spaza-Shop-2.0/issues"

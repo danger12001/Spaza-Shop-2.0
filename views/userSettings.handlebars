@@ -1,0 +1,21 @@
+
+<h1>User Settings</h1>
+<h2>Welcome: {{data.username}}!</h2>
+
+<form action="/user/update/{{data.username}}" method="POST">
+  <div>
+
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" value="{{data.username}}" >
+    <label for="email">Email:</label>
+    <input type="text" name="email" value="{{data.Email}}" >
+    <label for="password">Current Password:</label>
+    <input type="text" name="password" value="" required >
+    <label for="new">New Password:</label>
+    <input type="text" name="new" value="" >
+<!-- <div>{{user.password}}</div> -->
+  </div>
+	<input class="btn" type="submit" value="Save Changes">
+</form>
+<h5 id = 'warning'>{{messages.warning}}</h5>

@@ -66,8 +66,81 @@ console.log(adminSwitch);
         });
     });
 };
+exports.settingsGet = function(req, res,next){
+  // var id = req.params.id;
+  var user = req.params.user;
+  // var username = req.session.user;
+  req.getConnection(function(err, connection) {
+      connection.query('SELECT * FROM users WHERE username = ?', [user], function(err, rows) {
+          if (err) return next(err);
+          // console.log(rows[0]);
+          res.render('userSettings', {
+              data: rows[0],
+              admin: req.session.admintab,
+              user: req.session.user
+          });
+      });
+  });
+};
 
 
+exports.settingsUpdate = function(req, res, next) {
+  var currentUser = req.params.user;
+  req.getConnection(function(err, connection) {
+
+      connection.query('SELECT * FROM users where username = ?', currentUser, function(err, users) {
+        var user = users[0];
+  var password = req.body.password;
+  var NewPassword = req.body.new;
+
+
+    // console.log(data.password);
+
+    bcrypt.compare(password, user.password, function(err, match) {
+        if (match) {
+          if(NewPassword !== ""){
+          bcrypt.hash(NewPassword, 10, function(err, hash) {
+            var data = {
+              username: req.body.username,
+              email: req.body.email
+            };
+            data.password = hash;
+            connection.query('UPDATE users SET ? WHERE username = ?', [data, currentUser], function(err, rows) {
+              if (err) next(err);
+              res.redirect('/');
+            });
+          });
+        }
+          else {
+            var data = {
+              username: req.body.username,
+              password: user.password,
+              email: req.body.email
+            };
+            connection.query('UPDATE users SET ? WHERE username = ?', [data, currentUser], function(err, rows) {
+              if (err) next(err);
+              res.redirect('/');
+            });
+          }
+        }
+        else {
+          req.flash('warning', 'Current Password Incorrect');
+          res.redirect("/user/" + currentUser);
+        }
+});
+
+  });
+});
+
+
+
+
+        // else {
+          // req.flash("warning", 'Passwords Incorrect');
+          // res.redirect('/user'  + users);
+        // }
+
+};
 exports.get = function(req, res, next) {
     var id = req.params.id;
     req.getConnection(function(err, connection) {
