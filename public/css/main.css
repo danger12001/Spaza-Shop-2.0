@@ -45,22 +45,29 @@
 .dbList {
   border: 1px solid black;
     /*border-right: 1px solid black;*/
+
     height: 25px;
 }
 .currentPage {
   background-color:rgba(0,0,0,0.2);
 }
-#nelisaData {
-  display: none;
+#container {
+  border: 1px solid black;
+  margin-top: 5%;
+  padding: 2%;
+  background-color: white;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  flex: 1 0 auto;
 }
-#xolaniData {
-  display: none;
+/*body {*/
+/*}*/
+body {
+  background-color: grey;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
-#nelisa {
-  height: 250px;
-  /*width: 80%;*/
-}
-#xolani {
-  height: 250px;
-  /*width: 10%;*/
-}
+
+/*main {*/
+/*}*/
