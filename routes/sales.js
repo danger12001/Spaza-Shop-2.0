@@ -29,11 +29,13 @@ exports.showAdd = function(req, res, next) {
 exports.add = function(req, res, next) {
   req.getConnection(function(err, connection) {
     if (err) return next(err);
+  var price =  Number(req.body.price);
+  var markup = Number(req.body.markup);
     var data = {
       date: new Date(req.body.date),
       product_id: Number(req.body.product_id),
       sold: Number(req.body.sold),
-      price: Number(req.body.price),
+      price: price + markup
     };
     connection.query('insert into sales set ?', data, function(err, results) {
       if (err) return next(err);
@@ -96,7 +98,7 @@ exports.delete = function(req, res, next) {
 exports.search = function(req, res, next) {
   req.getConnection(function(err, connection) {
     var searchVal = '%' + req.params.searchVal + '%';
-    connection.query("SELECT DATE_FORMAT(sales.date,'%d %b') as date,sales.id, products.product, categories.category, sales.sold, sales.price FROM  sales	INNER JOIN products ON sales.product_id = products.id AND sales.price = products.price  INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?", [searchVal, searchVal], function(err, result) {
+    connection.query("SELECT DATE_FORMAT(sales.date,'%d %b') as date,sales.id, products.product, categories.category, sales.sold, sales.price FROM  sales	INNER JOIN products ON sales.product_id = products.id  INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ? ORDER BY `sales`.`date` ASC", [searchVal, searchVal], function(err, result) {
       if (err) return console.log(err);
       res.render('salesSearchResults', {
         search: result,
