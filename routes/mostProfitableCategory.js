@@ -5,13 +5,11 @@ exports.mostProfitableCategory = function(week) {
   var purchases = fs.readFileSync('./csv/purchases.csv', "utf8");
   purchases = purchases.replace("Shop;Date;Item;Quantity;Cost;Total Cost", "").replace(/R/g, "");
   var interimArray = purchases.split('\n').join('.').split(";").join(".").split(".");
-  // console.log(interimArray);
   var bought = [];
   for(x=0;x<interimArray.length - 1;x++){
     if(x % 6 === 0){
       var item = interimArray[x - 3];
       var cost = interimArray[x];
-      // console.log(interimArray[x]);
     bought.push({
       item: item,
       cost: cost
@@ -31,8 +29,6 @@ exports.mostProfitableCategory = function(week) {
         "stockItem": stockItem,
         "category": categorys
       });
-      // console.log(categories);
-
     }
   }
   var m = [];

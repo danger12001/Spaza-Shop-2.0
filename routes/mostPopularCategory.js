@@ -12,23 +12,18 @@ exports.mostPopularCategory = function(week) {
     if (x % 2 === 0) {
       var stockItem = interimArray[x];
       var categorys = interimArray[x + 1];
-      // console.log(stockItem);
       categories.push({
         "stockItem": stockItem,
         "category": categorys
       });
-      // console.log(interimArray);
-
     }
   }
-  // console.log(weeklySales1[0].stockItem);
   var oc = [];
   for (x = 0; x < categories.length; x++) {
     for (y = 0; y < weeklySales.length; y++) {
       if (weeklySales[y].stockItem == categories[x].stockItem) {
         var cat = categories[x].category;
         var amountsold = weeklySales[y].sold;
-        // console.log(amountsold);
         oc.push({amountsold: amountsold,
           category: cat});
       }

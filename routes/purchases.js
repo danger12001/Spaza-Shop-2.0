@@ -23,14 +23,8 @@ exports.Purchases = function() {
         "item": stockItem,
         "id": count
       });
-      // console.log(interimArray);
-
-      // console.log(stockItem);
     }
   }
-  // console.log(categories  );
-
-// console.log(id);
   var purchases = [];
   for (var v = 0; v < interimArray.length - 1; v++) {
     if (v % 6 === 0) {
@@ -59,12 +53,8 @@ for(var z = 0; z< categories.length;z ++){
         "date": date,
         "id": product_id
       });
-      // console.log(interimArray);
-// console.log(product_id);
     }
   }
-// console.log(purchases.length);
-  // console.log(weeklySales1[0].stockItem);
   var op = [];
   for (x = 0; x < purchases.length; x++) {
     for (y = 0; y < categories.length; y++) {
@@ -83,7 +73,6 @@ for(var z = 0; z< categories.length;z ++){
       }
     }
   }
-  // console.log(op.length);
   var Purchases = op;
   return Purchases;
 };
