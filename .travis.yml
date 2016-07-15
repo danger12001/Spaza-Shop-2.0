@@ -2,7 +2,7 @@
 
 before_script:
   - npm install
-  - mysql -u root -e 'create database if not exists TestDB;'
-  - mysql -u root TestDB < test.sql
+  - mysql -u root -e 'create database if not exists travis_db;'
+  - mysql -u root travis_db < test.sql
 
 script: mocha
