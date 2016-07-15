@@ -8,13 +8,31 @@ module.exports = function(connection){
             cb(err, "There are no categories with that ID");
         });
     };
-        this.showCategory = function(cb) {
-          connection.query("SELECT * FROM categories", [], function(err, categories) {
-                if (err) return cb(err, null);
-                if (categories && categories.length > 0) {
-                    return cb(null, categories);
-                }
-                cb(err, "There are no categories");
-            });
-        };
+    this.updateCategory = function(id,edit) {
+      connection.query('UPDATE categories SET ? WHERE id = ?', [ edit , id], function(err, rows) {
+        if (err) throw err;
+      });
+
+    };
+
+    this.addCategory = function(data){
+      connection.query('INSERT INTO categories (id, category) VALUES ?', [data], function(err, rows){
+        if (err) throw err;
+        });
+    };
+
+    this.deleteCategory = function(id){
+    connection.query('DELETE FROM categories WHERE id = ?', id, function(err, rows) {
+      if (err) throw err;
+    });
+    };
+
+
+
+
+
+
+
+
+    //end
 };

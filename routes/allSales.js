@@ -1,12 +1,12 @@
 exports.sales = function() {
 var fs = require('fs');
-var NoOfWeeks = fs.readdirSync("../csv/weeklySales/").length;
+var NoOfWeeks = fs.readdirSync("./csv/weeklySales/").length;
 var input = [];
 var interimArray = [];
 var processedArray = [];
 for (var N = 0; N < NoOfWeeks; N++) {
   var week = N + 1;
-  input.push(fs.readFileSync('../csv/weeklySales/week' + week + '.csv', 'utf8'));
+  input.push(fs.readFileSync('./csv/weeklySales/week' + week + '.csv', 'utf8'));
   input[N] = input[N].replace("Day,Date,stock item,No sold,Sales Price\n", "");
   input[N] = input[N].replace(/R/g, "").split('\n');
   input[N].pop();

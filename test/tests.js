@@ -2537,13 +2537,18 @@ describe("Purchases", function() {
 
 var ProductsDataService = require('../data-services/products-data-service');
 var CategoriesDataService = require('../data-services/categories-data-service');
+var SalesDataService = require('../data-services/sales-data-service');
+var PurchasesDataService = require('../data-services/purchases-data-service');
+var UserDataService = require('../data-services/user-data-service');
+
+
 describe('ProductsDataService', function(){
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "Nelisa2"
+    database: "TestDB"
   };
   var connection = mysql.createConnection(dbOptions);
 
@@ -2554,66 +2559,73 @@ describe('ProductsDataService', function(){
             done();
         });
     });
-    it('showProduct should return all data in products', function(done){
+
+    it('addProduct add a product', function(done){
+
+      var data = [19,"Milk 2ls", 6, 9];
+
+        var dbOptions = {
+          host: '127.0.0.1',
+          user: 'root',
+          password: '5550121a',
+          port: 3306,
+          database: "TestDB"
+        };
+        var connection = mysql.createConnection(dbOptions);
         var productsDataService = new ProductsDataService(connection);
-        productsDataService.showProduct(function(err, product) {
-            assert.deepEqual(product, [ { id: 1, product: 'Bananas - loose', price: 2, category: 'Fruit' },
-  { id: 2, product: 'Imasi', price: 25, category: 'Dairy' },
-  { id: 3, product: 'Bread', price: 12, category: 'Baked Goods' },
-  { id: 4,
-    product: 'Chakalaka Can',
-    price: 10,
-    category: 'Canned Goods' },
-  { id: 5, product: 'Coke 500ml', price: 6.5, category: 'Sweets' },
-  { id: 6,
-    product: 'Cream Soda 500ml',
-    price: 7.5,
-    category: 'Sweets' },
-  { id: 7, product: 'Fanta 500ml', price: 6.5, category: 'Sweets' },
-  { id: 8,
-    product: 'Gold Dish Vegetable Curry Can',
-    price: 9,
-    category: 'Canned Goods' },
-  { id: 9, product: 'Iwisa Pap 5kg', price: 30, category: 'Cereal' },
-  { id: 10, product: 'Milk 1l', price: 10, category: 'Dairy' },
-  { id: 11,
-    product: 'Mixed Sweets 5s',
-    price: 2,
-    category: 'Sweets' },
-  { id: 12,
-    product: 'Shampoo 1 litre',
-    price: 30,
-    category: 'Hygiene' },
-  { id: 13, product: 'Soap Bar', price: 6, category: 'Hygiene' },
-  { id: 14,
-    product: 'Top Class Soy Mince',
-    price: 12,
-    category: 'Meat' },
-  { id: 15,
-    product: 'Heart Chocolates',
-    price: 35,
-    category: 'Sweets' },
-  { id: 16,
-    product: 'Rose (plastic)',
-    price: 15,
-    category: 'Other' },
-  { id: 17, product: 'Apples - loose', price: 2, category: 'Fruit' },
-  { id: 18,
-    product: 'Valentine Cards',
-    price: 4,
-    category: 'Other' } ]
-);
-            done();
+        productsDataService.addProduct([data], function(err, rows) {
+          if (err) throw err;
+          var test = rows.affectedRows;
+            assert.equal(test, 1);
         });
+        done();
     });
-});
+
+
+    it('updateProduct should update a products data', function(done){
+      var data = {
+        category_id: 6,
+        product: "Milk 2L",
+        price: 10 };
+
+        var dbOptions = {
+          host: '127.0.0.1',
+          user: 'root',
+          password: '5550121a',
+          port: 3306,
+          database: "TestDB"
+        };
+        var connection = mysql.createConnection(dbOptions);
+        var productsDataService = new ProductsDataService(connection);
+      productsDataService.updateProduct(19,data ,function(err, rows) {
+        if (err) throw err;
+        var test = rows.changedRows;
+        assert.equal(test, 1);
+      });
+      done();
+    });
+
+    it('deleteProduct should remove a product', function(done){
+        var productsDataService = new ProductsDataService(connection);
+        productsDataService.deleteProduct(19, function(err, rows) {
+          var test = rows.changedRows;
+            assert.equal(test, 1);
+        });
+        done();
+    });
+
+
+
+
+  });
+
 describe('CategoriesDataService', function(){
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "Nelisa2"
+    database: "TestDB"
   };
   var connection = mysql.createConnection(dbOptions);
     it('getCategory should return a specific category', function(done){
@@ -2623,20 +2635,284 @@ describe('CategoriesDataService', function(){
         });
         done();
     });
-    it('showCategory should return a specific category', function(done){
-      var categoryDataService = new CategoriesDataService(connection);
-      categoryDataService.showCategory(function(err, categories){
-        assert.deepEqual(categories, [ { id: 2, category: 'Baked Goods' },
-  { id: 3, category: 'Canned Goods' },
-  { id: 5, category: 'Cereal' },
-  { id: 6, category: 'Dairy' },
-  { id: 1, category: 'Fruit' },
-  { id: 7, category: 'Hygiene' },
-  { id: 8, category: 'Meat' },
-  { id: 9, category: 'Other' },
-  { id: 4, category: 'Sweets' } ]
-);
+    it('addCategory should add an category', function(done){
+
+      var data = [10,"Test"];
+
+        var dbOptions = {
+          host: '127.0.0.1',
+          user: 'root',
+          password: '5550121a',
+          port: 3306,
+          database: "TestDB"
+        };
+        var connection = mysql.createConnection(dbOptions);
+          var categoryDataService = new CategoriesDataService(connection);
+        categoryDataService.addCategory([data], function(err, rows) {
+          if (err) throw err;
+          var test = rows.affectedRows;
+            assert.equal(test, 1);
+        });
+        done();
+    });
+
+
+    it('updateCategory should update a products data', function(done){
+      var data = {
+        category: "test" };
+
+        var dbOptions = {
+          host: '127.0.0.1',
+          user: 'root',
+          password: '5550121a',
+          port: 3306,
+          database: "TestDB"
+        };
+        var connection = mysql.createConnection(dbOptions);
+        var categoryDataService = new CategoriesDataService(connection);
+      categoryDataService.updateCategory(10,data ,function(err, rows) {
+        if (err) throw err;
+        var test = rows.changedRows;
+        assert.equal(test, 1);
       });
       done();
     });
+
+    it('deleteCategory should remove a product', function(done){
+        var categoryDataService = new CategoriesDataService(connection);
+        categoryDataService.deleteCategory(10, function(err, rows) {
+          var test = rows.changedRows;
+            assert.equal(test, 1);
+        });
+        done();
+    });
+    });
+
+    describe('SalesDataService', function(){
+      var dbOptions = {
+        host: '127.0.0.1',
+        user: 'root',
+        password: '5550121a',
+        port: 3306,
+        database: "TestDB"
+      };
+      var connection = mysql.createConnection(dbOptions);
+        it('getSale should return a specific sale', function(done){
+            var salesDataService = new SalesDataService(connection);
+            salesDataService.getSale(3, function(err, sale) {
+                assert.equal(4, sale.product_id);
+            });
+            done();
+        });
+        it('addSale should add a sale', function(done){
+
+          var data = [448,2001-03-01,11,12,3];
+
+            var dbOptions = {
+              host: '127.0.0.1',
+              user: 'root',
+              password: '5550121a',
+              port: 3306,
+              database: "TestDB"
+            };
+            var connection = mysql.createConnection(dbOptions);
+              var salesDataService = new SalesDataService(connection);
+            salesDataService.addSale([data], function(err, rows) {
+              if (err) throw err;
+              var test = rows.affectedRows;
+                assert.equal(test, 1);
+            });
+            done();
+        });
+
+
+        it('updateSale should update a sales data', function(done){
+          var data = {
+            date: 2001-03-01,
+            product_id: 4,
+            sold: 12,
+            price: 4
+            };
+
+            var dbOptions = {
+              host: '127.0.0.1',
+              user: 'root',
+              password: '5550121a',
+              port: 3306,
+              database: "TestDB"
+            };
+            var connection = mysql.createConnection(dbOptions);
+            var salesDataService = new SalesDataService(connection);
+          salesDataService.updateSale(448,data ,function(err, rows) {
+            if (err) throw err;
+            var test = rows.changedRows;
+            assert.equal(test, 1);
+          });
+          done();
+        });
+
+        it('deleteSale should remove a sale', function(done){
+            var salesDataService = new SalesDataService(connection);
+            salesDataService.deleteSale(448, function(err, rows) {
+              var test = rows.changedRows;
+                assert.equal(test, 1);
+            });
+            done();
+        });
+
+        });
+        describe('PurchasesDataService', function(){
+          var dbOptions = {
+            host: '127.0.0.1',
+            user: 'root',
+            password: '5550121a',
+            port: 3306,
+            database: "TestDB"
+          };
+          var connection = mysql.createConnection(dbOptions);
+            it('getPurchase should return a specific Purchase', function(done){
+                var purchasesDataService = new PurchasesDataService(connection);
+                purchasesDataService.getPurchase(1, function(err, purchase) {
+                    assert.equal(4, purchase.product_id);
+                });
+                done();
+            });
+            it('addPurchase should add a Purchase', function(done){
+
+              var data = [154,2001-03-01,11,12,3];
+
+                var dbOptions = {
+                  host: '127.0.0.1',
+                  user: 'root',
+                  password: '5550121a',
+                  port: 3306,
+                  database: "TestDB"
+                };
+                var connection = mysql.createConnection(dbOptions);
+                  var purchasesDataService = new PurchasesDataService(connection);
+                purchasesDataService.addPurchase([data], function(err, rows) {
+                  if (err) throw err;
+                  var test = rows.affectedRows;
+                    assert.equal(test, 1);
+                });
+                done();
+            });
+
+
+            it('updatePurchase should update a Purchases data', function(done){
+              var data = {
+                date: 2001-03-01,
+                quantity: 12,
+                cost: 4,
+                product_id: 4
+                };
+
+                var dbOptions = {
+                  host: '127.0.0.1',
+                  user: 'root',
+                  password: '5550121a',
+                  port: 3306,
+                  database: "TestDB"
+                };
+                var connection = mysql.createConnection(dbOptions);
+                var purchasesDataService = new PurchasesDataService(connection);
+              purchasesDataService.updatePurchase(154,data ,function(err, rows) {
+                if (err) throw err;
+                var test = rows.changedRows;
+                assert.equal(test, 1);
+              });
+              done();
+            });
+
+            it('deletePurchase should remove a Purchase', function(done){
+                var purchasesDataService = new PurchasesDataService(connection);
+                purchasesDataService.deletePurchase(154, function(err, rows) {
+                  var test = rows.changedRows;
+                    assert.equal(test, 1);
+                });
+                done();
+            });
+          });
+
+            describe('UserDataService', function(){
+              var dbOptions = {
+                host: '127.0.0.1',
+                user: 'root',
+                password: '5550121a',
+                port: 3306,
+                database: "TestDB"
+              };
+              var connection = mysql.createConnection(dbOptions);
+
+                it('getUser should return a specific User', function(done){
+                    var userDataService = new UserDataService(connection);
+                    userDataService.getUser(1, function(err, user) {
+                        assert.equal('test', user.username);
+                        done();
+                    });
+                });
+
+                it('addUser add a User', function(done){
+
+                  var data = [2,"test","Test" ,1, 0];
+
+                    var dbOptions = {
+                      host: '127.0.0.1',
+                      user: 'root',
+                      password: '5550121a',
+                      port: 3306,
+                      database: "TestDB"
+                    };
+                    var connection = mysql.createConnection(dbOptions);
+                    var userDataService = new UserDataService(connection);
+                    userDataService.addUser([data], function(err, rows) {
+                      if (err) throw err;
+                      var test = rows.affectedRows;
+                        assert.equal(test, 1);
+                    });
+                    done();
+                });
+
+
+                it('updateUser should update a Users data', function(done){
+                  var data = {
+                    username: 6,
+                    Email: "Milk 2L",
+                    password: 10,
+                    admin: 1,
+                    locked: 0};
+
+                    var dbOptions = {
+                      host: '127.0.0.1',
+                      user: 'root',
+                      password: '5550121a',
+                      port: 3306,
+                      database: "TestDB"
+                    };
+                    var connection = mysql.createConnection(dbOptions);
+                    var userDataService = new UserDataService(connection);
+                  userDataService.updateUser(2,data ,function(err, rows) {
+                    if (err) throw err;
+                    var test = rows.changedRows;
+                    assert.equal(test, 1);
+                  });
+                  done();
+                });
+
+                it('deleteUser should remove a User', function(done){
+                    var userDataService = new UserDataService(connection);
+                    userDataService.deleteUser(2, function(err, rows) {
+                      var test = rows.changedRows;
+                        assert.equal(test, 1);
+                    });
+                    done();
+                });
+
+
+
+
+
+
+
+
 });
