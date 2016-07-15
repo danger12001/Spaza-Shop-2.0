@@ -2580,12 +2580,13 @@ describe('ProductsDataService', function(){
         user: 'root',
         password: '5550121a',
         port: 3306,
-        database: "travis_db"
+        database: "TestDB"
       };
       var connection = mysql.createConnection(dbOptions);
         var productsDataService = new ProductsDataService(connection);
-        productsDataService.getProduct(19, function(err, product) {
-            assert.equal('Milk 2ls', product.product);
+        productsDataService.getProduct(10, function(err, product) {
+          console.log(product);
+            assert.equal('Milk 1l', product.product);
             done();
         });
     });
@@ -2855,16 +2856,16 @@ describe('CategoriesDataService', function(){
 
                 it('addUser add a User', function(done){
 
-                  var data = [2,"test","Test" ,1, 0];
+                  var data = [2,"test","Test","123" ,1, 0];
 
-                    var dbOptions = {
-                      host: '127.0.0.1',
-                      user: 'root',
-                      password: '5550121a',
-                      port: 3306,
-                      database: "travis_db"
-                    };
-                    var connection = mysql.createConnection(dbOptions);
+                    // var dbOptions = {
+                    //   host: '127.0.0.1',
+                    //   user: 'root',
+                    //   password: '5550121a',
+                    //   port: 3306,
+                    //   database: "travis_db"
+                    // };
+                    // var connection = mysql.createConnection(dbOptions);
                     var userDataService = new UserDataService(connection);
                     userDataService.addUser([data], function(err, rows) {
                       if (err) throw err;
@@ -2875,17 +2876,17 @@ describe('CategoriesDataService', function(){
                 });
 
                 it('getUser should return a specific User', function(done){
-                  var dbOptions = {
-                    host: '127.0.0.1',
-                    user: 'root',
-                    password: '5550121a',
-                    port: 3306,
-                    database: "travis_db"
-                  };
-                  var connection = mysql.createConnection(dbOptions);
+                  // var dbOptions = {
+                  //   host: '127.0.0.1',
+                  //   user: 'root',
+                  //   password: '5550121a',
+                  //   port: 3306,
+                  //   database: "travis_db"
+                  // };
+                  // var connection = mysql.createConnection(dbOptions);
 
                     var userDataService = new UserDataService(connection);
-                    userDataService.getUser(2, function(err, user) {
+                    userDataService.getUser(1, function(err, user) {
                         assert.equal('test', user.username);
                         done();
                     });

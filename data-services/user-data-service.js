@@ -5,7 +5,7 @@ module.exports = function(connection){
             if (users && users.length > 0){
                 return cb(null, users[0]);
             }
-            cb(err, "There are no users with that ID");
+            cb(err, err);
         });
     };
     this.updateUser = function(id,edit) {
