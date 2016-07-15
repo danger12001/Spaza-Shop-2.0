@@ -2552,13 +2552,7 @@ describe('ProductsDataService', function(){
   };
   var connection = mysql.createConnection(dbOptions);
 
-    it('getProduct should return a specific product', function(done){
-        var productsDataService = new ProductsDataService(connection);
-        productsDataService.getProduct(10, function(err, product) {
-            assert.equal('Milk 1l', product.product);
-            done();
-        });
-    });
+
 
     it('addProduct add a product', function(done){
 
@@ -2580,7 +2574,13 @@ describe('ProductsDataService', function(){
         });
         done();
     });
-
+    it('getProduct should return a specific product', function(done){
+        var productsDataService = new ProductsDataService(connection);
+        productsDataService.getProduct(19, function(err, product) {
+            assert.equal('Milk 2ls', product.product);
+            done();
+        });
+    });
 
     it('updateProduct should update a products data', function(done){
       var data = {
@@ -2867,6 +2867,14 @@ describe('CategoriesDataService', function(){
                 });
 
                 it('getUser should return a specific User', function(done){
+                  var dbOptions = {
+                    host: '127.0.0.1',
+                    user: 'root',
+                    password: '5550121a',
+                    port: 3306,
+                    database: "travis_db"
+                  };
+                  var connection = mysql.createConnection(dbOptions);
                     var userDataService = new UserDataService(connection);
                     userDataService.getUser(1, function(err, user) {
                         assert.equal('test', user.username);
