@@ -2548,7 +2548,7 @@ describe('ProductsDataService', function(){
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "TestDB"
+    database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
 
@@ -2569,7 +2569,7 @@ describe('ProductsDataService', function(){
           user: 'root',
           password: '5550121a',
           port: 3306,
-          database: "TestDB"
+          database: "travis_db"
         };
         var connection = mysql.createConnection(dbOptions);
         var productsDataService = new ProductsDataService(connection);
@@ -2593,7 +2593,7 @@ describe('ProductsDataService', function(){
           user: 'root',
           password: '5550121a',
           port: 3306,
-          database: "TestDB"
+          database: "travis_db"
         };
         var connection = mysql.createConnection(dbOptions);
         var productsDataService = new ProductsDataService(connection);
@@ -2625,7 +2625,7 @@ describe('CategoriesDataService', function(){
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "TestDB"
+    database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
     it('getCategory should return a specific category', function(done){
@@ -2644,7 +2644,7 @@ describe('CategoriesDataService', function(){
           user: 'root',
           password: '5550121a',
           port: 3306,
-          database: "TestDB"
+          database: "travis_db"
         };
         var connection = mysql.createConnection(dbOptions);
           var categoryDataService = new CategoriesDataService(connection);
@@ -2666,7 +2666,7 @@ describe('CategoriesDataService', function(){
           user: 'root',
           password: '5550121a',
           port: 3306,
-          database: "TestDB"
+          database: "travis_db"
         };
         var connection = mysql.createConnection(dbOptions);
         var categoryDataService = new CategoriesDataService(connection);
@@ -2694,7 +2694,7 @@ describe('CategoriesDataService', function(){
         user: 'root',
         password: '5550121a',
         port: 3306,
-        database: "TestDB"
+        database: "travis_db"
       };
       var connection = mysql.createConnection(dbOptions);
         it('getSale should return a specific sale', function(done){
@@ -2713,7 +2713,7 @@ describe('CategoriesDataService', function(){
               user: 'root',
               password: '5550121a',
               port: 3306,
-              database: "TestDB"
+              database: "travis_db"
             };
             var connection = mysql.createConnection(dbOptions);
               var salesDataService = new SalesDataService(connection);
@@ -2739,7 +2739,7 @@ describe('CategoriesDataService', function(){
               user: 'root',
               password: '5550121a',
               port: 3306,
-              database: "TestDB"
+              database: "travis_db"
             };
             var connection = mysql.createConnection(dbOptions);
             var salesDataService = new SalesDataService(connection);
@@ -2767,7 +2767,7 @@ describe('CategoriesDataService', function(){
             user: 'root',
             password: '5550121a',
             port: 3306,
-            database: "TestDB"
+            database: "travis_db"
           };
           var connection = mysql.createConnection(dbOptions);
             it('getPurchase should return a specific Purchase', function(done){
@@ -2786,7 +2786,7 @@ describe('CategoriesDataService', function(){
                   user: 'root',
                   password: '5550121a',
                   port: 3306,
-                  database: "TestDB"
+                  database: "travis_db"
                 };
                 var connection = mysql.createConnection(dbOptions);
                   var purchasesDataService = new PurchasesDataService(connection);
@@ -2812,7 +2812,7 @@ describe('CategoriesDataService', function(){
                   user: 'root',
                   password: '5550121a',
                   port: 3306,
-                  database: "TestDB"
+                  database: "travis_db"
                 };
                 var connection = mysql.createConnection(dbOptions);
                 var purchasesDataService = new PurchasesDataService(connection);
@@ -2840,17 +2840,10 @@ describe('CategoriesDataService', function(){
                 user: 'root',
                 password: '5550121a',
                 port: 3306,
-                database: "TestDB"
+                database: "travis_db"
               };
               var connection = mysql.createConnection(dbOptions);
 
-                it('getUser should return a specific User', function(done){
-                    var userDataService = new UserDataService(connection);
-                    userDataService.getUser(1, function(err, user) {
-                        assert.equal('test', user.username);
-                        done();
-                    });
-                });
 
                 it('addUser add a User', function(done){
 
@@ -2861,7 +2854,7 @@ describe('CategoriesDataService', function(){
                       user: 'root',
                       password: '5550121a',
                       port: 3306,
-                      database: "TestDB"
+                      database: "travis_db"
                     };
                     var connection = mysql.createConnection(dbOptions);
                     var userDataService = new UserDataService(connection);
@@ -2873,6 +2866,13 @@ describe('CategoriesDataService', function(){
                     done();
                 });
 
+                it('getUser should return a specific User', function(done){
+                    var userDataService = new UserDataService(connection);
+                    userDataService.getUser(1, function(err, user) {
+                        assert.equal('test', user.username);
+                        done();
+                    });
+                });
 
                 it('updateUser should update a Users data', function(done){
                   var data = {
@@ -2887,7 +2887,7 @@ describe('CategoriesDataService', function(){
                       user: 'root',
                       password: '5550121a',
                       port: 3306,
-                      database: "TestDB"
+                      database: "travis_db"
                     };
                     var connection = mysql.createConnection(dbOptions);
                     var userDataService = new UserDataService(connection);
