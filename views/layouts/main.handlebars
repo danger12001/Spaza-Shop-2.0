@@ -125,6 +125,7 @@
 <script>$(document).ready(function(){
   $("#saleSelect").on("change", function(){
     $("#sale-price").val($("#saleSelect option:selected").attr("data-price"));
+    $("#markup-price").html("R" + $("#saleSelect option:selected").attr("data-price"));
   });
 });
 </script>

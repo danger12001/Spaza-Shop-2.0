@@ -1,12 +1,12 @@
 module.exports = function(connection){
 
     this.getProduct = function(productId, cb, err){
-        if (err) return cb(err, null);
         connection.query('select * from products where id = ?', productId, function(err, products){
+          if (err) throw err;
             if (products && products.length > 0){
-                return cb(null, products[0]);
+                return products[0];
             }
-            cb(err, err);
+            // cb(err, err);
         });
     };
         this.updateProduct = function(productId,edit) {
