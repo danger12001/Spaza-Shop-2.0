@@ -1,9 +1,9 @@
 module.exports = function(connection){
     this.getSale = function(id, cb, err){
-        if (err) return cb(err, null);
+        if (err) throw err;
         connection.query('select * from sales where id = ?', id, function(err, sales){
             if (sales && sales.length > 0){
-                return cb(null, sales[0]);
+                return sales[0];
             }
             cb(err, "There are no sale with that ID");
         });

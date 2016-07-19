@@ -1,9 +1,9 @@
 module.exports = function(connection){
     this.getPurchase = function(id, cb, err){
-        if (err) return cb(err, null);
+        if (err) throw err;
         connection.query('select * from purchases where id = ?', id, function(err, purchases){
             if (purchases && purchases.length > 0){
-                return cb(null, purchases[0]);
+                return purchases[0];
             }
             cb(err, "There are no purchases with that ID");
         });
