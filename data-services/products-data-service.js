@@ -6,7 +6,6 @@ module.exports = function(connection){
             if (products && products.length > 0){
                 return products[0];
             }
-            // cb(err, err);
         });
     };
         this.updateProduct = function(productId,edit) {

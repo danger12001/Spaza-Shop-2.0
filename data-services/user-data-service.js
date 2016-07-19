@@ -1,11 +1,10 @@
 module.exports = function(connection){
-    this.getUser = function(id, cb, err){
-        if (err) return cb(err, null);
+    this.getUser = function(id, err){
         connection.query('select * from users where id = ?', id, function(err, users){
             if (users && users.length > 0){
-                return cb(null, users[0]);
+                return users[0];
             }
-            cb(err, err);
+
         });
     };
     this.updateUser = function(id,edit) {
