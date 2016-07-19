@@ -22,7 +22,13 @@ module.exports = function(req, res) {
                     if (match) {
                       // var admin = user.admin;
                       // console.log(user.username);
+                      if(user.username.match(username)){
                         req.session.username = user.username;
+                      }
+                      else {
+                        req.flash('warning', 'Invalid username or password');
+                        return res.redirect("/login");
+                      }
                         // console.log("Logged in as" + req.session.user);
                         if(user.admin === 1){
                         req.session.admintab = {
@@ -45,8 +51,8 @@ module.exports = function(req, res) {
                         }
 
                         else {
-                            req.flash('warning', 'Invalid username or password');
-                            return res.redirect("/login");
+                          req.flash('warning', 'Invalid username or password');
+                          return res.redirect("/login");
                           }
                         }
                     });
