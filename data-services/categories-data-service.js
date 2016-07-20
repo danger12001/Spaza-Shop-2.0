@@ -1,6 +1,25 @@
 module.exports = function(connection){
+  this.showCategory = function(cb, err){
+      connection.query('SELECT * from categories', function(err, categories){
+        if(err) throw err;
+          if (categories && categories.length > 0){
+              return categories;
+          }
+          cb(err, "There are no categories");
+      });
+  };
+this.searchCategory = function(searchVal, cb, err){
+      connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal], function(err, result) {
+        if(err) throw err;
+        if(result.length > 0){
+          return result[0];
+        }
+        cb(err, "There are no categories similar to your query!");
+      });
+};
+
+
     this.getCategory = function(id, cb, err){
-      // if (err) throw err;
         connection.query('select * from categories where id = ?', id, function(err, categories){
             if (categories && categories.length > 0){
                 return categories[0];

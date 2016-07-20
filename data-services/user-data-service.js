@@ -1,4 +1,27 @@
 module.exports = function(connection){
+  this.showUser = function(cb,err){
+    connection.query('SELECT * FROM users', function(err, result) {
+      if (err) throw err;
+      if(result && result.length > 0){
+        return result;
+      }
+      cb(err, "There are no users!");
+    });
+  };
+
+
+  this.searchUser = function( searchVal,cb, err){
+    connection.query('SELECT * FROM users WHERE users.username LIKE ?', [searchVal], function(err, result){
+      if (err) throw err;
+      if(result.length > 0){
+        return result[0];
+      }
+      cb(err, "There are no users similar to your query!");
+    });
+  };
+
+
+
     this.getUser = function(id, err){
         connection.query('select * from users where id = ?', id, function(err, users){
             if (users && users.length > 0){
