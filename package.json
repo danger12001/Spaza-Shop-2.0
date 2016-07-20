@@ -16,11 +16,13 @@
     "nodemon": "~1.9.2",
     "express-flash": "0.0.2",
     "express-session": "^1.13.0",
-
-    "bcrypt": "^0.8.7"
-
+    "bcrypt": "^0.8.7",
+    "connection-provider": "git://github.com/avermeulen/connection-provider",
+    "bluebird": "~3.4.1"
   },
-  "devDependencies": {"mocha": "^2.5.3"},
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

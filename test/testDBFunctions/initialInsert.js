@@ -44,7 +44,7 @@ var conn = mysql.createConnection({
   user: 'root',
   password: '5550121a',
   port: 3306,
-  database: "TestDB"
+  database: "travis_db"
     });
 
 var sql1 = "INSERT INTO categories ( category ) VALUES ?";

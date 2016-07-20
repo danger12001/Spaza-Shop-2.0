@@ -30,11 +30,10 @@ module.exports = function(req, res, next) {
             email: req.body.email
 
         };
+
         if(data.username.length < 4 || password.length < 4){
           req.flash('warning', "Your username and/or password should not be smaller than 4 characters");
-          res.redirect('/signup');
         }
-
                 bcrypt.hash(password, 10, function(err, hash) {
                   if(password === passwordVerification){
                       data.password = hash;
@@ -42,12 +41,12 @@ module.exports = function(req, res, next) {
                   else {
                     req.flash('warning', "Passwords do not match");
                   }
+
+
                     connection.query('insert into users set ?', data, function(err, data) {
                          if (err) {
-                             req.flash('warning', req.body.admin);
                              res.redirect('/signup');
                          } else {
-                            //  req.flash('success', "Thank you for registering, Now login");
                              res.redirect('/login');
                          }
             });

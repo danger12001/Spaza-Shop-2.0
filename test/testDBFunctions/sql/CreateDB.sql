@@ -1,1 +1,1 @@
-CREATE database TestDB;
+CREATE database travis_db;

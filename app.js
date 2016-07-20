@@ -1,5 +1,6 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
+var connectionProvider = require('connection-provider');
 var myConnection = require('express-myconnection');
 var bodyParser = require('body-parser');
 var mysql = require('mysql');
@@ -16,6 +17,12 @@ var products = require("./routes/products");
 var sales = require("./routes/sales");
 var purchase = require("./routes/purchase");
 var users = require("./routes/users");
+
+var ProductsDataService = require("./data-services/products-data-service");
+var CategoriesDataService = require("./data-services/categories-data-service");
+var SalesDataService = require("./data-services/sales-data-service");
+var PurchasesDataService = require("./data-services/purchases-data-service");
+var UsersDataService = require("./data-services/user-data-service");
 
 
 var mostPopularProduct = require('./routes/mostPopularProduct');
@@ -88,6 +95,17 @@ var dbOptions = {
   port: 3306,
   database: "Nelisa2"
 };
+var setupCallback = function(connection){
+  return {
+    productDataService : new ProductsDataService(connection),
+    categoriesDataService : new CategoriesDataService(connection),
+    salesDataService : new SalesDataService(connection),
+    purchasesDataService : new PurchasesDataService(connection),
+    usersDataService : new UsersDataService(connection)
+  };
+};
+
+app.use(connectionProvider(dbOptions, setupCallback));
 app.use(session({
   secret: 'space cats on synthesizers'
 }));
@@ -95,6 +113,9 @@ app.use(session({
 app.use(flash());
 app.use(myConnection(mysql, dbOptions, 'single'));
 var connection = mysql.createConnection(dbOptions);
+
+
+
 app.engine('handlebars', handlebars({
   defaultLayout: 'main'
 }));

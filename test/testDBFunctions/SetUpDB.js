@@ -6,13 +6,13 @@ var categoriesTable = String(fs.readFileSync('./sql/categoriesTable.sql'));
 var productsTable = String(fs.readFileSync('./sql/productsTable.sql'));
 var purchaseTable = String(fs.readFileSync('./sql/purchaseTable.sql'));
 var salesTable = String(fs.readFileSync('./sql/salesTable.sql'));
-var salesTable = String(fs.readFileSync('./sql/usersTable.sql'));
+var usersTable = String(fs.readFileSync('./sql/usersTable.sql'));
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "TestDB"
+    database: "travis_db"
   };
 var connection = mysql.createConnection(dbOptions);
 
@@ -30,6 +30,10 @@ connection.query(purchaseTable, [], function(err, result) {
   // connection.end();
 });
 connection.query(salesTable, [], function(err, result) {
+  if (err) throw err;
+  // connection.end();
+});
+connection.query(usersTable, [], function(err, result) {
   if (err) throw err;
   // connection.end();
 });

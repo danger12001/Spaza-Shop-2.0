@@ -3302,21 +3302,12 @@ describe('ProductsDataService', function() {
     user: 'root',
     password: '5550121a',
     port: 3306,
-    database: "travis_db"
+    database: "TestDB"
   };
   var connection = mysql.createConnection(dbOptions);
 
 
   it('showProduct should show all products', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
-
     var productsDataService = new ProductsDataService(connection);
     productsDataService.showProduct(function(err, result) {
       if (err) throw err;
@@ -3326,14 +3317,6 @@ describe('ProductsDataService', function() {
   });
 
   it("searchProduct should return all products that matches searchValue", function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "TestDB"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     var searchVal = "%Coke%";
     productsDataService.searchProduct(searchVal, function(err, result) {
@@ -3347,15 +3330,6 @@ describe('ProductsDataService', function() {
   it('addProduct add a product', function(done) {
 
     var data = [19, "Milk 2ls", 6, 9];
-
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     productsDataService.addProduct([data], function(err, rows) {
       if (err) throw err;
@@ -3364,40 +3338,33 @@ describe('ProductsDataService', function() {
     });
     done();
   });
+
   it('getProduct should return a specific product', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.getProduct(10, function(err, product) {
+    productsDataService.getProduct(19, function(err, product) {
       console.log(product);
       assert.equal('Milk 1l', product.product);
     });
     done();
   });
-
+  it('should add, update and delete a product from DB', function(done) {
+      var addData = [19, "Milk 2ls", 6, 9];
+    var productsDataService = new ProductsDataService(connection);
+    productsDataService.addProduct([data], function(err, rows) {
+      if (err) throw err;
+      var test = rows.affectedRows;
+      assert.equal(test, 1);
+    });
+    done();
+  });
   it('updateProduct should update a products data', function(done) {
     var data = {
       category_id: 6,
       product: "Milk 2L",
       price: 10
     };
-
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.updateProduct(19, data, function(err, rows) {
+    productsDataService.updateProduct(data, 19, function(err, rows) {
       if (err) throw err;
       var test = rows.changedRows;
       assert.equal(test, 1);
@@ -3405,9 +3372,12 @@ describe('ProductsDataService', function() {
     done();
   });
 
+
   it('deleteProduct should remove a product', function(done) {
     var productsDataService = new ProductsDataService(connection);
     productsDataService.deleteProduct(19, function(err, rows) {
+      if (err) throw err;
+      // console.log();
       var test = rows.changedRows;
       assert.equal(test, 1);
     });
