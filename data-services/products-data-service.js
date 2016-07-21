@@ -46,12 +46,12 @@ var QueryService = new queryBuilder(connection);
 
 
 
-//         this.updateProduct = function(edit,productId) {
+        this.updateProduct = function(edit,productId) {
 //           // connection.query('UPDATE products SET ? WHERE id = ?', [ edit , productId], function(err, rows) {
 //           //   if (err) throw err;
 //           // });
-// return QueryService.runQuery('UPDATE products SET ? WHERE id = ?', [ edit , productId]);
-//         };
+return QueryService.runQuery('UPDATE products SET ? WHERE id = ?', [ edit , productId]);
+        };
 
 
       this.deleteProduct = function(productId){
