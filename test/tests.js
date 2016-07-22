@@ -3313,7 +3313,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
@@ -3330,7 +3330,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
@@ -3349,7 +3349,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var data = [19, "Milk 2ls", 6, 9];
@@ -3368,7 +3368,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
@@ -3394,7 +3394,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var data = {
@@ -3418,7 +3418,7 @@ describe('ProductsDataService', function() {
       user: 'root',
       password: '5550121a',
       port: 3306,
-      database: "TestDB"
+      database: "travis_db"
     };
     var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
