@@ -3308,6 +3308,14 @@ describe('ProductsDataService', function() {
 
 
   it('showProduct should show all products', function(done) {
+    var dbOptions = {
+      host: '127.0.0.1',
+      user: 'root',
+      password: '5550121a',
+      port: 3306,
+      database: "TestDB"
+    };
+    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     productsDataService.showProduct(function(err, result) {
       if (err) throw err;
@@ -3317,6 +3325,14 @@ describe('ProductsDataService', function() {
   });
 
   it("searchProduct should return all products that matches searchValue", function(done) {
+    var dbOptions = {
+      host: '127.0.0.1',
+      user: 'root',
+      password: '5550121a',
+      port: 3306,
+      database: "TestDB"
+    };
+    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     var searchVal = "%Coke%";
     productsDataService.searchProduct(searchVal, function(err, result) {
