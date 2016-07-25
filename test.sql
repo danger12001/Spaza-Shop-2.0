@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `travis_db`
 --
-
+CREATE DATABASE IF NOT EXISTS `travis_db`;
 -- --------------------------------------------------------
 
 --
