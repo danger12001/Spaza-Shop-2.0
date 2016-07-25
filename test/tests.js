@@ -3349,9 +3349,9 @@ describe('ProductsDataService', function() {
     done();
   });
   it('should add a product to the DB', function(done) {
-      var addData = [19, "Milk 2ls", 6, 9];
+      var data = [19, "Milk 2ls", 6, 9];
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.addProduct([addData], function(err, rows) {
+    productsDataService.addProduct([data], function(err, rows) {
       if (err) throw err;
       var test = rows.affectedRows;
       assert.equal(test, 1);
@@ -3396,7 +3396,7 @@ describe('CategoriesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3428,14 +3428,6 @@ describe('CategoriesDataService', function() {
 
     var data = [10, "Test"];
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var categoryDataService = new CategoriesDataService(connection);
     categoryDataService.addCategory([data], function(err, rows) {
       if (err) throw err;
@@ -3482,20 +3474,13 @@ describe('SalesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
   it("showSale should return all sales", function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var salesDataService = new SalesDataService(connection);
     salesDataService.showSale(function(err, sale) {
       assert.equal(sale.length, 447);
@@ -3503,14 +3488,7 @@ describe('SalesDataService', function() {
     done();
   });
   it("searchSale should return all Sales similar to the searchValue", function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var searchVal = "%bread%";
     var salesDataService = new SalesDataService(connection);
     salesDataService.searchSale(searchVal, function(err, sale) {
@@ -3529,14 +3507,7 @@ describe('SalesDataService', function() {
 
     var data = [448, 2001 - 03 - 01, 11, 12, 3];
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var salesDataService = new SalesDataService(connection);
     salesDataService.addSale([data], function(err, rows) {
       if (err) throw err;
@@ -3555,14 +3526,7 @@ describe('SalesDataService', function() {
       price: 4
     };
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var salesDataService = new SalesDataService(connection);
     salesDataService.updateSale(448, data, function(err, rows) {
       if (err) throw err;
@@ -3586,7 +3550,7 @@ describe('PurchasesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3619,14 +3583,6 @@ describe('PurchasesDataService', function() {
 
     var data = [154, 2001 - 03 - 01, 11, 12, 3];
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var purchasesDataService = new PurchasesDataService(connection);
     purchasesDataService.addPurchase([data], function(err, rows) {
       if (err) throw err;
@@ -3645,14 +3601,6 @@ describe('PurchasesDataService', function() {
       product_id: 4
     };
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var purchasesDataService = new PurchasesDataService(connection);
     purchasesDataService.updatePurchase(154, data, function(err, rows) {
       if (err) throw err;
@@ -3676,7 +3624,7 @@ describe('UserDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3703,14 +3651,6 @@ it("searchUser should return all users that match searchVal", function(done){
 
     var data = [2, "test", "test", "test", 1, 0];
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var userDataService = new UserDataService(connection);
     userDataService.addUser([data], function(err, rows) {
       if (err) throw err;
@@ -3721,14 +3661,6 @@ it("searchUser should return all users that match searchVal", function(done){
   });
 
   it('getUser should return a specific User', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
 
     var userDataService = new UserDataService(connection);
     userDataService.getUser(1, function(err, user) {
@@ -3745,15 +3677,6 @@ it("searchUser should return all users that match searchVal", function(done){
       admin: 1,
       locked: 0
     };
-
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var userDataService = new UserDataService(connection);
     userDataService.updateUser(2, data, function(err, rows) {
       if (err) throw err;
