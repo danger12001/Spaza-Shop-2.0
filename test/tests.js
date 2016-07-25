@@ -3295,147 +3295,171 @@ var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
 
-
 describe('ProductsDataService', function() {
+
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    // password: '5550121a',
+    password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
 
-
   it('showProduct should show all products', function(done) {
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.showProduct(function(err, result) {
-      if (err) throw err;
-      assert.equal(result.length, 18);
-    });
-    done();
-  });
+    productsDataService
+      .showProduct()
+      .then(function(products) {
+        assert.equal(products.length, 18);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
 
+  });
+  //
   it("searchProduct should return all products that matches searchValue", function(done) {
     var productsDataService = new ProductsDataService(connection);
     var searchVal = "%Coke%";
-    productsDataService.searchProduct(searchVal, function(err, result) {
-      if (err) throw err;
-      assert.equal(result.product, "Coke 500ml");
-    });
-    done();
+    productsDataService
+      .searchProduct(searchVal)
+      .then(function(product) {
+        assert.equal(product[0].product, "Coke 500ml");
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
-
-
-  it('addProduct add a product', function(done) {
-    var data = [19, "Milk 2ls", 6, 9];
-    var productsDataService = new ProductsDataService(connection);
-    productsDataService.addProduct([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
-    });
-    done();
-  });
-
+  //
   it('getProduct should return a specific product', function(done) {
 
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.getProduct(19, function(err, product) {
-      console.log(product);
-      assert.equal('Milk 1l', product.product);
-    });
-    done();
+    productsDataService.getProduct(10)
+      .then(function(product) {
+        assert.equal('Milk 1l', product[0].product);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
-  it('addProduct should add a product to the DB', function(done) {
-      var data = [19, "Milk 2ls", 6, 9];
-    var productsDataService = new ProductsDataService(connection);
-    productsDataService.addProduct([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
-    });
-    done();
-  });
-  it('updateProduct should update a products data', function(done) {
 
+  it('addProduct should add a product to the DB', function(done) {
+    var data = [19, "Milk 2ls", 6, 9];
+    var productsDataService = new ProductsDataService(connection);
+    productsDataService.addProduct([data])
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+  });
+
+  it('updateProduct should update a products data', function(done) {
     var data = {
       category_id: 6,
       product: "Milk 2L",
       price: 10
     };
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.updateProduct(data, 19, function(err, rows) {
-      if (err) throw err;
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    productsDataService.updateProduct(data, 19)
+      .then(function(rows) {
+        var test = rows.changedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
 
 
   it('deleteProduct should remove a product', function(done) {
-
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.deleteProduct(19, function(err, rows) {
-      if (err) throw err;
-      // console.log();
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    productsDataService.deleteProduct(19)
+      .then(function(rows) {
+        var test = rows.changedRows;
+        assert.equal(test, 0);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
 
 
-
-
 });
+
 
 describe('CategoriesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    // password: '5550121a',
+    password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
+
   it("showCategory should return all categories", function(done) {
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.showCategory(function(err, category) {
-      assert.equal(category.length, 5);
-    });
-    done();
+    categoryDataService.showCategory()
+      .then(function(category) {
+        assert.equal(category.length, 9);
+        done();
+
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
+
   it("searchCategory should return all categories similar to the searchValue", function(done) {
     var categoryDataService = new CategoriesDataService(connection);
     var searchVal = "%Canned%";
-    categoryDataService.searchCategory(searchVal, function(err, category) {
-      assert.equal(category.category, "Canned Goods");
-    });
-    done();
+    categoryDataService.searchCategory(searchVal).then(function(category) {
+        assert.equal(category[0].category, "Canned Goods");
+        done();
+
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
 
   it('getCategory should return a specific category', function(done) {
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.getCategory(3, function(err, category) {
-      assert.equal('Canned Goods', category.category);
-    });
-    done();
+    categoryDataService.getCategory(3)
+      .then(function(category) {
+        assert.equal('Canned Goods', category[0].category);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
+
   it('addCategory should add an category', function(done) {
 
     var data = [10, "Test"];
 
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.addCategory([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    categoryDataService.addCategory([data])
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
-
 
   it('updateCategory should update a products data', function(done) {
     var data = {
@@ -3443,21 +3467,29 @@ describe('CategoriesDataService', function() {
     };
 
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.updateCategory(10, data, function(err, rows) {
-      if (err) throw err;
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    categoryDataService.updateCategory(10, data)
+      .then(function(rows) {
+        var test = rows.changedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
-
+  //
   it('deleteCategory should remove a product', function(done) {
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.deleteCategory(10, function(err, rows) {
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    categoryDataService.deleteCategory(10)
+      .then(function(rows) {
+        var test = rows.changedRows;
+        assert.equal(test, 0);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
 });
 
@@ -3465,7 +3497,7 @@ describe('SalesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    // password: '5550121a',
+    password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3473,42 +3505,63 @@ describe('SalesDataService', function() {
   it("showSale should return all sales", function(done) {
 
     var salesDataService = new SalesDataService(connection);
-    salesDataService.showSale(function(err, sale) {
-      assert.equal(sale.length, 447);
-    });
-    done();
+    salesDataService.showSale()
+      .then(function(sale) {
+        assert.equal(sale.length, 447);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
+
   it("searchSale should return all Sales similar to the searchValue", function(done) {
 
     var searchVal = "%bread%";
     var salesDataService = new SalesDataService(connection);
-    salesDataService.searchSale(searchVal, function(err, sale) {
-      assert.equal(sale.length, 58);
-    });
-    done();
+    salesDataService.searchSale(searchVal)
+      .then(function(sale) {
+        assert.equal(sale.length, 58);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
   it('getSale should return a specific sale', function(done) {
     var salesDataService = new SalesDataService(connection);
-    salesDataService.getSale(3, function(err, sale) {
-      assert.equal(4, sale.product_id);
-    });
-    done();
+    salesDataService.getSale(3)
+      .then(function(sale) {
+
+        assert.equal(4, sale[0].product_id);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
+
+
   it('addSale should add a sale', function(done) {
 
     var data = [448, 2001 - 03 - 01, 11, 12, 3];
 
 
     var salesDataService = new SalesDataService(connection);
-    salesDataService.addSale([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    salesDataService.addSale([data])
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
-
-
+  //
+  //
   it('updateSale should update a sales data', function(done) {
     var data = {
       date: 2001 - 03 - 01,
@@ -3519,71 +3572,100 @@ describe('SalesDataService', function() {
 
 
     var salesDataService = new SalesDataService(connection);
-    salesDataService.updateSale(448, data, function(err, rows) {
-      if (err) throw err;
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    salesDataService.updateSale(448, data)
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
 
   it('deleteSale should remove a sale', function(done) {
     var salesDataService = new SalesDataService(connection);
-    salesDataService.deleteSale(448, function(err, rows) {
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    salesDataService.deleteSale(448)
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
 
 });
+
 describe('PurchasesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    // password: '5550121a',
+    password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
   it("showPurchase should return all purchases", function(done) {
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.showPurchase(function(err, purchase) {
-      assert.equal(purchase.length, 153);
-    });
-    done();
+    purchasesDataService.showPurchase()
+      .then(function(purchase) {
+        assert.equal(purchase.length, 153);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
+
   it("searchPurchase should return all purchases similar to searchVal", function(done) {
     var purchasesDataService = new PurchasesDataService(connection);
     var searchVal = "%bread%";
-    purchasesDataService.searchPurchase(searchVal, function(err, purchase) {
-      assert.equal(purchase.length, 18);
-    });
-    done();
+    purchasesDataService.searchPurchase(searchVal)
+
+    .then(function(purchase) {
+        assert.equal(purchase.length, 18);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
-
-
+  //
+  //
   it('getPurchase should return a specific Purchase', function(done) {
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.getPurchase(1, function(err, purchase) {
-      assert.equal(4, purchase.product_id);
-    });
-    done();
+    purchasesDataService.getPurchase(1)
+      .then(function(purchase) {
+        assert.equal(4, purchase[0].product_id);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
   });
   it('addPurchase should add a Purchase', function(done) {
 
     var data = [154, 2001 - 03 - 01, 11, 12, 3];
 
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.addPurchase([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    purchasesDataService.addPurchase([data])
+      .then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
-
-
+  //
+  //
   it('updatePurchase should update a Purchases data', function(done) {
     var data = {
       date: 2001 - 03 - 01,
@@ -3593,21 +3675,28 @@ describe('PurchasesDataService', function() {
     };
 
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.updatePurchase(154, data, function(err, rows) {
-      if (err) throw err;
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    purchasesDataService.updatePurchase(154, data).then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
 
   it('deletePurchase should remove a Purchase', function(done) {
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.deletePurchase(154, function(err, rows) {
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
+    purchasesDataService.deletePurchase(154).then(function(rows) {
+        var test = rows.affectedRows;
+        assert.equal(test, 1);
+        done();
+      })
+      .catch(function(err) {
+        done(err);
+      });
+
   });
 });
 
@@ -3615,76 +3704,95 @@ describe('UserDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    // password: '5550121a',
+    password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
   var connection = mysql.createConnection(dbOptions);
-it("showUser should return all users", function(done){
-  var userDataService = new UserDataService(connection);
-  userDataService.showUser(function(err, result) {
-    if (err) throw err;
-    assert.equal(result.length, 2);
-  });
-  done();
-});
-it("searchUser should return all users that match searchVal", function(done){
-  var userDataService = new UserDataService(connection);
-  var searchVal = "%test%";
-  userDataService.searchUser(searchVal, function(err, result) {
-    if (err) throw err;
-    assert.equal(result.length, 1);
-  });
-  done();
-});
 
-  it('addUser add a User', function(done) {
-
-    var data = [2, "testE", "test", "test", 1, 0];
-
+  it("showUser should return all users", function(done){
     var userDataService = new UserDataService(connection);
-    userDataService.addUser([data], function(err, rows) {
-      if (err) throw err;
-      var test = rows.affectedRows;
-      assert.equal(test, 1);
+    userDataService.showUser()
+    .then(function(result){
+      assert.equal(result.length, 1);
+      done();
+    })
+    .catch(function(err){
+      done(err);
     });
-    done();
+
   });
-
-  it('getUser should return a specific User', function(done) {
-
+  it("searchUser should return all users that match searchVal", function(done){
     var userDataService = new UserDataService(connection);
-    userDataService.getUser(1, function(err, user) {
-      assert.equal('test', user.username);
-    });
-    done();
+    var searchVal = "%test%";
+    userDataService.searchUser(searchVal)
+    .then(function(result){
+        assert.equal(result.length, 1);
+        done();
+      })
+      .catch(function(err){
+        done(err);
+      });
   });
 
-  it('updateUser should update a Users data', function(done) {
-    var data = {
-      username: 6,
-      Email: "Milk 2L",
-      password: 10,
-      admin: 1,
-      locked: 0
-    };
-    var userDataService = new UserDataService(connection);
-    userDataService.updateUser(2, data, function(err, rows) {
-      if (err) throw err;
-      var test = rows.changedRows;
-      assert.equal(test, 1);
-    });
-    done();
-  });
+    it('addUser add a User', function(done) {
 
-  it('deleteUser should remove a User', function(done) {
-    var userDataService = new UserDataService(connection);
-    userDataService.deleteUser(2, function(err, rows) {
-      var test = rows.changedRows;
-      assert.equal(test, 1);
+      var data = [2, "testE", "test", "test", 1, 0];
+
+      var userDataService = new UserDataService(connection);
+      userDataService.addUser([data]) .then(function(rows) {
+          var test = rows.affectedRows;
+          assert.equal(test, 1);
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        });
     });
-    done();
-  });
+  //
+    it('getUser should return a specific User', function(done) {
+
+      var userDataService = new UserDataService(connection);
+      userDataService.getUser(1).then(function(user) {
+
+          assert.equal('test', user[0].username);
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        });
+    });
+  //
+    it('updateUser should update a Users data', function(done) {
+      var data = {
+        username: 6,
+        Email: "Milk 2L",
+        password: 10,
+        admin: 1,
+        locked: 0
+      };
+      var userDataService = new UserDataService(connection);
+      userDataService.updateUser(2, data).then(function(rows) {
+          var test = rows.affectedRows;
+          assert.equal(test, 1);
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        });
+    });
+  //
+    it('deleteUser should remove a User', function(done) {
+      var userDataService = new UserDataService(connection);
+      userDataService.deleteUser(2) .then(function(rows) {
+          var test = rows.affectedRows;
+          assert.equal(test, 1);
+          done();
+        })
+        .catch(function(err) {
+          done(err);
+        });
+    });
 
 
 

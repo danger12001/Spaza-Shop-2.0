@@ -10,6 +10,13 @@
     /*border-right: 1px solid black;*/
     height: 25px;
 }
+
+#stackList li {
+  border: 1px solid black;
+height: 100px;
+padding-top: 1.5%;
+}
+
 .head {
   font-weight: bold;
 
