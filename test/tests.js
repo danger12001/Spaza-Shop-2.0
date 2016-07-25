@@ -3300,7 +3300,7 @@ describe('ProductsDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3401,7 +3401,7 @@ describe('CategoriesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3497,7 +3497,7 @@ describe('SalesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3604,7 +3604,7 @@ describe('PurchasesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3704,7 +3704,7 @@ describe('UserDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: 'root',
-    password: '5550121a',
+    // password: '5550121a',
     port: 3306,
     database: "travis_db"
   };
