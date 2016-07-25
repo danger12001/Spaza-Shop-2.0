@@ -3443,14 +3443,6 @@ describe('CategoriesDataService', function() {
       category: "test"
     };
 
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var categoryDataService = new CategoriesDataService(connection);
     categoryDataService.updateCategory(10, data, function(err, rows) {
       if (err) throw err;
@@ -3649,7 +3641,7 @@ it("searchUser should return all users that match searchVal", function(done){
 
   it('addUser add a User', function(done) {
 
-    var data = [2, "test", "test", "test", 1, 0];
+    var data = [2, "testE", "test", "test", 1, 0];
 
     var userDataService = new UserDataService(connection);
     userDataService.addUser([data], function(err, rows) {
