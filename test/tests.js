@@ -3328,7 +3328,6 @@ describe('ProductsDataService', function() {
 
 
   it('addProduct add a product', function(done) {
-
     var data = [19, "Milk 2ls", 6, 9];
     var productsDataService = new ProductsDataService(connection);
     productsDataService.addProduct([data], function(err, rows) {
@@ -3348,7 +3347,7 @@ describe('ProductsDataService', function() {
     });
     done();
   });
-  it('should add a product to the DB', function(done) {
+  it('addProduct should add a product to the DB', function(done) {
       var data = [19, "Milk 2ls", 6, 9];
     var productsDataService = new ProductsDataService(connection);
     productsDataService.addProduct([data], function(err, rows) {
