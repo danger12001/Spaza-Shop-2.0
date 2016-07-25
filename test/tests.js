@@ -3294,13 +3294,15 @@ var CategoriesDataService = require('../data-services/categories-data-service');
 var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
+var password = process.env.MYSQL_PWD !== null ? process.env.MYSQL_PWD : '5550121a';
+
 
 describe('ProductsDataService', function() {
 
   var dbOptions = {
     host: '127.0.0.1',
-    user: 'root',
-    // password: '5550121a',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PWD ||'5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3400,8 +3402,8 @@ describe('ProductsDataService', function() {
 describe('CategoriesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
-    user: 'root',
-    // password: '5550121a',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PWD ||'5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3496,8 +3498,8 @@ describe('CategoriesDataService', function() {
 describe('SalesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
-    user: 'root',
-    // password: '5550121a',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PWD ||'5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3603,8 +3605,8 @@ describe('SalesDataService', function() {
 describe('PurchasesDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
-    user: 'root',
-    // password: '5550121a',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PWD ||'5550121a',
     port: 3306,
     database: "travis_db"
   };
@@ -3703,8 +3705,8 @@ describe('PurchasesDataService', function() {
 describe('UserDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
-    user: 'root',
-    // password: '5550121a',
+    user: process.env.MYSQL_USER || 'root',
+    password: process.env.MYSQL_PWD ||'5550121a',
     port: 3306,
     database: "travis_db"
   };

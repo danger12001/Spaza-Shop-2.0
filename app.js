@@ -1,38 +1,39 @@
-var express = require('express');
-var handlebars = require('express-handlebars');
-var connectionProvider = require('connection-provider');
-var myConnection = require('express-myconnection');
-var bodyParser = require('body-parser');
-var mysql = require('mysql');
-var fs = require("fs");
-var bcrypt = require('bcrypt');
-var session = require('express-session');
-var flash = require('express-flash');
-var app = express();
-var signup = require('./routes/signUp');
-var login = require('./routes/login');
+var express = require('express'),
+handlebars = require('express-handlebars'),
+connectionProvider = require('connection-provider'),
+myConnection = require('express-myconnection'),
+bodyParser = require('body-parser'),
+mysql = require('mysql'),
+bcrypt = require('bcrypt'),
+session = require('express-session'),
+flash = require('express-flash'),
+fs = require("fs"),
+app = express();
 
-var categories = require("./routes/categories");
-var products = require("./routes/products");
-var sales = require("./routes/sales");
-var purchase = require("./routes/purchase");
-var users = require("./routes/users");
+var signup = require('./routes/signUp'),
+login = require('./routes/login');
 
-var ProductsDataService = require("./data-services/products-data-service");
-var CategoriesDataService = require("./data-services/categories-data-service");
-var SalesDataService = require("./data-services/sales-data-service");
-var PurchasesDataService = require("./data-services/purchases-data-service");
-var UsersDataService = require("./data-services/user-data-service");
+var categories = require("./routes/categories"),
+ products = require("./routes/products"),
+ sales = require("./routes/sales"),
+ purchase = require("./routes/purchase"),
+ users = require("./routes/users");
+
+var ProductsDataService = require("./data-services/products-data-service"),
+ CategoriesDataService = require("./data-services/categories-data-service"),
+ SalesDataService = require("./data-services/sales-data-service"),
+ PurchasesDataService = require("./data-services/purchases-data-service"),
+ UsersDataService = require("./data-services/user-data-service");
 
 
-var mostPopularProduct = require('./routes/mostPopularProduct');
-var leastPopularProduct = require('./routes/leastPopularProduct');
-var mostPopularCategory = require('./routes/mostPopularCategory');
-var leastPopularCategory = require('./routes/leastPopularCategory');
-var mostProfitableProduct = require('./routes/mostProfitableProduct');
-var mostProfitableCategory = require('./routes/mostProfitableCategory');
-var weeklySalesfunc = require('./routes/weeklySales');
-var purchases = require('./routes/purchases');
+var mostPopularProduct = require('./routes/mostPopularProduct'),
+ leastPopularProduct = require('./routes/leastPopularProduct'),
+ mostPopularCategory = require('./routes/mostPopularCategory'),
+ leastPopularCategory = require('./routes/leastPopularCategory'),
+ mostProfitableProduct = require('./routes/mostProfitableProduct'),
+ mostProfitableCategory = require('./routes/mostProfitableCategory'),
+ weeklySalesfunc = require('./routes/weeklySales'),
+ purchases = require('./routes/purchases');
 var week1 = {
   mostPopularProduct: mostPopularProduct.mostPopularProduct(1),
   leastPopularProduct: leastPopularProduct.leastPopularProduct(1),
@@ -122,13 +123,11 @@ app.engine('handlebars', handlebars({
 app.set('view engine', 'handlebars');
 
 //MiddleWare
+// OR STATEMENT
 app.use(function(req, res, next) {
-  if (req.path != "/login") {
-    if (req.path != "/signup") {
+  if (req.path != "/login" && req.path != "/signup") {
       if (!req.session.username) {
         return res.redirect("/login");
-      }
-
     }
   }
   next();
@@ -137,15 +136,19 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
   if (!req.session.admintab) {
 
-    if (req.path.split("/")[1] == "users") {
+var path = req.path.split("/")[1];
+
+//^ DRY!!!
+
+    if (path == "users") {
       return res.redirect("/");
-    } else if (req.path.split("/")[1] == "sales") {
+    } else if (path == "sales") {
       return res.redirect("/");
-    } else if (req.path.split("/")[1] == "products") {
+    } else if (path == "products") {
       return res.redirect("/");
-    } else if (req.path.split("/")[1] == "purchases") {
+    } else if (path == "purchases") {
       return res.redirect("/");
-    } else if (req.path.split("/")[1] == "categories") {
+    } else if (path == "categories") {
       return res.redirect("/");
     }
   }
