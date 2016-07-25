@@ -3297,25 +3297,17 @@ var UserDataService = require('../data-services/user-data-service');
 
 
 describe('ProductsDataService', function() {
-  // var dbOptions = {
-  //   host: '127.0.0.1',
-  //   user: 'root',
-  //   password: '5550121a',
-  //   port: 3306,
-  //   database: "TestDB"
-  // };
-  // var connection = mysql.createConnection(dbOptions);
+  var dbOptions = {
+    host: '127.0.0.1',
+    user: 'root',
+    password: '5550121a',
+    port: 3306,
+    database: "travis_db"
+  };
+  var connection = mysql.createConnection(dbOptions);
 
 
   it('showProduct should show all products', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     productsDataService.showProduct(function(err, result) {
       if (err) throw err;
@@ -3325,14 +3317,6 @@ describe('ProductsDataService', function() {
   });
 
   it("searchProduct should return all products that matches searchValue", function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
     var productsDataService = new ProductsDataService(connection);
     var searchVal = "%Coke%";
     productsDataService.searchProduct(searchVal, function(err, result) {
@@ -3344,14 +3328,7 @@ describe('ProductsDataService', function() {
 
 
   it('addProduct add a product', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var data = [19, "Milk 2ls", 6, 9];
     var productsDataService = new ProductsDataService(connection);
     productsDataService.addProduct([data], function(err, rows) {
@@ -3363,14 +3340,7 @@ describe('ProductsDataService', function() {
   });
 
   it('getProduct should return a specific product', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var productsDataService = new ProductsDataService(connection);
     productsDataService.getProduct(19, function(err, product) {
       console.log(product);
@@ -3378,10 +3348,10 @@ describe('ProductsDataService', function() {
     });
     done();
   });
-  it('should add, update and delete a product from DB', function(done) {
+  it('should add a product to the DB', function(done) {
       var addData = [19, "Milk 2ls", 6, 9];
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.addProduct([data], function(err, rows) {
+    productsDataService.addProduct([addData], function(err, rows) {
       if (err) throw err;
       var test = rows.affectedRows;
       assert.equal(test, 1);
@@ -3389,14 +3359,7 @@ describe('ProductsDataService', function() {
     done();
   });
   it('updateProduct should update a products data', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var data = {
       category_id: 6,
       product: "Milk 2L",
@@ -3413,14 +3376,7 @@ describe('ProductsDataService', function() {
 
 
   it('deleteProduct should remove a product', function(done) {
-    var dbOptions = {
-      host: '127.0.0.1',
-      user: 'root',
-      password: '5550121a',
-      port: 3306,
-      database: "travis_db"
-    };
-    var connection = mysql.createConnection(dbOptions);
+
     var productsDataService = new ProductsDataService(connection);
     productsDataService.deleteProduct(19, function(err, rows) {
       if (err) throw err;

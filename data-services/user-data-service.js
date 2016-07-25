@@ -47,7 +47,7 @@ return QueryService.runQuery('UPDATE users SET ? WHERE id = ?', [ edit , id]);
       // connection.query('INSERT INTO users (id, category) VALUES ?', [data], function(err, rows){
       //   if (err) throw err;
       //   });
-        return QueryService.runQuery('INSERT INTO users (id, category) VALUES ?', [data]);
+        return QueryService.runQuery('INSERT INTO users (id, username, Email, password, admin, locked) VALUES ?', [data]);
     };
 
     this.deleteUser = function(id){
