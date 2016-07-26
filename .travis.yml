@@ -6,7 +6,5 @@ before_script:
   - mysql -u root travis_db < test.sql
 
 
-env:
-   - MYSQL_PWD = undefined
 
 script: mocha
