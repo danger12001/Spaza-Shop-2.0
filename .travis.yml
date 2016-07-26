@@ -11,8 +11,6 @@ before_script:
     password: null
 
 env:
-  # - MYSQL_PWD = undefined
-  # - MYSQL_URL='mysql://root:@127.0.0.1/travis_db'
   - MYSQL_PWD = null
 
 script: mocha
