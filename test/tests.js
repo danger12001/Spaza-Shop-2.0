@@ -3304,7 +3304,7 @@ describe('ProductsDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: process.env.MYSQL_USER || 'root',
-    password: '5550121a' ||process.env.MYSQL_PWD,
+    password: password,
     port: 3306,
     database: "travis_db"
   };
