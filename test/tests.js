@@ -3294,7 +3294,7 @@ var CategoriesDataService = require('../data-services/categories-data-service');
 var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
-var password = process.env.MYSQL_PWD !== null ? process.env.MYSQL_PWD : '5550121a';
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
 
 // if(process.env.MYSQL_PWD !== null){
 //   process.env.MYSQL_PWD = null;
@@ -3308,7 +3308,7 @@ describe('ProductsDataService', function() {
   var dbOptions = {
     host: '127.0.0.1',
     user: process.env.MYSQL_USER || 'root',
-    password: process.env.MYSQL_PWD || '5550121a',
+    password: password,
     port: 3306,
     database: "travis_db"
   };
