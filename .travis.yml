@@ -7,6 +7,6 @@ before_script:
 
 
 env:
-   - export MYSQL_PWD = undefined
+   - MYSQL_PWD = undefined
 
 script: mocha
