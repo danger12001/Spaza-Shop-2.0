@@ -6,7 +6,7 @@ before_script:
   - mysql -u root travis_db < test.sql
 
 env:
-  - MYSQL_PWD = undefined
+  - MYSQL_PWD = undefine
   # - MYSQL_URL='mysql://root:@127.0.0.1/test'
   # - MYSQL_USER = 'root'
 
