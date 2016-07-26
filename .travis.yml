@@ -7,6 +7,6 @@ before_script:
 
 
 env:
-  - MYSQL_PWD = ""
+  - MYSQL_PWD = null
 
 script: mocha
