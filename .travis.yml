@@ -7,7 +7,8 @@ before_script:
 
 env:
   - MYSQL_URL='mysql://root:@127.0.0.1/test'
-  - MYSQL_PWD = undefined
+  - MYSQL_PWD = null
+  - MYSQL_USER = 'root'
 
 
 script: mocha
