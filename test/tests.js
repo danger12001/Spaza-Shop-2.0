@@ -3295,8 +3295,6 @@ var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
 var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
-var test = null || 'test';
-console.log(test);
 describe('ProductsDataService', function() {
   //
   var dbOptions = {
