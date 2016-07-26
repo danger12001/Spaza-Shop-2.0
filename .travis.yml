@@ -6,9 +6,9 @@ before_script:
   - mysql -u root travis_db < test.sql
 
 env:
-  - MYSQL_URL='mysql://root:@127.0.0.1/test'
+  # - MYSQL_URL='mysql://root:@127.0.0.1/test'
   - MYSQL_PWD = null
-  - MYSQL_USER = 'root'
+  # - MYSQL_USER = 'root'
 
 
 script: mocha

@@ -3294,8 +3294,8 @@ var CategoriesDataService = require('../data-services/categories-data-service');
 var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
-var password = process.env.MYSQL_PWD !== null ? process.env.MYSQL_PWD : '5550121a';
-
+var password = process.env.MYSQL_PWD === null ? process.env.MYSQL_PWD : '5550121a';
+// var testPW = process.env.MYSQL_PWD ||
 // if(process.env.MYSQL_PWD !== null){
 //   process.env.MYSQL_PWD = null;
 // }
