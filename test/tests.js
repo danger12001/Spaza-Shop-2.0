@@ -3295,21 +3295,16 @@ var SalesDataService = require('../data-services/sales-data-service');
 var PurchasesDataService = require('../data-services/purchases-data-service');
 var UserDataService = require('../data-services/user-data-service');
 var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
-// console.log(password);
-// var testPW = process.env.MYSQL_PWD ||
-// if(process.env.MYSQL_PWD !== null){
-//   process.env.MYSQL_PWD = null;
-// }
-// else {
-//   process.env.MYSQL_PWD = "5550121a";
-// }
+
+console.log(password);
+
 
 describe('ProductsDataService', function() {
   //
   var dbOptions = {
     host: '127.0.0.1',
     user: process.env.MYSQL_USER || 'root',
-    password: password,
+    password: process.env.MYSQL_PWD || '5550121a',
     port: 3306,
     database: "travis_db"
   };
