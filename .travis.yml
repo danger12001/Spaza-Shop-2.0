@@ -5,11 +5,14 @@ before_script:
   - mysql -u root -e 'create database if not exists travis_db;'
   - mysql -u root travis_db < test.sql
 
+  test:
+    database: 'travis_db'
+    username: 'root'
+    password: null
+
 env:
   # - MYSQL_PWD = undefined
-  - MYSQL_URL='mysql://root:@127.0.0.1/travis_db'
+  # - MYSQL_URL='mysql://root:@127.0.0.1/travis_db'
   - MYSQL_PWD = null
-  # - MYSQL_USER = 'root'
-
 
 script: mocha
