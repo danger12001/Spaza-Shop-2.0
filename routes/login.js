@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var lockCount = 0;
 
 module.exports = function(req, res) {

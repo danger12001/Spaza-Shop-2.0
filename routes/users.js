@@ -1,70 +1,97 @@
-// var admin = document.getElementById("adminSwitch");
-var bcrypt = require('bcrypt');
+
+var UsersDataService = require("../data-services/user-data-service");
+var bcrypt = require('bcryptjs');
+var co = require('co');
+var mysql = require('mysql');
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
+var dbOptions = {
+  host: '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: password,
+  port: 3306,
+  database: "Nelisa2"
+};
+var connection = mysql.createConnection(dbOptions);
+
+
 exports.show = function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        if (err) return next(err);
-        connection.query('SELECT * FROM users', function(err, results) {
-            if (err) return next(err);
+    co(function*() {
+      var userDataService = new UsersDataService(connection);
+      var results = yield userDataService.showUser();
+
+        try {
             var transposedResults = [];
-                  results.forEach(function(data) {
-                      if (data.admin === 0) {
-                          data.admin = "No";
-                      } else {
-                          data.admin = "Yes";
-                      }
-                      if (data.locked === 0) {
-                          data.locked = "No";
-                      } else {
-                          data.locked = "Yes";
-                      }
-                      transposedResults.push(data);
-                  });
+                          results.forEach(function(results) {
+                              if (results.admin === 0) {
+                                  results.admin = "No";
+                              } else {
+                                  results.admin = "Yes";
+                              }
+                              if (results.locked === 0) {
+                                  results.locked = "No";
+                              } else {
+                                  results.locked = "Yes";
+                              }
+                              transposedResults.push(results);
+                          });
+
             res.render('users', {
-                users: transposedResults,
+                users:   transposedResults,
                 admin: req.session.admintab,
-                user: req.session.user
+                user: req.session.admintab
             });
-        });
+        } catch (err) {
+            console.log(err);
+        }
     });
 };
 
+
   exports.showAdd = function(req, res){
-  	req.getConnection(function(err, connection){
-  		if (err) return next(err);
-  		connection.query('SELECT * from users', [], function(err, data) {
-          	if (err) return next(err);
-      		res.render( 'addUser', {
-  					data : data,
-  					admin: req.session.admintab, user: req.session.username
-      		});
-        	});
-  	});
+    co(function*() {
+      var userDataService = new UsersDataService(connection);
+      var results = yield userDataService.showUser();
+
+        try {
+
+
+            res.render('addUser', {
+                data:   results,
+                admin: req.session.admintab,
+                user: req.session.username
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
 };
 
 
 exports.add = function(req, res, next) {
-    req.getConnection(function(err, connection) {
-        if (err) return next(err);
-        var password = req.body.password;
-        var data = {
-            username: req.body.username,
-            email: req.body.email,
-            admin: 0,
-            locked: 0
-        };
+co(function*() {
+  var userDataService = new UsersDataService(connection);
 
-var adminSwitch = req.body.adminSwitch;
-console.log(adminSwitch);
+    try {
+      var password = req.body.password;
+             var data = {
+                 username: req.body.username,
+                 email: req.body.email,
+                 admin: 0,
+                 locked: 0
+             };
+             bcrypt.hash(password, 10, function(err, hash) {
+                         data.password = hash;
+                      res.redirect('/users');
+                     });
+                     var results = yield userDataService.addUser(data);
 
-        bcrypt.hash(password, 10, function(err, hash) {
-            data.password = hash;
+    } catch (err) {
+        console.log(err);
+    }
+});
 
-            connection.query('insert into users set ?', data, function(err, data) {
-                if (err) return next(err);
-                res.redirect('/users');
-            });
-        });
-    });
+
 };
 exports.settingsGet = function(req, res,next){
   // var id = req.params.id;
@@ -132,81 +159,86 @@ exports.settingsUpdate = function(req, res, next) {
   });
 });
 
-
-
-
-        // else {
-          // req.flash("warning", 'Passwords Incorrect');
-          // res.redirect('/user'  + users);
-        // }
-
 };
 exports.get = function(req, res, next) {
-    var id = req.params.id;
-    req.getConnection(function(err, connection) {
-        connection.query('SELECT * FROM users WHERE id = ?', [id], function(err, rows) {
-            if (err) return next(err);
+    co(function*() {
+      var id = req.params.id;
+      var userDataService = new UsersDataService(connection);
+      var results = yield userDataService.getUser(id);
+
+        try {
+
+
             res.render('editUser', {
-                data: rows[0],
+                data:   results[0],
                 admin: req.session.admintab,
-                user: req.session.user
+                user: req.session.admintab
             });
-        });
+        } catch (err) {
+            console.log(err);
+        }
     });
 };
 
 exports.update = function(req, res, next) {
 
-    var id = req.params.id;
-    // var password = req.body.password;
-    var data = {
-        // username: req.body.username,
-        admin: req.body.admin,
-        locked: req.body.lock
-    };
-    if(req.body.admin === "on"){
-      data.admin = "1";
-    }
-    else {
-      data.admin = "0";
-    }
-    if(req.body.lock === "on"){
-      data.locked = "1";
-    }
-    else {
-      data.locked = "0";
-    }
-    // bcrypt.hash(password, 10, function(err, hash) {
-    //     data.password = hash;
+    co(function*() {
+      var id = req.params.id;
+      var userDataService = new UsersDataService(connection);
 
-        req.getConnection(function(err, connection) {
-            connection.query('UPDATE users SET ? WHERE id = ?', [data, id], function(err, rows) {
-                if (err) next(err);
-                res.redirect('/users');
-            });
-        });
-    // });
+        try {
+          var data = {
+            admin: req.body.admin,
+            locked: req.body.locked
+          };
+          if(req.body.admin === "on"){
+            data.admin = "1";
+          }
+          else {
+            data.admin = "0";
+          }
+          if(req.body.lock === "on"){
+            data.locked = "1";
+          }
+          else {
+            data.locked = "0";
+          }
+
+          var results = yield userDataService.updateUser(id, data);
+        res.redirect('/users');
+        } catch (err) {
+            console.log(err);
+        }
+    });
 };
 
 exports.delete = function(req, res, next) {
-    var id = req.params.id;
-    req.getConnection(function(err, connection) {
-        connection.query('DELETE FROM users WHERE id = ?', [id], function(err, rows) {
-            if (err) return next(err);
-            res.redirect('/users');
-        });
+    co(function*() {
+      var id = req.params.id;
+      var userDataService = new UsersDataService(connection);
+
+        try {
+          var results = yield userDataService.deleteUser([id]);
+        res.redirect('/users');
+        } catch (err) {
+            console.log(err);
+        }
     });
 };
 exports.search = function(req, res, next){
-  req.getConnection(function(err, connection) {
+  co(function*() {
+    var userDataService = new UsersDataService(connection);
     var searchVal = '%'+ req.params.searchVal +'%';
-    connection.query('SELECT * FROM users WHERE users.username LIKE ?', [searchVal], function(err, result){
-      if(err) return console.log(err);
-      res.render('usersSearchResults',{
-        search : result,
-        		admin: req.session.admintab, user: req.session.username,
-        layout : false
-      });
-    });
+
+      try {
+        var results = yield userDataService.searchUser([searchVal]);
+        res.render('usersSearchResults',{
+          search : results,
+          		admin: req.session.admintab, user: req.session.username,
+          layout : false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };

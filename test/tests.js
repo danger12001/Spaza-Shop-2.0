@@ -3737,10 +3737,16 @@ describe('UserDataService', function() {
 
     it('addUser add a User', function(done) {
 
-      var data = [2, "testE", "test", "test", 1, 0];
-
+      var data = {
+          id: 2,
+          username: "testE",
+          email: "test",
+          password: "test",
+          admin: 1,
+          locked: 0
+      };
       var userDataService = new UserDataService(connection);
-      userDataService.addUser([data]) .then(function(rows) {
+      userDataService.addUser(data) .then(function(rows) {
           var test = rows.affectedRows;
           assert.equal(test, 1);
           done();

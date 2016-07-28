@@ -4,7 +4,7 @@ connectionProvider = require('connection-provider'),
 myConnection = require('express-myconnection'),
 bodyParser = require('body-parser'),
 mysql = require('mysql'),
-bcrypt = require('bcrypt'),
+bcrypt = require('bcryptjs'),
 session = require('express-session'),
 flash = require('express-flash'),
 fs = require("fs"),
@@ -212,6 +212,9 @@ app.get("/logout", function(req, res, next) {
   delete req.session.admintab;
   res.redirect("/");
 });
+
+
+
 
 app.get('/products', products.show);
 app.get('/product', products.showU);

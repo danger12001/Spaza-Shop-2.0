@@ -1,79 +1,107 @@
+var ProductsDataService = require("../data-services/products-data-service");
+var CategoryDataService = require("../data-services/categories-data-service");
+var bcrypt = require('bcryptjs');
+var co = require('co');
+var mysql = require('mysql');
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
+var dbOptions = {
+  host: '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: password,
+  port: 3306,
+  database: "Nelisa2"
+};
+var connection = mysql.createConnection(dbOptions);
+
+
+
 exports.showAdd = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('SELECT * from categories', [], function(err, categories) {
-      if (err) return next(err);
-      res.render('add', {
-        categories: categories,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
+    var results = yield productsDataService.showProduct();
+
+      try {
+          res.render('add', {
+              categories:   results,
+              admin: req.session.admintab,
+              user: req.session.username
+          });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 exports.show = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query("SELECT products.id,products.product,products.price, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ", [], function(err, products) {
-      if (err) return next(err);
-      res.render('products', {
-        products: products,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
+    var results = yield productsDataService.showProduct();
+      try {
+          res.render('products', {
+              products: results,
+              admin: req.session.admintab,
+              user: req.session.username
+          });
+      } catch (err) {
+          console.log(err);
+      }
   });
+
 };
 exports.showU = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query("SELECT products.id,products.product,products.price, categories.category FROM products, categories WHERE products.category_id = categories.id  ORDER BY `products`.`id` ASC ", [], function(err, products) {
-      if (err) return next(err);
-      res.render('productsU', {
-        products: products,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
+    var results = yield productsDataService.showProduct();
+      try {
+          res.render('productsU', {
+              products: results,
+              admin: req.session.admintab,
+              user: req.session.username
+          });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 exports.add = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    var data = {
-      category_id: Number(req.body.category_id),
-      product: req.body.product,
-      price: Number(req.body.price)
-    };
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
 
-    connection.query('insert into products set ?', data, function(err, results) {
-      if (err) return next(err);
-      res.redirect('/products');
-    });
+      try {
+        var data = {
+          category_id: Number(req.body.category_id),
+          product: req.body.product,
+          price: Number(req.body.price)
+        };
+
+
+                        var results = yield productsDataService.addProduct(data);
+                        res.redirect('/products');
+
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 
 exports.get = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('SELECT * FROM categories', [id], function(err, categories) {
-      if (err) return next(err);
-      connection.query('SELECT * FROM products WHERE id = ?', [id], function(err, products) {
-        if (err) return next(err);
-        var product = products[0];
-        categories = categories.map(function(category) {
-          category.selected = category.id === product.category_id ? "selected" : "";
-          return category;
-        });
-        res.render('edit', {
-          categories: categories,
-          data: product,
-          admin: req.session.admintab,
-          user: req.session.username
-        });
-      });
-    });
+
+  co(function*() {
+    var id = req.params.id;
+    var productsDataService = new ProductsDataService(connection);
+    var categoryDataService = new CategoryDataService(connection);
+    var results = yield productsDataService.getProduct(id);
+    var categories = yield categoryDataService.showCategory();
+      try {
+          res.render('edit', {
+            categories: categories,
+              data:   results[0],
+              admin: req.session.admintab,
+              user: req.session.username
+          });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 

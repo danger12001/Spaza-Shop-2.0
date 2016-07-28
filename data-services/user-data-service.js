@@ -26,7 +26,7 @@ module.exports = function(connection) {
 
   this.addUser = function(data) {
 
-    return QueryService.runQuery('INSERT INTO users (id, username, Email, password, admin, locked) VALUES ?', [data]);
+    return QueryService.runQuery('INSERT INTO users SET ?', [data]);
   };
 
 
