@@ -3555,11 +3555,17 @@ describe('SalesDataService', function() {
 
   it('addSale should add a sale', function(done) {
 
-    var data = [448, 2001 - 03 - 01, 11, 12, 3];
+    var data = {
+      id: 448,
+      date: 2001 - 03 - 01,
+      product_id: 11,
+      sold: 12,
+      price: 3
+    };
 
 
     var salesDataService = new SalesDataService(connection);
-    salesDataService.addSale([data])
+    salesDataService.addSale(data)
       .then(function(rows) {
         var test = rows.affectedRows;
         assert.equal(test, 1);
@@ -3660,10 +3666,16 @@ describe('PurchasesDataService', function() {
   });
   it('addPurchase should add a Purchase', function(done) {
 
-    var data = [154, 2001 - 03 - 01, 11, 12, 3];
+    var data = {
+      id: 154,
+      date: 2001 - 03 - 01,
+      quantity: 11,
+      cost: 12,
+      product_id: 3
+    }
 
     var purchasesDataService = new PurchasesDataService(connection);
-    purchasesDataService.addPurchase([data])
+    purchasesDataService.addPurchase(data)
       .then(function(rows) {
         var test = rows.affectedRows;
         assert.equal(test, 1);
