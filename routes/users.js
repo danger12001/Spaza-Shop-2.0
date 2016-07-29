@@ -103,8 +103,8 @@ exports.settingsGet = function(req, res,next){
           // console.log(rows[0]);
           res.render('userSettings', {
               data: rows[0],
-              admin: req.session.admintab,
-              user: req.session.user
+              user: req.session.username,
+              admin: req.session.admintab
           });
       });
   });
