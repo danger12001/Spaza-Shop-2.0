@@ -3348,9 +3348,15 @@ describe('ProductsDataService', function() {
   });
 
   it('addProduct should add a product to the DB', function(done) {
-    var data = [19, "Milk 2ls", 6, 9];
+    // var data = [19, "Milk 2ls", 6, 9];
+    var data = {
+      id: 19,
+      category_id: 6,
+      product: "Milk 2ls",
+      price: 9
+    };
     var productsDataService = new ProductsDataService(connection);
-    productsDataService.addProduct([data])
+    productsDataService.addProduct(data)
       .then(function(rows) {
         var test = rows.affectedRows;
         assert.equal(test, 1);
@@ -3447,10 +3453,14 @@ describe('CategoriesDataService', function() {
 
   it('addCategory should add an category', function(done) {
 
-    var data = [10, "Test"];
+    // var data = [10, "Test"];
+    var data = {
+      id: 10,
+      category: "Test",
+    };
 
     var categoryDataService = new CategoriesDataService(connection);
-    categoryDataService.addCategory([data])
+    categoryDataService.addCategory(data)
       .then(function(rows) {
         var test = rows.affectedRows;
         assert.equal(test, 1);

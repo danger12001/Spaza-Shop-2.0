@@ -26,7 +26,7 @@ module.exports = function(connection) {
 
   this.addPurchase = function(data) {
 
-    return QueryService.runQuery('INSERT INTO purchases (id, date, quantity,cost,product_id) VALUES ?', [data]);
+    return QueryService.runQuery('INSERT INTO purchases SET ?', [data]);
   };
 
   this.deletePurchase = function(id) {

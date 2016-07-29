@@ -108,7 +108,9 @@ var setupCallback = function(connection){
 
 app.use(connectionProvider(dbOptions, setupCallback));
 app.use(session({
-  secret: 'space cats on synthesizers'
+  secret: 'space cats on synthesizers',
+  resave: false,
+  saveUninitialized: false
 }));
 
 app.use(flash());

@@ -1,111 +1,152 @@
-// var  bodyParser = require('body-parser');
+var SalesDataService = require("../data-services/sales-data-service");
+var CategoryDataService = require("../data-services/categories-data-service");
+var ProductsDataService = require("../data-services/products-data-service");
+var Promise = require('bluebird');
+var bcrypt = require('bcryptjs');
+var co = require('co');
+var mysql = require('mysql');
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
+var dbOptions = {
+  host: '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: password,
+  port: 3306,
+  database: "Nelisa2"
+};
+var connection = mysql.createConnection(dbOptions);
+
+
+
+
 exports.show = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query("SELECT DATE_FORMAT(sales.date,'%d %b') as date,sales.id, sales.product_id, sales.sold, sales.price ,products.product FROM sales, products WHERE sales.product_id = products.id AND sales.sold > 0  ORDER BY `sales`.`date` ASC", [], function(err, sales) {
-      if (err) return next(err);
-      res.render('sales', {
-        sales: sales,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var salesDataService = new SalesDataService(connection);
+    var results = yield salesDataService.showSale();
+      try {
+        res.render('sales', {
+          sales: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 exports.showAdd = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query("SELECT * from sales, products", [], function(err, sales) {
-      if (err) return next(err);
-      res.render('addSales', {
-        sales: sales,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var salesDataService = new SalesDataService(connection);
+    var productsDataService = new ProductsDataService(connection);
+
+    var results = yield productsDataService.showProduct();
+      try {
+        res.render('addSales', {
+          sales: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.add = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-  var price =  Number(req.body.price);
-  var markup = Number(req.body.markup);
-    var data = {
-      date: new Date(req.body.date),
-      product_id: Number(req.body.product_id),
-      sold: Number(req.body.sold),
-      price: price + markup
-    };
-    connection.query('insert into sales set ?', data, function(err, results) {
-      if (err) return next(err);
-      res.redirect('/sales');
-    });
+  co(function*() {
+    var salesDataService = new SalesDataService(connection);
+      try {
+        var price =  Number(req.body.price);
+        var markup = Number(req.body.markup);
+          var data = {
+            date: new Date(req.body.date),
+            product_id: Number(req.body.product_id),
+            sold: Number(req.body.sold),
+            price: price + markup
+          };
+
+        var results = yield salesDataService.addSale(data);
+
+                        res.redirect('/sales');
+
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.get = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('SELECT * from sales, products', [id], function(err, sales) {
-      if (err) return next(err);
-      connection.query('SELECT * FROM sales WHERE id = ?', [id], function(err, products) {
-        if (err) return next(err);
-        var product = products[0];
-        sales = sales.map(function(sale) {
-          sale.selected = sales.product_id === product.id ? "selected" : "";
-          return sale;
-        });
+  co(function*() {
+    var id = req.params.id;
+    var salesDataService = new SalesDataService(connection);
+    var productsDataService = new ProductsDataService(connection);
+
+var sales = yield salesDataService.showSale();
+
+    var products = yield productsDataService.showProduct();
+    // var results = yield salesDataService.getSale(id);
+      try {
+        var join = Promise.join(sales,products, function(result){
         res.render('editSale', {
-          sales: sales,
-          data: product,
+          data: result[0],
+          sales: products,
           admin: req.session.admintab,
           user: req.session.username
         });
       });
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.update = function(req, res, next) {
-
-  var data = {
-    date: new Date(req.body.date),
-    product_id: Number(req.body.product_id),
-    sold: Number(req.body.sold),
-    price: Number(req.body.price),
-  };
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('UPDATE sales SET ? WHERE id = ?', [data, id], function(err, rows) {
-      if (err) return next(err);
-      res.redirect('/sales');
-    });
+  co(function*() {
+    var salesDataService = new SalesDataService(connection);
+      try {
+        var data = {
+          date: new Date(req.body.date),
+          product_id: Number(req.body.product_id),
+          sold: Number(req.body.sold),
+          price: Number(req.body.price),
+        };
+var id = req.params.id;
+var sales = yield salesDataService.updateSale(id,data);
+res.redirect('/sales');
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.delete = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('DELETE FROM sales WHERE id = ?', [id], function(err, rows) {
-      if (err) return next(err);
+  co(function*() {
+    var id = req.params.id;
+    var salesDataService = new SalesDataService(connection);
+
+      try {
+        var results = yield salesDataService.deleteSale(id);
       res.redirect('/sales');
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.search = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query("SELECT DATE_FORMAT(sales.date,'%d %b') as date,sales.id, products.product, categories.category, sales.sold, sales.price FROM  sales	INNER JOIN products ON sales.product_id = products.id  INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ? ORDER BY `sales`.`date` ASC", [searchVal, searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('salesSearchResults', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+    var salesDataService = new SalesDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+        var results = yield salesDataService.searchSale([searchVal]);
+        res.render('salesSearchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };

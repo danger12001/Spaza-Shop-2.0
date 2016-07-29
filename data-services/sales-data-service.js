@@ -23,7 +23,7 @@ module.exports = function(connection) {
 
   this.addSale = function(data) {
 
-    return QueryService.runQuery('INSERT INTO sales (id, date, product_id,sold,price) VALUES ?', [data]);
+    return QueryService.runQuery('INSERT INTO sales SET ?', [data]);
   };
 
   this.deleteSale = function(id) {

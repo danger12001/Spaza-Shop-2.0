@@ -8,14 +8,15 @@ module.exports = function(connection) {
     return QueryService.runQuery('SELECT * from categories');
   };
   this.searchCategory = function(searchVal, cb, err) {
-    return QueryService.runQuery('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal]);
+    return QueryService.runQuery('SELECT * FROM categories WHERE categories.category LIKE ?', [searchVal]);
   };
 
 
-  this.getCategory = function(id, cb, err) {
+  this.getCategory = function(id) {
 
-    return QueryService.runQuery('select * from categories where id = ?', id);
+    return QueryService.runQuery('select * from categories where id = ?', [id]);
   };
+
   this.updateCategory = function(id, edit) {
 
     return QueryService.runQuery('UPDATE categories SET ? WHERE id = ?', [edit, id]);
@@ -23,7 +24,7 @@ module.exports = function(connection) {
 
   this.addCategory = function(data) {
 
-    return QueryService.runQuery('INSERT INTO categories (id, category) VALUES ?', [data]);
+    return QueryService.runQuery('INSERT INTO categories SET ?', [data]);
   };
 
   this.deleteCategory = function(id) {

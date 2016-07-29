@@ -1,111 +1,150 @@
-// var  bodyParser = require('body-parser');
+var PurchaseDataService = require("../data-services/purchases-data-service");
+var CategoryDataService = require("../data-services/categories-data-service");
+var ProductsDataService = require("../data-services/products-data-service");
+var Promise = require('bluebird');
+var bcrypt = require('bcryptjs');
+var co = require('co');
+var mysql = require('mysql');
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
+var dbOptions = {
+  host: '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: password,
+  port: 3306,
+  database: "Nelisa2"
+};
+var connection = mysql.createConnection(dbOptions);
+
+
 exports.show = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query("SELECT DATE_FORMAT(purchases.date,'%d %b') as date,purchases.id, purchases.product_id, purchases.quantity, purchases.cost ,products.product FROM purchases, products WHERE purchases.product_id = products.id  ORDER BY `purchases`.`date` ASC", [], function(err, purchases) {
-      if (err) return next(err);
-      res.render('purchases', {
-        purchases: purchases,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var purchasesDataService = new PurchaseDataService(connection);
+    var results = yield purchasesDataService.showPurchase();
+      try {
+        res.render('purchases', {
+          purchases: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.showAdd = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('SELECT * from purchases, products', [], function(err, purchases) {
-      if (err) return next(err);
-      res.render('addPurchases', {
-        purchases: purchases,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
+  co(function*() {
+    var purchasesDataService = new PurchaseDataService(connection);
+    var productsDataService = new ProductsDataService(connection);
+    var results = yield productsDataService.showProduct();
+      try {
+        res.render('addPurchases', {
+          purchases: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.add = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    var data = {
-      date: new Date(req.body.date),
-      quantity: Number(req.body.quantity),
-      cost: Number(req.body.cost),
-      product_id: Number(req.body.product_id),
-    };
-    connection.query('insert into purchases set ?', data, function(err, results) {
-      if (err) return next(err);
-      res.redirect('/purchases');
-    });
+  co(function*() {
+    var purchasesDataService = new PurchaseDataService(connection);
+      try {
+        var data = {
+          date: new Date(req.body.date),
+          quantity: Number(req.body.quantity),
+          cost: Number(req.body.cost),
+          product_id: Number(req.body.product_id),
+        };
+
+      var results = yield purchasesDataService.addPurchase(data);
+                        res.redirect('/purchases');
+
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.get = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('SELECT * FROM purchases, products', [id], function(err, purchases) {
-      if (err) return next(err);
-      connection.query('SELECT * FROM purchases WHERE id = ?', [id], function(err, products) {
-        if (err) return next(err);
-        var product = products[0];
-        purchases = purchases.map(function(purchase) {
-          purchase.selected = purchases.product_id === product.id ? "selected" : "";
-          return purchase;
-        });
-        res.render('editPurchase', {
-          purchases: purchases,
-          data: product,
-          admin: req.session.admintab,
-          user: req.session.username
-        });
+
+  co(function*() {
+    var id = req.params.id;
+    var purchasesDataService = new PurchaseDataService(connection);
+    var productsDataService = new ProductsDataService(connection);
+
+  var purchases = yield purchasesDataService.showPurchase();
+  var products = yield productsDataService.showProduct();
+
+  // var results = yield purchasesDataService.getPurchase(id);
+      try {
+        var join = Promise.join(purchases,products, function(result){
+          res.render('editPurchase', {
+            purchases: products,
+            data: result[0],
+            admin: req.session.admintab,
+            user: req.session.username
+          });
       });
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.update = function(req, res, next) {
 
-  var data = {
-    date: new Date(req.body.date),
-    quantity: Number(req.body.quantity),
-    cost: Number(req.body.cost),
-    product_id: Number(req.body.product_id),
-  };
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('UPDATE purchases SET ? WHERE id = ?', [data, id], function(err, rows) {
-      if (err) return next(err);
-      res.redirect('/purchases');
-    });
+  co(function*() {
+    var purchasesDataService = new PurchaseDataService(connection);
+      try {
+        var data = {
+          date: new Date(req.body.date),
+          quantity: Number(req.body.quantity),
+          cost: Number(req.body.cost),
+          product_id: Number(req.body.product_id),
+        };
+var id = req.params.id;
+var purchases = yield purchasesDataService.updatePurchase(id,data);
+res.redirect('/purchases');
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.delete = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('DELETE FROM purchases WHERE id = ?', [id], function(err, rows) {
-      if (err) return next(err);
+  co(function*() {
+    var id = req.params.id;
+      var purchasesDataService = new PurchaseDataService(connection);
+
+      try {
+        var purchases = yield purchasesDataService.deletePurchase(id);
       res.redirect('/purchases');
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 
 exports.search = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query("SELECT DATE_FORMAT(purchases.date,'%d %b') as date,purchases.id, products.product, categories.category, purchases.quantity, purchases.cost FROM  purchases	INNER JOIN products ON purchases.product_id = products.id INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ? ORDER BY `purchases`.`date` ASC", [searchVal, searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('purchasesSearchResults', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+    var purchasesDataService = new PurchaseDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+      var results = yield purchasesDataService.searchPurchase([searchVal]);
+        res.render('purchasesSearchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };

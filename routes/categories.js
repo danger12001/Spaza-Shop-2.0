@@ -1,129 +1,172 @@
-exports.showAdd = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('SELECT * from categories', [], function(err, categories) {
-      if (err) return next(err);
-      res.render('addCategory', {
-        categories: categories,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
-  });
+var CategoriesDataService = require("../data-services/categories-data-service");
+var bcrypt = require('bcryptjs');
+var co = require('co');
+var mysql = require('mysql');
+var password = process.env.MYSQL_PWD !== undefined ? process.env.MYSQL_PWD : '5550121a';
+var dbOptions = {
+  host: '127.0.0.1',
+  user: process.env.MYSQL_USER || 'root',
+  password: password,
+  port: 3306,
+  database: "Nelisa2"
 };
-exports.show = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('SELECT * from categories', [], function(err, categories) {
-      if (err) return next(err);
-      res.render('categories', {
-        categories: categories,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
-  });
-};
-exports.showU = function(req, res) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('SELECT * from categories', [], function(err, categories) {
-      if (err) return next(err);
-      res.render('categoriesU', {
-        categories: categories,
-        admin: req.session.admintab,
-        user: req.session.username
-      });
-    });
-  });
-};
-exports.add = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    var data = {
-      category: req.body.category,
-    };
+var connection = mysql.createConnection(dbOptions);
 
-    connection.query('insert into categories set ?', data, function(err, results) {
-      if (err) return next(err);
-      res.redirect('/categories');
-    });
-  });
-};
-exports.get = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('SELECT * FROM categories', [id], function(err, categories) {
-      if (err) return next(err);
-      connection.query('SELECT * FROM categories WHERE id = ?', [id], function(err, category) {
-        if (err) return next(err);
-        var cat = category[0];
-        categories = categories.map(function(category) {
-          return category;
-        });
-        res.render('editCategory', {
-          categories: categories,
-          data: cat,
+
+exports.showAdd = function(req, res) {
+
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+    var results = yield categoryDataService.showCategory();
+
+      try {
+        res.render('addCategory', {
+          categories: results,
           admin: req.session.admintab,
           user: req.session.username
         });
-      });
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
+};
+exports.show = function(req, res) {
+
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+    var results = yield categoryDataService.showCategory();
+
+      try {
+        res.render('categories', {
+          categories: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
+  });
+};
+exports.showU = function(req, res) {
+
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+    var results = yield categoryDataService.showCategory();
+
+      try {
+        res.render('categoriesU', {
+          categories: results,
+          admin: req.session.admintab,
+          user: req.session.username
+        });
+      } catch (err) {
+          console.log(err);
+      }
+  });
+};
+exports.add = function(req, res, next) {
+
+
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+      try {
+        var data = {
+          category: req.body.category,
+        };
+
+
+        var results = yield categoryDataService.addCategory(data);
+                        res.redirect('/categories');
+
+      } catch (err) {
+          console.log(err);
+      }
+  });
+};
+exports.get = function(req, res, next) {
+  co(function*() {
+    var id = req.params.id;
+    var categoryDataService = new CategoriesDataService(connection);
+    var results = yield categoryDataService.getCategory(id);
+
+      try {
+        res.render('editCategory', {
+
+               data: results[0],
+               admin: req.session.admintab,
+               user: req.session.username
+             });
+      } catch (err) {
+          console.log(err);
+      }
+  });
+
+
 };
 
 exports.update = function(req, res, next) {
-
-  var data = {
-    category: req.body.category,
-  };
-
-  // console.log("test");
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('UPDATE categories SET ? WHERE id = ?', [data, id], function(err, rows) {
-      if (err) return next(err);
-      res.redirect('/categories');
-    });
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+      try {
+        var data = {
+          category: req.body.category,
+        };
+        var id = req.params.id;
+        var results = yield categoryDataService.updateCategory(id, data);
+        res.redirect('/categories');
+      } catch (err) {
+          console.log(err);
+      }
   });
+
 };
 
 exports.delete = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('DELETE FROM categories WHERE id = ?', [id], function(err, rows) {
-      if (err) return next(err);
-      res.redirect('/categories');
-    });
+  co(function*() {
+    var categoryDataService = new CategoriesDataService(connection);
+      try {
+        var id = req.params.id;
+        var results = yield categoryDataService.deleteCategory(id);
+        res.redirect('/categories');
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.search = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('CategorySearchResults', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+  var categoryDataService = new CategoriesDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+        var results = yield categoryDataService.searchCategory([searchVal]);
+        res.render('CategorySearchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 exports.searchU = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query('SELECT * FROM categories WHERE  categories.category LIKE ?', [searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('CatSearchResults', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+  var categoryDataService = new CategoriesDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+        var results = yield categoryDataService.searchCategory([searchVal]);
+        res.render('CatSearchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };

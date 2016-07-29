@@ -106,57 +106,73 @@ exports.get = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
 
-  var data = {
-    category_id: Number(req.body.category_id),
-    product: req.body.product,
-    price: Number(req.body.price)
-  };
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    if (err) return next(err);
-    connection.query('UPDATE products SET ? WHERE id = ?', [data, id], function(err, rows) {
-      if (err) return next(err);
-      res.redirect('/products');
-    });
+      try {
+        var data = {
+          category_id: Number(req.body.category_id),
+          product: req.body.product,
+          price: Number(req.body.price)
+        };
+var id = req.params.id;
+var results = yield productsDataService.updateProduct(data, id);
+res.redirect('/products');
+
+
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.delete = function(req, res, next) {
-  var id = req.params.id;
-  req.getConnection(function(err, connection) {
-    connection.query('DELETE FROM products WHERE id = ?', [id], function(err, rows) {
-      if (err) return next(err);
+  co(function*() {
+    var id = req.params.id;
+    var productsDataService = new ProductsDataService(connection);
+
+      try {
+        var results = yield productsDataService.deleteProduct([id]);
       res.redirect('/products');
-    });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 
 exports.search = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchVal, searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('searchResults', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+        var results = yield productsDataService.searchProduct([searchVal]);
+        res.render('searchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
 exports.searchU = function(req, res, next) {
-  req.getConnection(function(err, connection) {
-    var searchVal = '%' + req.params.searchVal + '%';
-    connection.query('SELECT products.id, products.product, categories.category FROM products INNER JOIN categories ON products.category_id = categories.id WHERE products.product LIKE ? OR categories.category LIKE ?', [searchVal, searchVal], function(err, result) {
-      if (err) return console.log(err);
-      res.render('productSearchResult', {
-        search: result,
-        admin: req.session.admintab,
-        user: req.session.username,
-        layout: false
-      });
-    });
+  co(function*() {
+    var productsDataService = new ProductsDataService(connection);
+    var searchVal = '%'+ req.params.searchVal +'%';
+
+      try {
+        var results = yield productsDataService.searchProduct([searchVal]);
+        res.render('searchResults', {
+          search: results,
+          admin: req.session.admintab,
+          user: req.session.username,
+          layout: false
+        });
+      } catch (err) {
+          console.log(err);
+      }
   });
 };
