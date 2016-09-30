@@ -1,1 +1,1 @@
-CREATE database Nelisa2;
+CREATE database IF NOT EXISTS `Nelisa2`;

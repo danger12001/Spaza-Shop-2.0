@@ -8,11 +8,16 @@ var dbOptions = {
   password: '5550121a',
   port: 3306,
 };
-var CreateDB = String(fs.readFileSync('./sql/CreateDB.sql'));
+var CreateDB = String(fs.readFileSync('./DB-functions/sql/CreateDB.sql'));
 var connection = mysql.createConnection(dbOptions);
+
+exports.create = function(){
 
 //DB SETUP SQL
 connection.query(CreateDB, [], function(err, result) {
   if (err) throw err;
   // connection.end();
+  console.log('DB created!');
 });
+
+};

@@ -8,8 +8,10 @@ bcrypt = require('bcryptjs'),
 session = require('express-session'),
 flash = require('express-flash'),
 fs = require("fs"),
+dbSetup = require('./DB-functions/SetUpDB');
 app = express();
 
+// dbSetup.Setup(); //Uncomment this to set up the DB, remember to comment again afterwards
 var signup = require('./routes/signUp'),
 login = require('./routes/login');
 

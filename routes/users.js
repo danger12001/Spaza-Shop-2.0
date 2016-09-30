@@ -38,7 +38,7 @@ exports.show = function(req, res, next) {
             res.render('users', {
                 users:   transposedResults,
                 admin: req.session.admintab,
-                user: req.session.admintab
+                user: req.session.username
             });
         } catch (err) {
             console.log(err);
